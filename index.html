@@ -1,15 +1,3319 @@
-<!DOCTYPE HTML>
-<html lang="en-US">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="refresh" content="0; url=https://w3c.github.io/vcalm/">
-        <script type="text/javascript">
-            window.location.href = "https://w3c.github.io/vcalm/"
-        </script>
-        <title>Page Redirection</title>
-    </head>
-    <body>
-        <!-- Note: don't tell people to `click` the link, just tell them that it is a link. -->
-        If you are not redirected automatically, follow this <a href='https://w3c.github.io/vcalm/'>link to the new website</a>.
-    </body>
+<!DOCTYPE html>
+<html>
+<head>
+  <title style="font-size: 10px;">VCALM v0.9</title>
+  <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+  <script class="remove"
+    src="https://www.w3.org/Tools/respec/respec-w3c"></script>
+  <script class="remove"
+    src="https://cdn.jsdelivr.net/gh/digitalbazaar/respec-oas@0.9.0/dist/main.js"></script>
+  <script class="remove"
+    src="https://cdn.jsdelivr.net/gh/digitalbazaar/respec-mermaid@1.2.0/dist/main.js"></script>
+
+  <script class="remove" type="text/javascript">
+  var respecConfig = {
+    // the W3C WG and public mailing list
+    group: "credentials",
+    wgPublicList: "public-credentials",
+
+    // the specification's short name, as in http://www.w3.org/TR/short-name/
+    shortName: "vcalm",
+
+    // specification status (e.g., WD, LCWD, NOTE, etc.). If in doubt use ED.
+    specStatus: "CG-DRAFT",
+
+    // W3C Candidate Recommendation information
+    //crEnd: "2021-05-04",
+    //implementationReportURI: "https://w3c.github.io/vcalm-test-suite/",
+
+    // Editor's Draft URL
+    latestVersion: "https://w3c-ccg.github.io/vcalm/",
+    //edDraftURI: "https://w3c-ccg.github.io/vcalm/",
+
+
+    // subtitle for the spec
+    subtitle: "A Verifiable Credential API for Lifecycle Management",
+
+    // if you wish the publication date to be other than today, set this
+    //publishDate:  "2019-11-07",
+
+    // previously published draft, uncomment this and set its
+    // YYYY-MM-DD date and its maturity status
+    //previousPublishDate:  "2021-03-01",
+    //previousMaturity:  "WD",
+
+    // automatically allow term pluralization
+    pluralize: true,
+
+    // extend the bibliography entries
+    localBiblio: {
+      "ISO18004": {
+        title: "ISO18004:2024: QR Code Bar Code Symbology Specification",
+        href: "https://www.iso.org/standard/83389.html",
+        status: "Published",
+        publisher: "ISO"
+      },
+      "DCAPI": {
+        title: "Digital Credential API",
+        href: "https://www.w3.org/TR/digital-credentials/",
+        status: "WD",
+        publisher: "W3C"
+      },
+      "OID4VCI": {
+        title: "OpenID for Verifiable Credential Issuance v1.0",
+        href: "https://openid.net/specs/openid-4-verifiable-credential-issuance-1_0.html",
+        status: "WD",
+        publisher: "OpenID Foundation"
+      },
+      "OID4VP": {
+        title: "OpenID for Verifiable Presentations v1.0",
+        href: "https://openid.net/specs/openid-4-verifiable-presentations-1_0.html",
+        status: "WD",
+        publisher: "OpenID Foundation"
+      },
+    },
+    xref: [
+      "web-platform", "infra", "vc-data-model-2.0", "did", "vc-data-integrity"
+    ],
+    github: {
+      repoURL: "https://github.com/w3c-ccg/vcalm/",
+      branch: "main"
+    },
+    includePermalinks: false,
+    maxTocLevel: 3,
+
+    // Uncomment these to use the respec extension that generates a list of
+    //   normative statements:
+    preProcess: [window.respecMermaid.createFigures],
+    postProcess: [window.respecOas.injectOas],
+    oas: ["oas.yaml"],
+    lint: {
+      "no-unused-dfns": false,
+      "informative-dfn": false
+    },
+
+    // list of specification editors
+    editors: [{
+      name: "TBD"
+    }],
+
+    // list of specification authors
+    authors: [],
+
+    otherLinks: [{
+      key: "Meetings:",
+      data: [{
+        value: "View next scheduled meeting",
+        href: "https://www.w3.org/events/meetings/ce3fe409-8ab6-4b25-ae46-f605108403f1/#next"
+      }]
+    }]
+  };
+  </script>
+  <style>
+code {
+  color: rgb(199, 73, 0);
+  font-weight: bold;
+}
+pre {
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+pre .highlight {
+  font-weight: bold;
+  color: Green;
+}
+pre .subject {
+  font-weight: bold;
+  color: RoyalBlue;
+}
+pre .property {
+  font-weight: bold;
+  color: DarkGoldenrod;
+}
+pre .comment {
+  font-weight: bold;
+  color: SteelBlue;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+code a[href] {
+  color: inherit;
+  border-bottom: none;
+}
+code a[href]:hover {
+  border-bottom: 1px solid #c63501;
+}
+ol.algorithm {
+  counter-reset: numsection;
+  list-style-type: none;
+}
+ol.algorithm li {
+  margin: 0.5em 0;
+}
+ol.algorithm li:before {
+  font-weight: bold;
+  counter-increment: numsection;
+  content: counters(numsection, ".") ") ";
+}
+table.simple {
+  border-collapse: collapse;
+  margin: 25px 0;
+  min-width: 75%;
+  border: 1px solid #dddddd;
+}
+table.simple thead tr {
+  background-color: #005a9c;
+  color: #ffffff;
+  text-align: left;
+}
+table.simple th,
+table.simple td {
+  padding: 12px 15px;
+  vertical-align: top;
+  text-align: left;
+}
+table.simple tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+table.simple tbody tr:nth-of-type(even) {
+  background-color: #00000008;
+}
+table.simple tbody tr:last-of-type {
+  border-bottom: 2px solid #005a9c;
+}
+  </style>
+</head>
+<body data-cite="vc-data-model">
+  <section id='abstract'>
+
+    <p>
+Verifiable credentials provide a mechanism to express credentials on
+the Web in a way that is cryptographically secure, privacy respecting,
+and machine-verifiable. This specification provides data model and
+HTTP protocols to issue, verify, present, and manage data used in such an
+ecosystem.
+    </p>
+  </section>
+
+  <section id='sotd'>
+    <p>
+This specification is highly experimental and changing rapidly. Implementation
+in non-experimental systems is discouraged unless you are participating in
+the weekly meetings that coordinate activity around this specification.
+    </p>
+
+    <p>
+Comments regarding this document are welcome. Please file issues
+directly on <a href="https://github.com/w3c-ccg/vcalm/issues/">GitHub</a>,
+or send them
+to <a href="mailto:public-credentials@w3.org">public-credentials@w3.org</a> (
+<a href="mailto:public-credentials-request@w3.org?subject=subscribe">subscribe</a>,
+<a href="https://lists.w3.org/Archives/Public/public-credentials/">archives</a>).
+    </p>
+
+  </section>
+
+  <section class="informative">
+    <h1>Introduction</h1>
+
+    <p>
+The Verifiable Credentials specification [[VC-DATA-MODEL-2.0]] provides a data
+model and serialization to express digital credentials in a way that is
+cryptographically secure, privacy respecting, and machine-verifiable. This
+specification provides a set of HTTP Application Programming Interfaces (HTTP
+APIs) and protocols for issuing, verifying, presenting, and managing Verifiable
+Credentials.
+    </p>
+
+    <p>
+When managing [=verifiable credentials=], there are two general types of APIs
+that are contemplated. The first type of APIs are designed to be used within
+a single security domain. The second type of APIs can be used to
+communicate across different security domains. This specification defines
+both types of APIs.
+    </p>
+
+    <p>
+The APIs that are designed to be used within a single security domain are used by
+systems that are operating on behalf of a single role such as an [=issuer=], [=verifier=],
+or [=holder=]. One benefit of these APIs for the Verifiable Credentials ecosystem
+is that they define a useful, common, and vetted modular architecture for
+managing Verifiable Credentials. For example, this approach helps software
+architects integrate with common components and speak a common language
+when implementing systems that issue [=verifiable credentials=]. Knowing that
+a particular architecture has been vetted is also beneficial for architects that
+do not specialize in [=verifiable credentials=]. Documented architectures and
+APIs increase market competition and reduce vendor lock-in and switching
+costs.
+    </p>
+
+    <p>
+The APIs that are designed to operate across multiple security domains are
+used by systems that are communicating between two different roles in a
+[=verifiable credential=] interaction, such as an API that is used to
+communicate presentations between a [=holder=] and a [=verifier=]. In order to
+achieve protocol interoperability in [=verifiable credentials=] interactions,
+it is vital that these APIs be standardized. The additional benefits of
+documenting these APIs are the same for documenting the
+single-security-domain APIs: common, vetted architecture and APIs, increased
+market competition, and reduced vendor lock-in and switching costs.
+    </p>
+
+    <p>
+This specification contains the following sections that software architects
+and implementers might find useful:
+    </p>
+
+    <ul class="bullet">
+      <li>
+<a href="#design-goals-and-rationale"></a> specifies the high level design goals
+that drove the formulation of this specification.
+      </li>
+      <li>
+<a href="#architecture-overview"></a> highlights the different roles
+and components that are contemplated by the architecture.
+      </li>
+      <li>
+<a href="#terminology"></a> defines specific terms that are used throughout
+the document.
+      </li>
+      <li>
+<a href="#authorization"></a> elaborates upon the various forms of authorization
+that can be used with the API.
+      </li>
+      <li>
+<a href="#issuing"></a> describes the APIs for
+issuing [=verifiable credentials=] as well as updating their status.
+      </li>
+      <li>
+<a href="#verifying"></a> specifies the APIs for verifying both
+[=verifiable credentials=] and verifiable presentations.
+      </li>
+      <li>
+<a href="#presenting"></a> defines APIs for generating and deriving
+[=verifiable presentations=] within a trust domain, as well as
+exchanging [=verifiable presentations=] across trust domains.
+      </li>
+      <li>
+Finally, Appendix <a href="#privacy-considerations"></a>, and
+<a href="#security-considerations"></a> are provided to highlight factors
+that implementers might consider when building systems that utilize the APIs
+defined by this specification.
+      </li>
+    </ul>
+
+    <section class="informative">
+      <h2>Design Goals and Rationale</h2>
+
+      <p>
+The Verifiable Credentials API is optimized towards the following design goals:
+      </p>
+
+      <table class="simple">
+        <thead>
+          <tr>
+            <th>
+Goal
+            </th>
+            <th>
+Description
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>
+Modularity
+            </td>
+            <td>
+Implementers need only implement the APIs that are required for their use case
+enabling modularity between Issuing, Verifying, and Presenting.
+            </td>
+          </tr>
+          <tr>
+            <td>
+Simplicity
+            </td>
+            <td>
+The number of APIs and optionality are kept to a minimum to ensure that they are
+easy to implement and audit from a security standpoint.
+            </td>
+          </tr>
+          <tr>
+            <td>
+Composability
+            </td>
+            <td>
+The APIs are designed to be composable such that complex flows are possible
+using a small number of simple API primitives.
+            </td>
+          </tr>
+          <tr>
+            <td>
+Extensibility
+            </td>
+            <td>
+Extensions to API endpoints are expected and catered to in the API design
+enabling experimentation and the addition of value-added services on top of
+the base API platform.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <section class="notoc">
+        <h3>HTTP API Design Guidelines</h3>
+        <p>
+A <a href="https://restfulapi.net/">RESTful API</a> approach was used as a basis
+for the specification. Some endpoints use what is referred to as the
+'controller' resource naming style. [[[?json-schema]]] is used to define the
+acceptable inputs to the APIs.
+        </p>
+      </section>
+
+    </section>
+
+    <section class="informative">
+      <h2>
+Architecture Overview
+      </h2>
+
+      <p>
+The Verifiable Credentials Data Model defines three fundamental roles, the
+[=issuer=], the [=verifier=], and the [=holder=].
+      </p>
+
+      <figure id="roles">
+        <img style="margin: auto; width: 33%; display: block;"
+       src="./diagrams/roles.svg"
+       alt="
+Diagram showing the verifiable credential roles of Issuer, Holder, and Verifier">
+        <figcaption style="text-align: center;">
+The roles defined by the Verifiable Credentials Data Model specification.
+        </figcaption>
+      </figure>
+
+      <p>
+Actors fulfilling each of these roles may use a number of software or service
+components to realize the API for exchanging Verifiable Credentials.
+      </p>
+      <p>
+Each role associates with a role-specific Coordinator, Service, and Admin as
+well as their own dedicated Storage Service. In addition, the [=issuer=]  may also
+manage a Status Service for revocable credentials issued by the [=issuer=].
+      </p>
+
+      <figure id="components">
+        <img style="margin: auto; width: 100%; display: block;"
+       src="diagrams/components.svg"
+       alt="API Components of Coordinators, Services, and Admin for Issuers, Verifiers, and Holders">
+        <figcaption style="text-align: center;">
+API Components. Arrows indicate initiation of flows.
+        </figcaption>
+      </figure>
+
+      <p>
+Any given implementation may choose to combine any or all of these
+components into a single functional application. The boundaries and interfaces
+between these components are defined in this specification to ensure
+interoperability and substitutability across the Verifiable Credential
+conformant ecosystem.
+      </p>
+
+      <p class="issue" title="Standardizing the architecture is of primary importance; component standards are secondary">
+Based on this architectural thinking, we may want to frame this API as a
+roadmap of related specifications, integrated in an extensible way for maximum
+substitutability. Several technologies, such as EDVs and WebKMSs would likely
+benefit from the crypto suite Approach taken for [=verifiable credential=] proofs. Defining a generic
+mechanism that can be realized by any functionally conformant technology enables
+flexibility while laying the groundwork with current existing functionality. In
+this way, we may be able to acknowledge that elements like Key Services,
+Storage, and Status are necessary parts of this API while deferring the
+definition of how those elements work to specification already in development as
+well as those yet to be written.
+      </p>
+
+      <p>
+In addition to aggregating components into a single app, implementers may choose
+to operationalize any given role over any number active instances of deployed
+software. For example, a browser-based [=holder coordinator=] should be considered
+as an amalgam of a web browser, various code running in that browser, one or
+more web servers (in the case of cross-origin AJAX or remote embedded content),
+and the code running on that server. Each of those elements runs as different
+software packages in different configurations, each executing just part of the
+overall functionality of the component. For the sake of this API, each
+component satisfies all of its required functionality as a whole, regardless of
+deployment architecture.
+      </p>
+
+    </section>
+
+    <section id="conformance">
+
+     <p>
+A conforming <dfn>issuer service implementation</dfn> MUST provide the interface
+described in Section [[[#issue-credential]]]. Other interfaces described in
+Section [[[#issuing]]] MAY also be provided.
+     </p>
+
+     <p>
+A conforming <dfn>verifier service implementation</dfn> MUST provide the
+interface described in Section [[[#verify-credential]]] and Section
+[[[#verify-presentation]]]. Other interfaces described in Section
+[[[#verifying]]] MAY also be provided.
+     </p>
+
+     <p>
+A conforming <dfn>holder service implementation</dfn> MUST provide the interface
+described in Section [[[#get-exchange-protocols]]] and Section
+[[[#participate-in-an-exchange]]]. Conformance to protocols, query languages,
+and data formats described in Section [[[#initiating-interactions]]], Section
+[[[#requesting-a-presentation]]], Section [[[#create-presentation]]], Section
+[[[#presenting]]], and Section [[[#workflows-and-exchanges]]] MAY
+also be provided.
+     </p>
+
+     <p>
+A conforming <dfn>status service implementation</dfn> MUST provide the interface
+described in Section [[[#update-status]]].
+     </p>
+
+     <p>
+A conforming <dfn>workflow service implementation</dfn> MUST provide all
+interfaces Section [[[#workflows-and-exchanges]]].
+     </p>
+
+     <p>
+A conforming <dfn>service client implementation</dfn> MUST provide the
+means to communicate with all REQUIRED interfaces provided by the
+corresponding service implementation. That is, a
+<em>status client implementation</em> provides means to communicate
+with all mandatory interfaces exposed by a [=status service implementation=].
+     </p>
+
+
+      <p>
+All implementations MAY provide functionality beyond this specification.
+      </p>
+
+    </section>
+
+    <section class="informative">
+      <h2>Terminology</h2>
+
+      <p>
+  Terminology used throughout this document is defined in the
+  <a data-cite="VC-DATA-MODEL-2.0#terminology">Terminology</a> section of the
+  [[[VC-DATA-MODEL-2.0]]] specification.
+      </p>
+
+    </section>
+  </section>
+
+  <section>
+    <h2>Architecture</h2>
+One possible architecture for these software components is represented by the
+architecture description below, as well as the diagram in the <a
+href="#architecture-overview"></a> section. These representations were chosen
+to make categorization of the different features in the specification clear,
+enabling each component to be treated independently both for clarity of reading
+and to highlight that each component can be implemented separately from any
+other. However, this is not a prescriptive architecture; implementers can use as
+many or as few software packages as desired to serve multiple roles; roles are
+not required to be served by a single library or other software package nor are
+software libraries or packages required to provide for particular roles in isolation
+of others. It is also an expectation that single deployments of software or
+system components can be for the purpose of multiple roles as needed for a
+given use case.
+    <section>
+      <h3>Coordinators</h3>
+      <p>
+A <dfn>coordinator</dfn> executes the business rules and policies set by the
+associated role. Often this is a custom or proprietary [=coordinator=] developed
+specifically for a single party acting in that role; it is the integration glue
+that connects the controlling party to the [=verifiable credential=] ecosystem.
+      </p>
+      <p>
+[=Coordinators=] might provide a visual user interface, depending on the
+implementation. Pure command-line or continuously running services might also be
+able to realize this component.
+      </p>
+      <p>
+With the exception of the [=status service=], all role-to-role communication is
+between [=coordinators=] acting on behalf of its particular actor to fulfill its
+role.
+      </p>
+      <p>
+An <dfn>issuer coordinator</dfn> executes the rules about who gets what
+credentials, including how the parties creating or receiving those credentials
+are authenticated and authorized. Typically the [=issuer coordinator=]
+integrates the [=issuer=]'s back-end system with the [=issuer service=]. This
+integration uses whatever technologies are appropriate; the interfaces between
+the [=issuer coordinator=] and back-end services are out of scope for this
+specification.  The [=issuer coordinator=] drives the [=issuer service=].
+      </p>
+      <p>
+A <dfn>verifier coordinator</dfn> communicates with a [=verifier service=] to
+first check authenticity and timeliness of a given [=verifiable credential=] or
+[=verifiable presentation=], then applies the [=verifier=]'s business rules
+before ultimately accepting or rejecting that [=verifiable credential=] or
+[=verifiable presentation=]. Such business rules might include evaluating the
+[=issuer=] of a particular claim or simply checking a configured allow-list. The
+[=verifier coordinator=] exposes an API for submitting [=verifiable
+credentials=] to the [=verifier=] per the [=verifier=]'s policies. For example,
+the [=verifier coordinator=] might only accept [=verifiable credentials=] from
+current users of the [=verifier=]'s other services. These rules typically
+require bespoke integration with the [=verifier=]'s existing back-end.
+      </p>
+      <p>
+A <dfn>holder coordinator</dfn> executes the business rules for approving the
+flow of credentials under the control of the [=holder=], from [=issuers=] to
+[=verifiers=]. In some deployments this means exposing a user interface that
+gives individual [=holders=] a visual way to authorize or approve [=verifiable
+credential=] storage or transfer. Some functionality of the [=holder
+coordinator=] is commonly referred to as a <dfn>digital wallet</dfn>. In this
+API, the [=holder coordinator=] initiates all flows. They request [=verifiable
+credentials=] from [=issuers=]. They decide if, and when, to share those
+[=verifiable credentials=] with [=verifiers=]. Within this API, there is no way
+for either the [=issuer=] or the [=verifier=] to initiate the transfer of a
+[=verifiable credential=]. In many scenarios, the [=holder coordinator=] is
+expected to be under the control of an individual human, ensuring a person is
+directly involved in the communication of [=verifiable credentials=], even if
+only at the step of authorizing the transfer. However, some [=verifiable
+credentials=] are about organizations, not individuals. How individuals using
+[=holder coordinator=]s related to organizations, and in particular, how
+organizational credentials are securely shared with, and presented by, (legal)
+agents of those organizations is not in scope for this specification.
+      </p>
+    </section>
+    <section>
+      <h3>Services</h3>
+      <p>
+A <dfn>service</dfn> provides lower-level API functionality, driven by its
+associated [=coordinator=], and is designed to enable infrastructure providers
+to offer [=verifiable credential=] capability through service delivery
+architectures such as Software-as-a-Service. All services expose HTTP endpoints
+to their authorized [=coordinators=], which are themselves operating on behalf
+of an associated role. Although deployed services might provide their own HTML
+interfaces, such interfaces are out of scope for this specification. Only the
+HTTP endpoints of services are defined herein.
+      </p>
+      <p>
+An <dfn>issuer service</dfn> takes requests to issue [=verifiable credentials=]
+from authorized [=issuer coordinators=] and return conforming [=verifiable
+credentials=]. This service has access to cryptographic material, such as
+private keys or key services which utilize private keys, in order to create the
+proofs for [=verifiable credentials=]. The API between the [=issuer service=]
+and its associated cryptographic key management service is out of scope for this
+specification.
+      </p>
+      <p>
+A <dfn>verifier service</dfn> takes requests to verify [=verifiable
+credentials=] and [=verifiable presentations=] and returns the result of
+checking their proofs and status (if present). The service only checks the
+authenticity and timeliness of the [=verifiable credential=], leaving the
+[=verifier coordinator=] to finish applying any necessary business rules.
+      </p>
+      <p>
+A <dfn>holder service</dfn> takes requests to create Verifiable Presentations
+from an optional set of [=verifiable credentials=] and returns well-formed, signed Verifiable
+Presentations containing those VCs. These [=verifiable presentation=]s are used with [=issuers=] to
+demonstrate control over DIDs prior to [=verifiable credential=] issuance and with [=verifiers=] to present
+specific VCs.
+      </p>
+      <p>
+A <dfn>status service</dfn> provides a privacy-preserving means of publishing
+and checking the status of any Verifiable Credentials issued by the [=issuer=].
+Implementers of verifier services are encouraged to understand the privacy
+implications of checking status by referring to the respective status
+specification used by the verifiable credential. For specific mechanisms by
+which to manage [=verifiable credential=] statuses, it's recommended to refer to
+well-known external specifications, such as the [[VC-BITSTRING-STATUS-LIST]].
+      </p>
+      <p>
+A <dfn>storage service</dfn> is used by each actor in the system to store their own verifiable credentials
+and corresponding data, as needed. Several known
+implementations use secure data storage such as encrypted data vaults for
+storing the [=holder=]'s [=verifiable credentials=] and use cryptographic authorizations to grant access to
+those [=verifiable credentials=] to [=verifier coordinator=]s, as directed by the [=holder=]. In-browser
+retrieval of such stored credentials can enable web-based [=verifier
+coordinator=]s to integrate data from the [=holder=] without sharing that data with
+the [=verifier=]—the data is only ever present in the browser. Authorizing
+third-party remote access to [=holder=] storage is likely in-scope for this API,
+although we expect this to be defined using extensible mechanisms to support a
+variety of storage and authorization approaches.
+      </p>
+      <p>
+The [=issuer=] and [=verifier=] storage solutions may or may not use secure data
+storage. Since all such storage interaction is moderated by the bespoke [=issuer=]
+and Storage Coordinators, any necessary integrations can simply be part of that
+bespoke customization. We expect different implementations to compete on the
+ease of integration into various back-end storage platforms.
+      </p>
+      <p>
+A <dfn>workflow service</dfn> provides a way for coordinators to automate
+specific interactions for specific users. Each role ([=holder=], [=issuer=], and
+[=verifier=]) can run their own workflow service to create and manage exchanges that
+realize particular workflows. Administrators configure the workflow system to
+support particular flows. Then, when the business rules justify it, coordinators
+create exchanges at their workflow service and give access to those exchanges to
+any authorized party.
+      </p>
+      <p>
+An <dfn>administration service</dfn> is an acknowledgement that each of the other
+components need a way to be configured and managed, without prescribing the
+interfaces or means of that configuration. Some components might use JSON files
+to drive a command line interface. Others might expose HTML pages. It is
+expected that different implementations will compete on the power, ease, and
+flexibility of their administration and therefore, configuration is largely out
+of scope for this specification. There are some places where some configuration
+mechanisms are provided, such as in Section [[[#create-workflow]]], where there
+was broad agreement to standardize some configuration parameters. As the market
+matures, other areas of configuration standardization might occur in future
+versions of this specification.
+      </p>
+    </section>
+    <section>
+      <h3>Instances</h3>
+      <p>
+The APIs defined in this specification presume that they are attached to a
+specific <dfn>instance</dfn> with an associated configuration that has been put
+in place by a system administrator. When a client calls an endpoint on a
+particular [=instance=], the [=instance=] uses the configuration and options
+provided by the client to execute the action.
+      </p>
+      <p>
+For example, the `/credentials/issue` endpoint can be provided at the end of a
+longer URL such as `/instances/12345/credentials/issue`. In this case, it is the
+[=instance=] that is configured to know which cryptographic key to use for
+issuance, whether or not a status list is involved, the type of credential to
+issue, the credential format, and what additional options are possible on the
+endpoint.
+      </p>
+      <p>
+Software clients that call a particular [=instance=] might not have the
+capability to configure an [=instance=], or be aware of the setup that the
+administrator did on the instance other than the requisite details to make
+appropriate use of it. Administration endpoints for configuring [=instances=]
+could be provided by implementations but are not necessarily exposed as HTTP
+APIs; configuration can also be done through configuration files or graphical
+interfaces.
+      </p>
+      <p class="note"
+         title="A coordinator can use multiple service instances">
+A coordinator instance can have access to multiple service instances in order to
+support different use cases or a use case with complex flows. Runtime discovery
+of service instance configuration is not defined by this specification as
+services are expected to be known by the [=coordinator=] at the time of
+deployment.
+      </p>
+    </section>
+    <section>
+      <h3>Configurations</h3>
+
+      <p>
+Each [=coordinator=] or [=service=] [=instance=] is associated with a
+specific configuration that drives its behavior. This section contains
+how some of those configurations might be performed.
+      </p>
+
+      <section class="notoc">
+        <h4>Base URL</h4>
+        <p>
+There are no restrictions put on the base URL for any particular [=instance=].
+The URL paths used throughout this specification are shown as absolute paths and
+their base URL MAY be the host name of the server (e.g.,
+`website.example`), a subdomain (e.g., `api.website.example`, or
+a path within that domain (e.g., <code>website.example/api</code>).
+        </p>
+      </section>
+      <section class="notoc">
+        <h3>Authorization</h3>
+        <p>
+  This API can be deployed in a variety of networking environments which might
+  contain hostile actors. As a result, conforming service implementations require
+  conforming [=service client implementations=] to utilize secure authorization
+  technologies when performing certain types of requests. Each HTTP endpoint
+  defined in this document specifies whether or not authorization is required when
+  performing a request. With the exception of the class of forbidden authorization
+  protocols discussed later in this section, this API is agnostic regarding
+  authorization mechanism.
+        </p>
+        <p>
+  This API is meant to be generic and useful in many scenarios that require the
+  issuance, possession, presentation, and/or verification of Verifiable
+  Credentials. To this end, implementers are advised to consider the following
+  classifications of use cases:
+        </p>
+        <ul>
+          <li>
+  <i>Public</i>. A Public API is one that can be called with no authorization.
+  Examples include an open witness or timestamp service (a trusted service that
+  can digitally sign a message with a timestamp for an audit trail purpose), or an
+  open retail coupon endpoint ("buy one, get one free"). Public verifiers might
+  also exist as well, to act as an agnostic third party in a trust scenario.
+        </li>
+        <li>
+  <i>Permissioned</i>. Permissioned authorization requires the entity making the
+  API call to, for example, have an access control token or a capability URL, or
+  to invoke a capability from a mutually trusted source. These permissions grant
+  access to the API, but make no assumptions about credential subjects, previous
+  interactions, or the like. Permissioned access is particularly useful in
+  service-to-service based workflows, where credential subjects are not directly
+  involved.
+        </li>
+        <li>
+  <i>Bound</i>. Bound authorization involves scenarios where the API calls are
+  tightly coupled, linked, or bound to another process, often out-of-band, that
+  has authenticated the holder/subject of the API interaction. These use cases
+  include, but are not limited to, issuance of subject-specific identity claims
+  directly to the subject in question, or verification of credentials to qualify
+  the holder for service at the verifier, for example. Examples of methods to bind
+  activity on one channel to an API call include <a
+  href="https://chapi.io/">CHAPI</a> (the
+  <a href="https://chapi.io/">Credential Handler API</a>), OIDC (OpenID Connect),
+  and GNAP (the Grant Negotiation and Authorization Protocol). Developers
+  implementing bound authorization will need to take steps to ensure the
+  appropriate level of assurance is achieved in the flow to properly protect the
+  binding.
+          </li>
+        </ul>
+        <p>
+  The rest of this section gives examples of the authorization technologies that
+  have been contemplated for use by conforming implementations. Other equivalent
+  authorization technologies can be used. Implementers are cautioned against using
+  non-standard or legacy authorization technologies.
+        </p>
+
+        <section class="notoc">
+          <h4>Forbidden Authorization</h4>
+          <p>
+  Requests to this API MUST NOT utilize any authorization protocol that includes
+  long-lived static credentials such as usernames and passwords or similar values
+  in those requests. An example of such a forbidden protocol is HTTP Basic
+  Authentication [[RFC7617]].
+          </p>
+        </section>
+
+        <section class="notoc">
+          <h4>OAuth 2.0</h4>
+          <p>
+  If the OAuth 2.0 Authorization Framework [[RFC6749]] is utilized for
+  authorization, the access tokens utilized by clients MAY be OAuth 2.0 Bearer
+  Tokens [[RFC6750]] or any other valid OAuth 2.0 token type. Any valid OAuth 2.0
+  grant type MAY be used to request the access tokens. However, OAuth 2.0 MUST be
+  implemented in the following way:
+          </p>
+          <p>
+  OAuth2 tokens for this purpose have an audience of the particular issuer
+  instance, e.g., `origin/issuers/zc612332f3`.
+          </p>
+          <p>
+  The scopes are generalized to read/write actions on particular endpoints, as
+  follows:
+          </p>
+          <ul>
+            <li>
+  `read:/` would allow reading on any API on a particular instance.
+            </li>
+            <li>
+  `write:/` would allow writing on any API on a particular instance.
+            </li>
+          </ul>
+          <p>
+  `write:/credentials/issue` would only allow writing to that particular API.
+          </p>
+          <p>
+  Other authorization mechanisms that support delegation might be defined in the
+  future.
+          </p>
+        </section>
+
+      </section>
+      <section class="notoc">
+        <h3>Options</h3>
+        <p>
+Some of the endpoints defined in the following sections accept an `options`
+object. All properties of the `options` object are OPTIONAL when configuring
+each instance, as these properties are intended to meet per-deployment needs
+that might vary. Thus, any given instance configuration MAY prohibit client use
+of some `options` properties in order to prevent clients from passing certain
+data to that instance. Likewise, an instance configuration MAY require that
+clients include some `options` properties.
+        </p>
+        <p>
+Implementations MAY extend an `options` object with additional properties.
+        </p>
+        <p>
+As extension properties are implementation specific, they ought not be
+mandatory. This is to maintain interoperability by avoiding clients needing to
+be modified to use a specific implementation.
+        </p>
+        <p>
+When adding an extension `options` property, consider whether providing
+optionality to clients is necessary. If not, using instance configuration to
+vary API functionality might be a preferable approach.
+        </p>
+        <p>
+Implementations MUST throw an error if an endpoint receives data, options, or
+option values that it does not understand or know how to process.
+        </p>
+      </section>
+
+      <section class="notoc">
+        <h3>Content Serialization</h3>
+        <p>
+All entity bodies in requests and responses sent to or received from the API
+endpoints defined by this specification MUST be serialized as JSON and include
+the `Content-Type` header with a media type value of `application/json`.
+        </p>
+      </section>
+      <section class="notoc">
+        <h4>Payload Sizes</h4>
+        <p>
+Implementers are encouraged to pay attention to the payload sizes of the
+Verifiable Credentials that their implementations process.
+        </p>
+        <p>
+Presentations can bundle a large volume of credentials, which can result in a
+higher request size than anticipated by implementers. This raises the risk of
+interoperability issues.
+        </p>
+        <p>
+A default maximum size of 10MB per [=verifiable credential=] is RECOMMENDED as an
+interoperability baseline, with the possibility of configuring a larger size if
+required. This also accommodates the 16MB size limit of most document-based
+database storage solutions.
+        </p>
+        <p>
+By default, large binary values are expected to be linked to and a hash included
+(unless there is a privacy reason for not doing so).
+        </p>
+      </section>
+    </section>
+  </section>
+
+  <section>
+    <h2>HTTP API</h2>
+
+    <p>
+This section contains the HTTP API endpoint definitions and implementation
+guidance that is to be followed when creating <a href="#conformance">conforming
+implementations</a>.
+    </p>
+
+    <section>
+      <h3>Component Overview</h3>
+        <p>
+This section gives an overview of all endpoints in the VC-API by the component
+the endpoint is expected be callable from. If a component does not have a
+listing below it means the VC-API does not currently specify any endpoints for
+that component.
+        </p>
+
+
+      <h4>Issuer Coordinator</h4>
+      <p>
+Below are all endpoints expected to be exposed by the [=issuer coordinator=], along
+with the component that is expected to call the endpoint.
+      </p>
+      <table class="simple api-component-table"
+        data-api-path="/interactions/{interactionId}"></table>
+
+
+      <h4>Issuer Service</h4>
+      <p>
+Below are all endpoints expected to be exposed by the [=issuer service=], along with
+the component that is expected to call the endpoint.
+      </p>
+      <table class="simple api-component-table"
+        data-api-path="/credentials/issue /credentials/{id}"></table>
+
+      <h4>Verifier Cooirdinator</h4>
+      <p>
+Below are all endpoints expected to be exposed by the [=verifier coordinator=], along with the component that is expected to call the endpoint.
+      </p>
+      <table class="simple api-component-table"
+        data-api-path="/interactions/{interactionId}"></table>
+      
+        <h4>Verifier Service</h4>
+      <p>
+Below are all endpoints expected to be exposed by the [=verifier service=],
+along with the component that is expected to call the endpoint.
+      </p>
+      <table class="simple api-component-table"
+        data-api-path="/credentials/verify /presentations/verify /challenges"></table>
+
+      <h4>Holder Coordinator</h4>
+      <p>
+Below are all endpoints expected to be exposed by the [=holder coordinator=], along with
+the component that is expected to call the endpoint.
+      </p>
+      <table class="simple api-component-table"
+        data-api-path="/interactions/{interactionId}"></table>
+      
+        <h4>Holder Service</h4>
+      <p>
+Below are all endpoints expected to be exposed by the [=holder service=], along with
+the component that is expected to call the endpoint.
+      </p>
+      <table class="simple api-component-table"
+        data-api-path="/credentials/derive /credentials/{id} /presentations /presentations/{id}"></table>
+
+      <h4>Status Service</h4>
+      <p>
+Below are all endpoints expected to be exposed by the [=status service=], along with
+the component that is expected to call the endpoint.
+      </p>
+      <table class="simple api-component-table"
+        data-api-path="/credentials/status"></table>
+
+      <h4>Workflow Service</h4>
+      <p>
+Below are all endpoints expected to be exposed by the Workflow Service, along
+with the component that is expected to call the endpoint.
+      </p>
+      <table class="simple api-component-table"
+        data-api-path="/workflows /workflows/{localWorkflowId} /workflows/{localWorkflowId}/exchanges /workflows/{localWorkflowId}/exchanges/{localExchangeId} /workflows/{localWorkflowId}/exchanges/{localExchangeId}/protocols /{inviteId}/invite-request/response"></table>
+
+    </section>
+    <section>
+      <h3>Issuing</h3>
+      <p>
+The following APIs are defined for issuing a Verifiable Credential:
+      </p>
+
+      <table class="simple api-summary-table"
+        data-api-path="/credentials/{id}
+          /credentials/issue /credentials/status"></table>
+
+      <section>
+        <h4>Issue Credential</h4>
+        <p>
+This endpoint is used to issue a [=verifiable credential=].
+        </p>
+
+        <p class="note" title="Issued credential media types">
+To issue credentials with a media type other than `application/vc` — such as
+`application/mdoc`, `application/vc+sd-jwt`,
+`application/vcb;barcode-format=qr_code`, or
+`application/vcb;barcode-format=pdf417` — an `EnvelopedVerifiableCredential`
+can be returned in the response.
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="post /credentials/issue"></div>
+
+        <p>
+If a use case requires an issuer instance to attach multiple proofs to the
+provided `credential`, the instance MUST attach all of these proofs in response
+to a single call to the `/credentials/issue` endpoint.
+        </p>
+       <p>
+If a provided `credential` already contains one or more proofs, the behavior is
+determined by the configuration of the issuer instance. An issuing instance
+SHOULD be configured to handle existing proofs in one of the following ways:
+      </p>
+      <ul>
+        <li>
+<strong>Proof Sets</strong>: Append new proofs to the list of existing proofs
+provided by the caller, first converting any existing single proof to a list
+if necessary. Here there is no binding to any existing proofs; the new proofs
+exist in parallel with those previously provided by the caller.
+        </li>
+        <li>
+<strong>Proof Chains</strong>: Append new proofs to create or extend an existing
+proof chain. Here proofs are linked in a specific sequence, potentially using the
+<code>previousProof</code> property to establish the chain relationship.
+        </li>
+        <li>
+<strong>Error Handling</strong>: Return an error if <code>credential</code>
+values that contain existing <code>proof</code> values are provided, when
+the instance is configured to only accept credentials without existing proofs.
+        </li>
+      </ul>
+      <p>
+The specific approach used depends on the configuration of the issuer instance
+and the intended use case for the verifiable credential.
+      </p>
+      </section>
+
+      <section>
+        <h4>Get a Specific Credential</h4>
+        <p>
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="get /credentials/{id}"></div>
+      </section>
+
+      <section>
+        <h4>Update Status</h4>
+        <p>
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="post /credentials/status"></div>
+      </section>
+
+      <section>
+        <h4>Delete a Specific Credential</h4>
+        <p>
+An [=issuer service=] or a [=holder service=] might store an issued [=verifiable
+credential=] for an extended period of time. When this is done, it can be useful
+to delete such a [=verifiable credential=]; for instance, an [=issuer=] might
+need to do so because of regulatory requirements such as
+<a href="https://en.wikipedia.org/wiki/Right_to_be_forgotten">
+the right to be forgotten</a>. See Section [[[#deletion]]] for additional
+considerations related to the removal of [=verifiable credentials=] from
+systems.
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="delete /credentials/{id}"></div>
+      </section>
+
+    </section>
+
+    <section>
+      <h3>Verifying</h3>
+      <p>
+The following APIs are defined for verifying a Verifiable Credential:
+      </p>
+
+      <table class="simple api-summary-table"
+        data-api-path="/credentials/verify /presentations/verify /challenges"></table>
+
+      <section>
+        <h4>Verify Credential</h4>
+        <p>
+This endpoint is used to verify a [=verifiable credential=].
+        </p>
+
+        <p class="note" title="Verify credential media types">
+To verify credentials with a media type other than `application/vc`, such as
+`application/mdoc`, `application/vc+sd-jwt`,
+`application/vcb;barcode-format=qr_code`, or
+`application/vcb;barcode-format=pdf417` — an `EnvelopedVerifiableCredential`
+can be provided in the request.
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="post /credentials/verify"></div>
+      </section>
+
+      <section>
+        <h4>Verify Presentation</h4>
+        <p>
+This endpoint is used to verify a [=verifiable presentation=] and, by default,
+all [=verifiable credentials=] contained within it.
+        </p>
+
+        <p>
+The verification process includes:
+        </p>
+        <ul>
+          <li>
+Verifying the presentation's own proof (including domain and challenge
+validation)
+          </li>
+          <li>
+Verifying each contained verifiable credential's proof, status, and validity
+period(s)
+          </li>
+          <li>
+Checking that the holder in the presentation matches the verification method
+used in the presentation's proof
+          </li>
+        </ul>
+
+        <p>
+Business rule validation (such as verifying that credential subjects match the
+presentation holder, or authorization policies about who can present which
+credentials) is outside the scope of this verification endpoint and should be
+performed by the calling application.
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="post /presentations/verify"></div>
+      </section>
+
+      <section>
+        <h4>Create Challenge</h4>
+        <p>
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="post /challenges"></div>
+        <p>
+The instance should create a challenge for use during verification, and track
+the number of times the challenge has been passed to verification endpoints as
+`options.challenge`.
+        </p>
+      </section>
+
+    </section>
+
+    <section>
+      <h3>Requesting a Presentation</h3>
+
+      <p>
+When working with [=verifiable credentials=], and [=decentralized
+identifier=]-based authentication, one party often needs to request data from
+another. This section describes the general format of those requests and
+provides a concrete verifiable presentation request format as well.
+      </p>
+
+      <section>
+        <h4>Verifiable Presentation Request</h4>
+
+        <p>
+A <dfn data-lt="presentation request">verifiable presentation request</dfn> is a
+request a [=verifier=] makes to a [=holder=] for a [=presentation=]. To make a
+request for one or more credentials wrapped in a [=verifiable presentation=], a
+[=verifier=] constructs a JSON request describing one or more credentials that
+it wishes to receive from the [=holder=]. The general format for a request looks
+like the following:
+        </p>
+
+        <pre class="example nohighlight" title="The general form of a verifiable presentation request">
+{
+  <span class="comment">// one or more requests for verifiable credentials</span>
+  "query": [{
+    "type": "QueryByExample",
+    <span class="comment">// query details specific to QueryByExample...</span>
+  }],
+  <span class="comment">// The target security domain, such as a website domain, to include in
+  // the verifiable presentation</span>
+  "domain": "domain.example",
+
+  <span class="comment">// The random challenge string to include in the verifiable presentation</span>
+  "challenge": "f63cb0d2-760e-11f0-a2b1-67febb854a5f"
+}
+        </pre>
+
+        <p>
+The `query` property serves as the main extension point mechanism for requests
+for data in the presentation. While this document defines a common query
+mechanism (see Section [[[#query-by-example]]]), all query objects are of the
+following form:
+        </p>
+
+        <dl>
+          <dt>query</dt>
+          <dd>
+A REQUIRED property that specifies the information requested by the
+[=verifier=]. The value MUST be one or more [=maps=] where each [=map=] MUST
+define a `type` property with an associated [=string=] value.
+          </dd>
+          <dt><dfn class="export">domain</dfn></dt>
+          <dd>
+An OPTIONAL [=string=] that a [=verifier=] provides to a [=holder=] during a
+[=presentation request=]. The [=holder=] checks to ensure that the data is
+associated with the domain, such as a website domain, that they are interacting
+with, and if it is, includes the data in a [=verifiable presentation=]. A domain
+is used to ensure that the [=holder=] limits their [=verifiable presentation=]
+to a specific [=verifier=], protecting the [=verifier=] against
+<a data-cite="?VC-DATA-MODEL-2.0#replay-attack">replay attacks</a>.
+          </dd>
+          <dt><dfn class="export">challenge</dfn></dt>
+          <dd>
+An OPTIONAL, unique [=string=] that is provided by a [=verifier=] to a
+[=holder=] during a specific [=presentation request=]. The [=holder=] includes
+this data in a [=verifiable presentation=] to the [=verifier=], protecting the
+[=verifier=] against <a data-cite="?VC-DATA-MODEL-2.0#replay-attack">replay
+attacks</a>.
+          </dd>
+        </dl>
+
+      </section>
+
+      <section>
+        <h3>Query By Example</h3>
+
+        <p>
+The "query by example" credential query format is designed to enable developers
+to easily request the [=claims=] that they need from one or more [=verifiable
+credentials=], to enable a particular business process. The query can also
+specify other information, such as one or more [=issuers=] that are trusted by
+the [=verifier=].
+        </p>
+
+        <pre class="example nohighlight" title="A Query By Example query">
+{
+  "query": [{
+    "type": "QueryByExample",
+    "credentialQuery": [{
+      <span class="comment">// (Optional) Reason for requesting this credential that
+      // may be shown to a user by their software</span>
+      "reason": "We need to know if you are an alumni of this school.",
+      <span class="comment">// (Mandatory) An example of the credential being requested</span>
+      "example": {
+        "@context": [
+          "https://www.w3.org/ns/credentials/v2",
+          "https://www.w3.org/ns/credentials/examples/v2"
+        ],
+        "type": "ExampleAlumniCredential",
+        <span class="comment">// (Optional) Select credential based on credential subject type</span>
+        "credentialSubject": {
+          "type": "Alumni"
+        }
+      },
+      <span class="comment">// (Optional) Specify credentials from a particular authority or
+      // delegate of the authority</span>
+      "authority": [{
+        "issuer": "did:web:authority.example"
+      }]
+    }]
+  }],
+  "challenge": "3182bdea-63d9-11ea-b6de-3b7c1404d57f",
+  "domain": "reunion.example"
+}
+        </pre>
+
+        <section>
+          <h4>Converting QueryByExample to JSON Pointers</h4>
+
+          <p>
+When implementing [=selective disclosure=] features, it is often necessary to
+convert a QueryByExample `example` object into a list of JSON pointers that
+specify which fields should be revealed. The following algorithm provides a
+standardized way to perform this conversion:
+          </p>
+
+          <ol>
+            <li>
+First, perform matching on the `@context` field, optionally performing
+JSON-LD transformations as desired.
+            </li>
+            <li>
+Convert the `example` object to JSON pointers, excluding the `@context` field.
+Any VCDM mandatory pointers can be automatically added based on the VC version
+(e.g., `/issuer`, `/issuanceDate` for VC 1.x).
+            </li>
+            <li>
+Ensure that `credentialSubject` is included in any reveal because the VCDM
+requires it. If it is not present, presume that the entire credential subject
+was requested.
+            </li>
+            <li>
+Prune shallow pointers to keep only the deepest pointers from the list. For
+example, `['/a/b', '/a/b/c', '/a/b/c/d']` will be pruned to `['/a/b/c/d']`.
+            </li>
+            <li>
+Make `type` pointers generic by removing array indices, so `/type/0` becomes
+`/type`.
+            </li>
+          </ol>
+
+          <p>
+The following is a reference implementation of this algorithm:
+          </p>
+
+          <pre class="example" title="Algorithm to convert QueryByExample example to JSON pointers">
+ALGORITHM: Convert QueryByExample example to JSON pointers
+
+INPUT: example (object from credentialQuery.example)
+OUTPUT: pointers (array of JSON pointer strings)
+
+BEGIN
+  // Step 1: First perform matching on @context, optionally performing
+  // JSON-LD transformations as desired, then...
+  
+  // Step 2: Convert example to JSON pointers, excluding @context field
+  // Any VCDM mandatory pointers can be automatically added based on VC version
+  // (e.g., /issuer, /issuanceDate for VC 1.x)
+  object = copy(example)
+  remove(object, '@context')
+  pointers = generate_json_pointers(object)
+  
+  // Step 3: Adjust pointers
+  pointers = adjust_pointers(pointers)
+  
+  RETURN pointers
+END
+
+FUNCTION adjust_pointers(pointers):
+  // Ensure credentialSubject is included in any reveal because the VCDM
+  // requires it; presume that if it isn't present that the entire credential
+  // subject was requested and inform the user of this (as always)
+  has_credential_subject = false
+  FOR EACH pointer IN pointers:
+    IF pointer contains '/credentialSubject/' OR pointer ends with '/credentialSubject':
+      has_credential_subject = true
+      BREAK
+    END IF
+  END FOR
+  
+  IF NOT has_credential_subject:
+    pointers = copy(pointers)
+    append(pointers, '/credentialSubject')
+  END IF
+  
+  // Step 4: Prune shallow pointers
+  pointers = prune_shallow_pointers(pointers)
+  
+  // Step 5: Make type pointers generic
+  adjusted_pointers = []
+  FOR EACH pointer IN pointers:
+    index = find(pointer, '/type/')
+    IF index != -1:
+      adjusted_pointer = substring(pointer, 0, index) + '/type'
+      append(adjusted_pointers, adjusted_pointer)
+    ELSE:
+      append(adjusted_pointers, pointer)
+    END IF
+  END FOR
+  
+  RETURN adjusted_pointers
+END FUNCTION
+
+FUNCTION prune_shallow_pointers(pointers):
+  // Gets only the deepest pointers from the given list of pointers, for example,
+  // ['/a/b', '/a/b/c', '/a/b/c/d'] will be pruned to: ['/a/b/c/d']
+  deep = []
+  FOR EACH pointer IN pointers:
+    is_deep = true
+    FOR EACH p IN pointers:
+      IF length(pointer) < length(p) AND p starts with pointer:
+        is_deep = false
+        BREAK
+      END IF
+    END FOR
+    IF is_deep:
+      append(deep, pointer)
+    END IF
+  END FOR
+  RETURN deep
+END FUNCTION
+          </pre>
+
+        </section>
+
+      </section>
+
+      <section>
+        <h3>DID Authentication</h3>
+
+        <p>
+This section defines how a [=verifier=] can request that a
+[=holder=] perform Decentralized Identifier-based Authentication
+[[?DID-CORE]]. In its simplest form, the authentication protocol is comprised
+of a challenge by the [=verifier=] and a response by a [=holder=]:
+        </p>
+
+        <pre class="example" title="A DID Authentication request">
+{
+  "query": [{
+    "type": "DIDAuthentication",
+    "acceptedMethods": [{"method": "example"}]
+  }],
+  "challenge": "99612b24-63d9-11ea-b99f-4f66f3e4f81a",
+  "domain": "example.com"
+}
+        </pre>
+
+        <p>
+The DID Authentication request above specifies that the [=verifier=] would
+like the [=holder=] to demonstrate control over a DID by generating a
+digital signature over the provided challenge. The [=holder=] might respond
+by providing the following response:
+        </p>
+
+        <pre class="example" title="A DID Authentication response">
+{
+  "@context": ["https://www.w3.org/ns/credentials/v2"],
+  "type": "VerifiablePresentation",
+  "holder": "did:example:12345",
+  "proof": {
+    "type": "DataIntegrityProof",
+    "cryptosuite": "eddsa-rdfc-2022",
+    "verificationMethod": "did:example:12345#key-1",
+    "challenge": "99612b24-63d9-11ea-b99f-4f66f3e4f81a",
+    "domain": "example.com",
+    "created": "2024-02-25T14:58:42Z",
+    "proofPurpose": "authentication",
+    "proofValue": "z3FXQjecWufY46...UAUL5n2Brbx"
+  }
+}
+        </pre>
+
+        <p class="issue">
+The DID Authentication examples shown in this document use a new proof type
+called `DataIntegrityProof` which is currently under development in the
+<a href="https://www.w3.org/2017/vc/WG/">W3C Verifiable Credentials Working
+Group</a>.
+        </p>
+
+        <section>
+          <h3>The DID Authentication Query Format</h3>
+
+          <p>
+The DID Authentication query format enables a [=verifier=] to request that
+a [=holder=] authenticate in specific ways. A DID Authentication query MUST
+be of the following form:
+          </p>
+          <table class="simple">
+            <tr>
+              <th>Property</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td>type</td>
+              <td>
+A REQUIRED string value that MUST be set to <code>DIDAuthentication</code>.
+              </td>
+            </tr>
+            <tr>
+              <td>acceptedMethods</td>
+              <td>
+An optional array of objects expressing that the [=verifier=] would accept
+any DID Method listed. Each object in the array MUST contain a property called
+`method` with a value that is a DID Method name, and MAY contain other
+properties that are specific to the DID Method. Valid example values
+include:
+<ul>
+  <li>
+<code>[{"method": "key"}]</code>
+  </li>
+  <li>
+<code>[{"method": "key"}, {"method": "web"}]</code>
+  </li>
+</ul>
+              </td>
+            </tr>
+            <tr>
+              <td>acceptedCryptosuites</td>
+              <td>
+An optional array of objects that conveys the cryptography suites among which
+the [=holder=] MUST choose when generating a cryptographic proof to be
+submitted to this [=verifier=]. Each object in the
+array MUST contain a property called `cryptosuite` with a value that is a
+cryptosuite name, and MAY contain other properties that are specific to the
+cryptosuite. Valid example values include:
+<ul>
+  <li>
+<code>[{"cryptosuite": "eddsa-rdfc-2022"}]</code>
+  </li>
+  <li>
+<code>[{"cryptosuite": "ecdsa-rdfc-2019"}, {"cryptosuite": "bbs-2023"}]</code>
+  </li>
+</ul>
+              </td>
+            </tr>
+          </table>
+
+          <p>
+The following example demonstrates that the [=verifier=] would like the
+[=holder=] to use the DID Web method and a data integrity ECDSA
+cryptography suite to authenticate over the established communication channel,
+such as the Credential Handler API (CHAPI):
+          </p>
+
+          <pre class="example"
+            title="A DID Authentication request using did:web and ecdsa-rdfc-2019">
+{
+  "query": [{
+    "type": "DIDAuthentication",
+    "acceptedMethods": [{"method": "key"}],
+    "acceptedCryptosuites": [{"cryptosuite": "ecdsa-rdfc-2019"}]
+  }],
+  "challenge": "99612b24-63d9-11ea-b99f-4f66f3e4f81a",
+  "domain": "example.com"
+}
+          </pre>
+
+          <p>
+In the next example, the [=verifier=] would like the
+[=holder=] to use either the DID Key or DID Web method, with the standard
+EdDSA data integrity cryptography suite; optionally include a
+cryptographic proof that they are capable of performing a data integrity BBS
+proof; and authenticate over a different communication channel, in this case
+using a Verifiable Credential API HTTP endpoint.
+          </p>
+
+          <pre class="example" title="A complex DID Authentication request">
+{
+  "query": [{
+    "type": "DIDAuthentication",
+    "acceptedMethods": [{"method": "key"}, {"method": "web"}],
+    "acceptedCryptosuites": [{"cryptosuite": "ecdsa-rdfc-2019"}]
+  }, {
+    "type": "DIDAuthentication",
+    "required": false,
+    "acceptedMethods": [{"method": "key"}, {"method": "web"}],
+    "acceptedCryptosuites": [{"cryptosuite": "bbs-2023"}]
+  }],
+  "challenge": "zLEwtBYgQVNR4tyeo",
+  "domain": "didauth.example"
+}
+          </pre>
+
+        </section>
+
+        <section>
+          <h3>The DID Authentication Response Format</h3>
+
+          <p>
+The DID Authentication response format enables a [=holder=] to
+provide the information requested by the [=verifier=]. A DID Authentication
+response MUST be a [=verifiable presentation=] of the following form:
+          </p>
+          <table class="simple">
+            <tr>
+              <th>Property</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td>type</td>
+              <td>
+A REQUIRED string value that MUST be set to <code>VerifiablePresentation</code>.
+              </td>
+            </tr>
+            <tr>
+              <td>holder</td>
+              <td>
+A REQUIRED string value that MUST be set to a specific DID that is of the
+type that was requested in the DID Authentication query.
+              </td>
+            </tr>
+            <tr>
+              <td>proof</td>
+              <td>
+A REQUIRED value that MUST be one or more specific digital proof types that
+were requested in the DID Authentication query. Each proof object MUST
+include the `domain` and `challenge` values that were provided in the DID
+Authentication query. [=Holder=] implementations MUST ensure that the `domain` specified
+by the [=verifier=] matches the domain used for the current channel of
+communication.
+              </td>
+            </tr>
+        </table>
+
+        <p class="advisement">
+It is vital that a [=holder=] implementation check the `domain` provided by
+the `verifier` against the domain used for the current channel of communication.
+If a [=holder=] fails to do so, a dishonest [=verifier=] could then replay the
+message to a domain that is not their own. For example, a dishonest [=verifier=]
+operating from the `evil.example` domain could retrieve a challenge from your
+bank, specify a domain value of `yourbank.example`, and then replay your
+response to your bank to get access to your financial accounts. This attack is
+mitigated as long as implementations ensure that the appropriate domain is used
+when generating the [=verifiable presentation=].
+        </p>
+
+        <p>
+The example below demonstrates a simple DID Authentication response.
+        </p>
+
+        <pre class="example"
+          title="A DID Authentication response using did:key">
+{
+  "@context": ["https://www.w3.org/ns/credentials/v2"],
+  "type": "VerifiablePresentation",
+  "holder": "did:example:12345",
+  "proof": {
+    "type": "DataIntegrityProof",
+    "cryptosuite": "eddsa-rdfc-2022",
+    "verificationMethod": "did:example:12345#key-1",
+    "challenge": "99612b24-63d9-11ea-b99f-4f66f3e4f81a",
+    "domain": "example.com",
+    "created": "2024-02-25T14:58:42Z",
+    "proofPurpose": "authentication",
+    "proofValue": "z3FXQjecWufY46...UAUL5n2Brbx"
+  }
+}
+        </pre>
+      </section>
+      </section>
+
+      <section>
+        <h3>Authorization Capability Request</h3>
+
+        <p class="issue">
+Authorization Capability queries and responses might not be standardized
+at this time. This example is provided to demonstrate that verifiable
+credentials and mDLs/mdocs are not the only type of credential that can be
+queried.
+        </p>
+
+        <p>
+This query type would be included in a request to ask for Authorization
+Capabilities or "zcaps" in the Verifiable Presentation.
+        </p>
+
+        <pre class="example nohighlight" title="An Authorization Capability Request query">
+{
+  "query": [{
+    "type": "AuthorizationCapabilityQuery",
+    "capabilityQuery": [{
+      "referenceId": "a-memorable-name",
+      "allowedAction": ["read", "write"],
+      "controller": "did:example:1234",
+      "invocationTarget": {
+        "type": "urn:edv:documents"
+      }
+    }, {
+      "referenceId": "another-memorable-name",
+      "allowedAction": "sign",
+      "controller": "did:example:1234",
+      "invocationTarget": {
+        "type": "Multikey",
+        "proofPurpose": "assertionMethod"
+      }
+    }],
+    challenge: "111112b24-63d9-11ea-b99f-4f66f3e4f81a"
+  }]
+}
+        </pre>
+    </section>
+
+    <section>
+      <h3>Logical Operations in Queries</h3>
+
+      <p>
+In Verifiable Presentation Requests, the structuring and retrieval of
+information rely on the use of logical operations. "AND" and "OR" operations
+play crucial roles in defining the path to desired data.
+      </p>
+
+      <section>
+        <h3>Top-Level Queries ("AND" Operation)</h3>
+
+        <p>
+At the top-most level of the request structure, different types of queries are
+expected to be processed as "AND" operations if each one's `group` property
+is set to the same value.
+        </p>
+
+        <p>
+In this example, there are two queries with the `group` flag set to
+`certification`. This results in an "AND" operation, indicating that both of
+these conditions need to be met in order to fulfill the request.
+        </p>
+
+        <pre class="example" title="Multiple credentials requested at once using top-level queries">
+{
+  "query": [{
+    "type": "QueryByExample",
+    "group": "certification",
+    // query details ...
+  },
+  // "AND"
+  {
+    "type": "DigitalCredentialQueryLanguage",
+    "group": "certification",
+    // query details ...
+  }]
+}
+        </pre>
+      </section>
+
+      <section>
+        <h3>Nested Queries ("OR" Operation)</h3>
+
+        <p>
+Within a specific query type, an "OR" operation can be applied, by either not
+specifying the `group` or providing `group` values that are different from
+one another.
+        </p>
+
+        <pre class="example" title="Queries for alternate credentials where any match will succeed">
+{
+  "query": [{
+    "type": "QueryByExample",
+    "group": "college-degree",
+    // query details ...
+  },
+  // "OR"
+  {
+    "type": "DigitalCredentialQueryLanguage",
+    "group": "job-experience",
+    // query details ...
+  }]
+}
+        </pre>
+
+      </section>
+    </section>
+    </section>
+
+    <section>
+      <h3>Presenting</h3>
+      <p>
+The following APIs are defined for presenting a Verifiable Credential:
+      </p>
+
+      <table class="simple api-summary-table"
+        data-api-path="
+          /credentials/derive /presentations
+          /presentations /presentations/{id}
+          /exchanges/ /exchanges/{exchangeId}"
+        ></table>
+
+        <p class="advisement">
+The URL path value <code>exchange-id</code> is
+meaningful to the server but is opaque to the client. While some server
+implementations might use values that happen to be human-readable,  clients are
+strongly advised to not assign semantics to any human-readable values.
+        </p>
+
+      <section>
+        <h4>Derive Credential</h4>
+        <p>
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="post /credentials/derive"></div>
+      </section>
+
+      <section>
+        <h4>Create Presentation</h4>
+        <p>
+        </p>
+
+        <p class="note" title="Presentation media types">
+          An `EnvelopedVerifiablePresentation` can be returned in the response
+          in order to create presentations with a media type other than `application/vp`,
+          such as `application/vp+jwt`.
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="post /presentations"></div>
+      </section>
+
+      <section>
+        <h4>Exchange Discovery</h4>
+        <p>
+Discovery is an optional call for the [=holder coordinator=] to ensure the [=holder coordinator=] can support
+the exchange protocol requirements before calling the endpoint. Coordinators SHOULD support
+the exchange discovery endpoint.
+        </p>
+        <div class="api-detail"
+          data-api-endpoint="post /exchanges/"></div>
+      </section>
+
+      <section>
+        <h4>Get Presentations</h4>
+        <p>
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="get /presentations"></div>
+      </section>
+
+
+      <section>
+        <h4>Get a Specific Presentation</h4>
+        <p>
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="get /presentations/{id}"></div>
+      </section>
+    </section>
+
+
+    <section>
+      <h3>Workflows and Exchanges</h3>
+      <p>
+A <dfn>workflow</dfn> defines a particular set of steps for exchanging
+verifiable credentials between two parties across a trust boundary. Each step
+can involve the issuance, verification, transmission, and/or presentation of
+verifiable credentials. Workflows are designed to support both linear sequences
+of steps and more complex patterns including branching logic and repeated steps,
+enabling sophisticated interactions between the parties involved. Examples of VC
+API workflows include, but are not limited to, the following:
+      </p>
+      <ul class="bullet">
+        <li>
+Issuing an employee membership credential to an employee who has logged in to a
+coordinator website.
+        </li>
+        <li>
+Issuing a vehicle title credential after receiving a presentation of a
+driver's license credential.
+        </li>
+        <li>
+Verification of the presentation of a permanent resident credential.
+        </li>
+        <li>
+Receipt of one or more newly-issued single-use proof of age credentials.
+        </li>
+      </ul>
+      <p>
+Workflow instances are expected to be created by administrators, for use with,
+for example, coordinator websites. A workflow instance is created by
+performing an HTTP POST to the workflow service's `/workflows` endpoint. The
+HTTP request body includes the configuration for the workflow instance. This
+includes, but is not limited to, information about the steps that define the
+workflow and any credential templates that will be used to issue verifiable
+credentials. The steps that define the workflow might also be templates,
+enabling additional flexibility. If a workflow involves the issuance of
+verifiable credentials, or the verification of presentations or credentials,
+then the workflow instance configuration can include authorization capabilities
+to use one or more issuer and/or verification services.
+      </p>
+      <p>
+Once a workflow instance exists, authorization to create and query particular
+workflow interactions, called exchanges, can be given to coordinators.
+      </p>
+      <p>
+An <dfn>exchange</dfn> represents a particular interaction based on a
+given workflow. The interaction will take place between an exchange
+client and the workflow service. Exchanges are expected to be transitory, only
+existing as long as the interaction takes to complete. The workflow service
+stores state information about each exchange, such as whether the exchange is
+pending, active, or complete, as well as the current step in the workflow, any
+workflow-specific variables and data, and any verifiable presentations and
+credentials received while the exchange executes. Implementers are free to use
+whatever variables they desire for their implementation in addition to the
+reserved variables defined in Section [[[#create-exchange]]]. While there is no
+technical limitation on the number of steps in a workflow, implementers might
+want to enforce a default maximum number of steps to prevent bugs.
+      </p>
+      <p>
+An issuer, verifier, or holder coordinator is responsible for creating
+exchanges. The coordinator creates an exchange by performing an HTTP POST to
+the `/exchanges` subpath of a chosen workflow, on the workflow service. The
+HTTP request body includes an expiration date and time for the exchange and any
+variables to be used to populate the workflow's templates for the particular
+exchange. The request body can also include configuration options to enable the
+exchange to be executed using additional protocols beyond this API. Once the
+exchange is created, an exchange URL that identifies the exchange and enables
+interaction with it is returned to the coordinator.
+      </p>
+      <p>
+The exchange URL is given to the exchange client so that it can initiate the
+exchange. Note that while the exchange URL is given to the coordinator to then
+provide it to the exchange client, the actual exchange is performed between the
+exchange client and the workflow service; the coordinator is not involved after
+providing the exchange URL to the exchange client. To be clear: a
+coordinator can still use its own exchange client for any
+use case that requires it to execute the exchange itself.
+      </p>
+      <p>
+Initiating the exchange does not require any authorization beyond the
+exchange URL. Depending on the workflow service implementation, exchange URLs
+can also be capability URLs (i.e., the URL is an unguessable secret such that
+only whomever is given the URL can initiate the exchange). If the workflow that
+the exchange is based on requires any additional authorization beyond the
+possession of the exchange URL, this is to be obtained during the exchange,
+not at its initiation.
+      </p>
+      <p>
+The exchange URL can also be used by the coordinator to query the current
+state of the exchange as it progresses and to obtain information associated
+with the exchange that the workflow service has stored. Querying the exchange
+in this way requires additional authorization that the coordinator is expected
+to have and that the exchange client is not.
+      </p>
+      <p>
+How the exchange URL is transmitted from a coordinator to an exchange client is
+out of scope for this specification. Known mechanisms for sharing the exchange
+URL with the client include the Credential Handler API (aka CHAPI), a QR
+code, or a universal link.
+      </p>
+      <p>
+Exchanges are designed to be executable using other protocols in
+addition to this API exchange protocol; for example, an exchange could
+potentially be executable with any of the OID4VCI, OID4VP, DIDComm, and
+exchange protocols. The protocols supported depend on the complexity
+of the workflow the exchange is based on, and the options provided by the
+coordinator when the exchange was created.
+      </p>
+      <p>
+The exchange client is expected to initiate the exchange using a protocol that
+is compatible with how the client received the exchange URL. For example, the
+exchange URL could have been provided over CHAPI with a protocol identifier
+indicating that this API protocol ought to be used. Alternatively, the
+exchange URL could be included as the "credential_issuer" in an OID4VCI
+credential offer, or as the "client_id" of an OID4VP authorization request,
+indicating that OID4VCI or OID4VP, respectively, ought to be used. This section
+focuses on how an exchange client uses this API to interact with the exchange; see
+<span class="issue">Appendix TBD</span> to see how to combine exchanges
+with other protocols such as OID4VCI, OID4VP, and DIDComm.
+      </p>
+      <p>
+Exchanges that are executed using this API protocol involve messages sent as
+request and response bodies over HTTP. Each message consists of a simple JSON
+object that includes zero or more of the following properties and values:
+      </p>
+      <ul class="bullet">
+        <li>
+`redirectUrl`: A URL that can be used to continue an interaction at another
+location. One use case for this is to send the user of an exchange client
+back to a coordinator website after an exchange has completed.
+        </li>
+        <li>
+`verifiablePresentation`: A Verifiable Presentation. This is used by either
+party in an exchange to provide information to the other party, either because
+the latter requested it or because the former is simply offering it.
+        </li>
+        <li>
+`verifiablePresentationRequest`: A Verifiable Presentation Request. This is
+used by either party in an exchange to request information from the other
+party.
+        </li>
+      </ul>
+      <p>
+Custom properties and values might also be included, but are expected to
+trigger errors in implementations that do not recognize them.
+      </p>
+      <p>
+To initiate an exchange using this API protocol, an exchange client
+performs an HTTP POST sending a JSON object as the request body. In the
+simplest case, when the client has no constraints of its own on the exchange
+&mdash; i.e., it has nothing to request from the other party &mdash; the
+JSON object is empty (`{}`). The workflow service responds with its own JSON
+object in the response body.
+      </p>
+      <p>
+If that response object is empty, the exchange is complete and nothing is
+requested from nor offered to the exchange client. If the object includes
+`verifiablePresentationRequest`, then the exchange is not yet complete and
+some additional information is requested, as specified by the contents of the
+associated verifiable presentation request. If the object includes
+`verifiablePresentation`, then some information is offered, such as
+verifiable credentials issued to the holder operating the exchange client or
+verifiable credentials with information about the exchange server's operator
+based on the exchange client's request. If the object includes `redirectUrl`,
+the exchange is complete and the workflow service recommends that the client
+proceed to another place to continue the interaction in another form.
+      </p>
+      <p>
+Many verifiable credential use cases can be implemented using these basic
+primitives. Either party to an exchange is capable of requesting verifiable
+presentations and of providing one or more verifiable credentials that might
+be necessary to establish trust and/or gain authorization capabilities, and
+either party is capable of presenting credentials that they hold or that they
+have issued. Specific workflows can be configured to expect specific
+presentations and credentials and to reject deviations from the expected flow
+of information. When a workflow service determines that a particular message
+is not acceptable, it raises an error by responding with a `4xx` HTTP status
+message and a JSON object that expresses information about the error.
+      </p>
+      <p>
+The exchange design approach is layered: it aims to provide a minimal
+communication message layer and a set of primitives that enable most use cases
+to be implemented via specific verifiable presentation requests and verifiable
+credentials at a layer above. See the appendices that follow for examples of
+workflows and exchanges that use specific verifiable presentation requests and
+verifiable credentials.
+      </p>
+      <span class="issue">These examples will be added later.</span>
+      <p>
+A given interaction with an exchange is expected to be short-lived but
+other mechanisms can be used to enable longer or multi-stage interactions.
+Examples of other interaction mechanisms include SMS, email, web notifications,
+or phone calls. This approach simplifies digital wallet implementation and
+allows existing mechanisms to be reused without reinvention within this API.
+The Web or native platforms are expected to enable additional interactions via
+applications (such as Web browsers) or other platform features. For example, in
+asynchronous issuance, a holder requests a credential but waits for processing.
+In such cases, system components (such as an issuer coordinator) make use of
+mechanisms outside this API to notify the holder when their credential is
+ready for collection.
+      </p>
+      <p>
+The following APIs are defined for using workflows and exchanges for credential
+use cases that require crossing trust boundaries:
+      </p>
+
+      <table class="simple api-summary-table"
+        data-api-path="/workflows /workflows/{localWorkflowId} /workflows/{localWorkflowId}/exchanges /workflows/{localWorkflowId}/exchanges/{localExchangeId}"></table>
+
+      <p>
+In the workflows and exchanges APIs, a "local" ID refers to an ID that is local
+to a service instance. In other words, an `exchangeId` or `workflowId` refers to
+a fully qualified URL, while a `localExchangeId` or `localWorkflowId` refers to
+a specific element in the URL path.
+      </p>
+
+      <section>
+        <h4>Create Workflow</h4>
+        <p>
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="post /workflows"></div>
+
+        <p>
+Workflows can contain information about steps, credential templates,
+and authorization. In some cases, a workflow will also reference the
+reserved `results` variable at different points in its configuration
+(typically in credential templates). This variable holds data that
+the workflow service receives from clients throughout the course
+of an exchange. Here is a basic workflow configuration that contains
+a DID Authentication step and a credential delivery step:
+        </p>
+
+        <pre class="example nohighlight" title="A Basic Workflow">
+{
+  "id": "9fd3bc6d-4a04-4b3d-a983-3482d0586626",
+  "initialStep": "didAuthRequest",
+  "steps": {
+    "didAuthRequest": {
+      "createChallenge": true,
+      "verifiablePresentationRequest": {
+        "query": {
+          "type": "DIDAuthentication",
+          "acceptedMethods": [
+            {
+              "method": "key"
+            },
+            {
+              "method": "web"
+            }
+          ],
+          "acceptedCryptosuites": [
+            {
+              "cryptosuite": "eddsa-rdfc-2022"
+            },
+            {
+              "cryptosuite": "ed25519-2020"
+            }
+          ]
+        },
+        "domain": "https://issuer.example.com"
+      },
+      "nextStep": "credentialDelivery"
+    },
+    "credentialDelivery": {
+      "issueRequests": [
+        {
+          "credentialTemplateId": "caffb919-053a-4bfa-beba-80567904f842",
+          "variables": "sampleAchievementCredential"
+        }
+      ]
+    }
+  },
+  "credentialTemplates": [
+    {
+      "id": "caffb919-053a-4bfa-beba-80567904f842",
+      "type": "jsonata",
+      "template": "{
+        \"credential\": {
+          \"@context\": [
+            \"https://www.w3.org/ns/credentials/v2\",
+            \"https://purl.imsglobal.org/spec/ob/v3p0/context-3.0.3.json\",
+            \"https://purl.imsglobal.org/spec/ob/v3p0/extensions.json\"
+          ],
+          \"id\": sampleAchievementCredential.id,
+          \"type\": [\"VerifiableCredential\", \"AchievementCredential\"],
+          \"issuer\": {
+            \"type\": [\"Profile\"],
+            \"name\": \"Example Issuer\",
+            \"image\": {
+              \"type\": \"Image\",
+              \"id\": \"https://issuer.example.com/logo.png\"
+            }
+          },
+          \"awardedDate\": sampleAchievementCredential.awardedDate,
+          \"validFrom\": sampleAchievementCredential.validFrom,
+          \"name\": \"Sample Achievement\",
+          \"credentialSubject\": {
+            \"id\": results.didAuthRequest.verifiablePresentation.holder,
+            \"type\": \"AchievementSubject\",
+            \"name\": sampleAchievementCredential.credentialSubject.name,
+            \"achievement\": {
+              \"id\": sampleAchievementCredential.credentialSubject.achievement.id,
+              \"type\": [\"Achievement\"],
+              \"achievementType\": sampleAchievementCredential.credentialSubject.achievement.achievementType,
+              \"name\": sampleAchievementCredential.credentialSubject.achievement.name,
+              \"description\": sampleAchievementCredential.credentialSubject.achievement.description,
+              \"alignment\": sampleAchievementCredential.credentialSubject.achievement.alignment
+            }
+          }
+        }
+      }"
+    }
+  ],
+  "controller": "did:web:issuer.example.com"
+}
+        </pre>
+
+        <p>
+Some workflows will need to reference custom variables in one or more
+of their steps. In this case, the coordinator will need
+to provide the appropriate value(s) for the variable(s) when it
+creates an exchange. Here is an example of a workflow configuration
+with a templated DID Authentication step
+(Notice the `verifiablePresentationRequest` and `callbackUrl` variables
+referenced in the `didAuthRequest` step):
+        </p>
+
+        <pre class="example nohighlight" title="A Templated Workflow">
+{
+  "id": "9fd3bc6d-4a04-4b3d-a983-3482d0586626",
+  "initialStep": "didAuthRequest",
+  "steps": {
+    "didAuthRequest": {
+      "stepTemplate": {
+        "type": "jsonata",
+        "template": "{
+          "createChallenge": true,
+          "verifiablePresentationRequest": verifiablePresentationRequest,
+          "callback": {
+            "url": callbackUrl
+          },
+          "nextStep": "credentialDelivery"
+        }"
+      }
+    },
+    "credentialDelivery": {
+      "issueRequests": [
+        {
+          "credentialTemplateId": "caffb919-053a-4bfa-beba-80567904f842",
+          "variables": "sampleAchievementCredential"
+        }
+      ]
+    }
+  },
+  "credentialTemplates": [
+    {
+      "id": "caffb919-053a-4bfa-beba-80567904f842",
+      "type": "jsonata",
+      "template": "{
+        \"credential\": {
+          \"@context\": [
+            \"https://www.w3.org/ns/credentials/v2\",
+            \"https://purl.imsglobal.org/spec/ob/v3p0/context-3.0.3.json\",
+            \"https://purl.imsglobal.org/spec/ob/v3p0/extensions.json\"
+          ],
+          \"id\": sampleAchievementCredential.id,
+          \"type\": [\"VerifiableCredential\", \"AchievementCredential\"],
+          \"issuer\": {
+            \"type\": [\"Profile\"],
+            \"name\": \"Example Issuer\",
+            \"image\": {
+              \"type\": \"Image\",
+              \"id\": \"https://issuer.example.com/logo.png\"
+            }
+          },
+          \"awardedDate\": sampleAchievementCredential.awardedDate,
+          \"validFrom\": sampleAchievementCredential.validFrom,
+          \"name\": \"Sample Achievement\",
+          \"credentialSubject\": {
+            \"id\": results.didAuthRequest.verifiablePresentation.holder,
+            \"type\": \"AchievementSubject\",
+            \"name\": sampleAchievementCredential.credentialSubject.name,
+            \"achievement\": {
+              \"id\": sampleAchievementCredential.credentialSubject.achievement.id,
+              \"type\": [\"Achievement\"],
+              \"achievementType\": sampleAchievementCredential.credentialSubject.achievement.achievementType,
+              \"name\": sampleAchievementCredential.credentialSubject.achievement.name,
+              \"description\": sampleAchievementCredential.credentialSubject.achievement.description,
+              \"alignment\": sampleAchievementCredential.credentialSubject.achievement.alignment
+            }
+          }
+        }
+      }"
+    }
+  ],
+  "controller": "did:web:issuer.example.com"
+}
+        </pre>
+
+        <p>
+For the `openId` options, specifically the values
+`createAuthorizationRequest` and `authorizationRequest`, the example below is
+provided to help developers understand what an OID4VP Authorization Request
+looks like:
+        </p>
+
+        <pre class="example nohighlight" title="An OID4VP Authorization Request">
+{
+  "response_type": "vp_token",
+  "presentation_definition": {
+    "id": "f1bd224a-0fed-469a-b64a-dad7cf63fd98",
+    "input_descriptors": [
+      {
+        "id": "77d50c71-95ef-442c-a372-f32e17634fab",
+        "constraints": {
+          "fields": [
+            {
+              "path": [
+                "$['@context']"
+              ],
+              "filter": {
+                "type": "array",
+                "contains": {
+                  "type": "string",
+                  "const": "https://www.w3.org/ns/credentials/v2"
+                }
+              }
+            },
+            {
+              "path": [
+                "$['type']"
+              ],
+              "filter": {
+                "type": "array",
+                "contains": {
+                  "type": "string",
+                  "const": "VerifiableCredential"
+                }
+              }
+            },
+            {
+              "path": [
+                "$['credentialSubject']['name']"
+              ],
+              "filter": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "purpose": "We require a name credential to display your name when you post messages."
+      }
+    ]
+  },
+  "response_mode": "direct_post",
+  "client_metadata": {
+    "vp_formats_supported": {
+      "ldp_vc": {
+        "proof_type_values": [
+          "DataIntegrityProof",
+          "Ed25519Signature2020"
+        ],
+        "cryptosuite_values": [
+          "ecdsa-rdfc-2019",
+          "eddsa-rdfc-2022"
+        ]
+      }
+    },
+    "vp_formats": {
+      "jwt_vp": {
+        "alg": [
+          "EdDSA",
+          "Ed25519",
+          "ES256",
+          "ES384"
+        ]
+      },
+      "jwt_vp_json": {
+        "alg": [
+          "EdDSA",
+          "Ed25519",
+          "ES256",
+          "ES384"
+        ]
+      },
+      "di_vp": {
+        "proof_type": [
+          "ecdsa-rdfc-2019",
+          "eddsa-rdfc-2022",
+          "Ed25519Signature2020"
+        ]
+      },
+      "ldp_vp": {
+        "proof_type": [
+          "ecdsa-rdfc-2019",
+          "eddsa-rdfc-2022",
+          "Ed25519Signature2020"
+        ]
+      }
+    }
+  },
+  "client_id": "https://some.example/workflows/z1A7ojitBF3pGpVzW17MgU7zm/exchanges/z1ACKwiBiXmuGjpKAdKMpBZXB/openid/client/authorization/response",
+  "client_id_scheme": "redirect_uri",
+  "response_uri": "https://some.example/workflows/z1A7ojitBF3pGpVzW17MgU7zm/exchanges/z1ACKwiBiXmuGjpKAdKMpBZXB/openid/client/authorization/response",
+  "nonce": "z1ACKwiBiXmuGjpKAdKMpBZXB"
+}
+        </pre>
+        </section>
+
+      <section>
+        <h4>Get Workflow Configuration</h4>
+        <p>
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="get /workflows/{localWorkflowId}"></div>
+      </section>
+      <p>
+There is an `expires` property associated with exchanges, denoting the
+expiration date and time of the exchange. It is created using the
+/workflows/{localWorkflowId}/exchanges endpoint. This impacts the lifetime of
+challenges associated with such an exchange: if a challenge is bound to an
+exchange, that challenge ceases to be valid at the date referenced by the
+`expires` property of the exchange.
+      </p>
+
+      <section>
+        <h4>Create Exchange</h4>
+        <p>
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="post /workflows/{localWorkflowId}/exchanges"></div>
+      </section>
+
+      <section>
+        <h4>Get Exchange Protocols</h4>
+        <p>
+This endpoint provides a mechanism for a client to query an exchange for all of
+the protocols that it supports. A single exchange can support many protocols
+that are capable of achieving the goals of the exchange, such as the issuance
+of a [=verifiable credential=] into a digital wallet.
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="get /workflows/{localWorkflowId}/exchanges/{localExchangeId}/protocols"></div>
+
+        <p>
+This endpoint also enables the website operator to delegate the authority to
+execute the exchange to a third party, such as a service provider, by delegating
+that trust through the HTTPS domain. For example, the website `brand.example`
+can delegate the operation of the exchange to a partner `saas.example` by using
+the `saas.example` domain in the list of protocols.
+        </p>
+
+        <figure>
+          <pre class="mermaid">
+sequenceDiagram
+    participant W as Holder Coordinator (Wallet)
+    participant I as Issuer/Verifier Coordinator (brand.example)
+    participant S as Exchange Service (saas.example)
+    autonumber
+    Note right of W: Wallet retrieves protocol options
+    W->>I: GET /workflows/123/exchanges/456/protocols
+    I->>W: Returns list of protocols understood by the exchange
+    Note right of W: Wallet selects a supported protocol
+    W->>W: Wallet picks protocol to saas.example
+    W->>S: Wallet executes interaction protocol via saas.example
+          </pre>
+          <figcaption>
+An example of a wallet using a protocol to a delegated exchange service.
+          </figcaption>
+        </figure>
+
+        <p>
+This enables the client to depend on their trust in `brand.example` to delegate
+the operation of the exchange to a third party in the same way that a website
+links to resources from other domains to render a web page.
+        </p>
+
+      </section>
+
+      <section>
+        <h4>Participate in an Exchange</h4>
+        <p>
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="post /workflows/{localWorkflowId}/exchanges/{localExchangeId}"></div>
+      </section>
+
+      <section>
+        <h4>Get Exchange State</h4>
+        <p>
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="get /workflows/{localWorkflowId}/exchanges/{localExchangeId}"></div>
+      </section>
+
+      <section>
+        <h4>Exchange Step Callbacks</h4>
+        <p>
+        </p>
+
+        <div class="api-detail"
+          data-api-endpoint="post /callbacks/{localCallbackId}"></div>
+      </section>
+
+      <section>
+        <h4>Exchange Examples</h4>
+
+        <p>
+The APIs in this specification enables unmediated (automated,
+machine-to-machine) or mediated (person in the loop) exchanges to be executed.
+These exchanges are initiated by a [=holder coordinator=] and responded to by
+any Coordinator that implements exchanges. The flows consist of the following
+steps:
+        </p>
+
+        <ol>
+          <li>
+The [=holder coordinator=] contacts the receiving Coordinator to request the
+initiation of a particular exchange.
+          </li>
+          <li>
+The receiving Coordinator responds with a presentation request of some kind to
+authenticate and/or authorize the [=holder coordinator=] and provides the next
+hop in the exchange as a URL.
+          </li>
+          <li>
+The [=holder coordinator=] responds to the receiving Coordinator with a
+Verifiable Presentation containing information that will satisfy the
+presentation request.
+          </li>
+          <li>
+The receiving Coordinator responds with a Verifiable Presentation with the newly
+issued Verifiable Credentials or a further presentation request as expressed in
+step 2 above.
+          </li>
+        </ol>
+        <p>
+The [=holder coordinator=] MAY call the Coordinator's exchange discovery
+endpoint to determine if the [=holder coordinator=] supports the Coordinator's
+protocol requirements on a particular endpoint, before actually initiating the
+exchange.
+        </p>
+        <p>
+A diagram of the steps outlined above is presented below:
+        </p>
+
+        <figure>
+          <pre class="mermaid">
+sequenceDiagram
+    participant H as Holder
+    participant W as Holder Coordinator (Wallet)
+    participant I as Issuer/Verifier Coordinator
+    autonumber
+    Note right of H: Start exchange
+    W->>I: Initiate
+    Note right of W: POST /workflows/123/exchanges/abc &mdash; HTTP request to start exchange (e.g., send credentials, get credentials)
+    I->>W: Verifiable Presentation Request (VPR)
+    Note left of I: VPR includes method of interaction, for purposes of exchange
+    W->>I: Verifiable Presentation (VP)
+    Note right of W: POST /workflows/123/exchanges/abc &mdash; sent via interaction mechanism to meet requirements of exchange
+    I->>W: Verifiable Presentation
+    Note left of I: VP includes result of exchange (e.g., VCs), or VPR with new interaction request, or error description
+          </pre>
+          <figcaption>
+A standard exchange between a [=holder=] and an [=issuer=]/[=verifier=].
+          </figcaption>
+        </figure>
+
+        <p class="note">
+The general exchange above can be performed in a way that is fully automated,
+mediated by a person, or in a hybrid fashion where portions are automated
+but interaction by a person is required at certain stages. The second step
+above is used to provide guidance on whether the next step is automated or
+requires an individual to intervene.
+        </p>
+
+      </section>
+    </section>
+
+    <section>
+      <h3>Initiating Interactions</h3>
+      <p>
+It is useful for an implementation to communicate how to start interacting with
+it to another implementation. This bootstrapping process is called
+<em>initiating an <dfn>interaction</dfn></em>, and communicates what protocols
+each implementation supports as well as how to start a particular interaction
+with the implementation.
+      </p>
+      <p class="note" title="Interactions are application, use case, and protocol agnostic">
+While several interaction specifications reside in this document, the general
+approach is agnostic as to use case, application, and protocol. This approach
+can be used to pair two or more applications that desire to bootstrap into a
+particular protocol over any transmission medium &mdash; such as a web browser,
+QR Code (optical medium), or NFC (wireless medium) &mdash; where the protocol
+does not need to involve this API.
+      </p>
+      <p>
+The sequence diagram below outlines an [=issuer=] generating an interaction
+URL, using a QR Code to share it with a [=holder=], and proceeding with the
+`vcapi` protocol:
+      </p>
+      <figure>
+        <pre class="mermaid">
+sequenceDiagram
+  participant H as Holder
+  participant W as Holder Coordinator (Wallet)
+  participant B as Browser
+  participant I as Issuer Coordinator
+  autonumber
+  H->>B: Click "Receive credential"
+  B->>I: Request interaction QR Code
+  I->>I: Generate QR Code
+  I->>B: Display QR Code
+  Note left of I: https://issuer.example/interactions/123?iuv=1
+  H->>W: Start scanning QR Code
+  W->>B: Scan QR Code
+  W->>I: Get available interaction protocols
+  Note left of I: GET https://issuer.example/interactions/123?iuv=1
+  I->>W: Return interaction protocols
+  Note left of I: (VCALM, OID4VP, NFC, Bluetooth, etc.)
+  W->>W: Select appropriate protocol
+  opt "vcapi" protocol example
+  W->>I: Initiate workflow exchange
+  W->>H: Acquire consent to proceed
+  Note right of H: issuer.example is offering credentials, accept?
+  end
+        </pre>
+        <figcaption>
+An issuer-initiated interaction using a QR Code
+        </figcaption>
+      </figure>
+
+      <p>
+The sequence diagram below outlines a [=verifier=] generating an interaction
+URL, using a QR Code to share it with a [=holder=], and proceeding with the
+`vcapi` protocol:
+      </p>
+      <figure>
+        <pre class="mermaid">
+sequenceDiagram
+  participant H as Holder
+  participant W as Holder Coordinator (Wallet)
+  participant B as Browser
+  participant V as Verifier Coordinator
+  autonumber
+  H->>B: Click "Share credential"
+  B->>V: Request interaction QR Code
+  V->>V: Generate QR Code
+  V->>B: Display QR Code
+  Note left of V: https://verifier.example/interactions/123?iuv=1
+  H->>W: Start scanning QR Code
+  W->>B: Scan QR Code
+  W->>V: Get available interaction protocols
+  Note left of V: GET https://verifier.example/interactions/123?iuv=1
+  V->>W: Return interaction protocols
+  Note left of V: (VCALM, OID4VP, NFC, Bluetooth, etc.)
+  W->>H: Acquire consent to proceed
+  Note right of H: verifier.example is requesting credentials, proceed?
+  W->>W: Select appropriate protocol
+  opt "vcapi" protocol example
+  W->>V: Initiate workflow exchange
+  end
+        </pre>
+        <figcaption>
+A verifier-initiated interaction using a QR Code
+        </figcaption>
+      </figure>
+
+      <p>
+The sequence diagram below outlines a [=holder=] generating an interaction URL,
+using a QR Code to share it with a [=verifier=], and proceeding with the
+`inviteRequest` protocol:
+      </p>
+      <figure>
+        <pre class="mermaid">
+sequenceDiagram
+  participant H as Holder
+  participant W as Holder Coordinator (Wallet)
+  participant V as Verifier Coordinator
+  autonumber
+  H->>W: Tap "Share credential"
+  W->>W: Generate Interaction URL
+  W->>W: Display QR Code
+  H->>V: Present QR Code
+  V->>V: Scan QR Code and decode URL
+  V->>W: Get available interaction protocols
+  Note left of V: GET https://wallet.example/interactions/456?iuv=1
+  W->>V: Return interaction protocols
+  Note left of V: (VCALM, OID4VP, NFC, Bluetooth, etc.)
+  V->>V: Select appropriate protocol
+  V->>W: Transmit protocol selection and options
+  opt "inviteRequest" protocol example
+  W->>H: Request consent to proceed
+  Note right of H: "Open browser to verifier.example?"
+  H->>W: Confirm consent to go to website
+  W->>V: Go to website
+  end
+        </pre>
+        <figcaption>
+A holder-initiated interaction using a QR Code
+        </figcaption>
+      </figure>
+
+      <section>
+        <h4>Interaction URL Format</h4>
+        <p>
+The format of the <dfn>interaction URL</dfn> MUST conform to the syntax for the
+[[[URL]]] and contain an `iuv` query parameter encoding the interaction URL
+version number, which MUST be `1` when using this version of this API. The
+interaction URL SHOULD be an HTTPS URL that contains an interaction-specific
+identifier. The URL SHOULD be opaque and require no URL syntax processing before
+it is fetched by the receiving system. An example of such a URL is shown below:
+        </p>
+
+        <pre class="example nohighlight" title="An interaction URL">
+https://app.example/interactions/z8n38Dp7a?iuv=1
+        </pre>
+
+        <p>
+Protocols that encode lengthy protocol-specific information into URLs suffer
+from limitations placed by software libraries on the maximum allowable length of a URL.
+At the time of writing, the suggested URL length limit is roughly 2,000
+characters. Implementers SHOULD NOT put information that can be expressed in the
+response to a GET request for an interaction URL, defined in Section
+[[[#interaction-protocols-response]]], into the query parameters of the
+interaction URL.
+        </p>
+      </section>
+
+        <p class="note" title="Interactions URL lives on Coordinators, not Workflow Services">
+A coordinator has the freedom to put the interaction URL at any location on its Web origin, because
+it is expected to be considered opaque by consuming software (except for the `iuv` query parameter).
+However, it is important that the interaction URL be hosted on a coordinator and NOT hosted at the
+workflow service. This enables the coordinator's Web origin (DNS domain name) to be used as a consistent trust signal by
+consumers and the application of business rules that might modulate actions.
+
+      <section>
+        <h4>Interaction QR Code Format</h4>
+        <p>
+An <dfn>interaction QR Code</dfn> MUST be an [=interaction URL=]
+expressed as a QR code according to [[[ISO18004]]]. To ensure broad
+interoperability, the length of the [=interaction URL=] SHOULD be as short as
+possible, SHOULD NOT exceed 400 alphanumeric characters, and MUST NOT exceed
+4,296 alphanumeric characters. An example of an interaction QR code can be found
+below:
+        </p>
+
+        <figure id="roles">
+          <img style="margin: auto; width: 33%; display: block;"
+         src="./diagrams/interaction-qr-code.png"
+         alt="A square image filled with black and white dots that is encoding
+a interaction URL">
+          <figcaption style="text-align: center;">
+An interaction QR code for `https://app.example/interactions/z8n38Dp7a?iuv=1`
+          </figcaption>
+        </figure>
+
+      </section>
+
+      <section>
+        <h4>Interaction Protocols Response</h4>
+        <p>
+Performing a retrieval of the [=interaction URL=] results in instructions
+on how to start an interaction with the remote system.
+        </p>
+
+        <p>
+When the [=interaction URL=] is fetched using an `Accept` header of
+`application/json`, a single JSON object containing a `protocols` [=map=] MUST
+be returned where each [=map/key=] is a protocol identifier and each
+[=map/value=] is a URL that can be used to initiate the interaction. For
+example, performing an HTTP GET on the
+`https://app.example/interactions/z8n38Dp7a?iuv=1` [=interaction URL=] might
+result in either of the following responses:
+        </p>
+
+        <pre class="example nohighlight" title="A list of protocols supported for a given interaction, with inviteRequest being generated by the Workflow Service in use.">
+{
+  "protocols": {
+    "inviteRequest": "https://saas.example/workflows/123/exchanges/987/invite-request/response",
+    "vcapi": "https://saas.example/workflows/123/exchanges/987",
+    "OID4VP": "openid4vp://?client_id=https%3A%2F%2Fapp.example%2Fworkflows%2F123%2Fexchanges%2F987%2Fopenid%2Fclient%2Fauthorization%2Fresponse&request_uri=https%3A%2F%2Fapp.example%2Fworkflows%2F123%2Fexchanges%2F987%2Fopenid%2Fclient%2Fauthorization%2Frequest'"
+  }
+}
+        </pre>
+
+        <pre class="example nohighlight" title="The degenerate case where the list of protocols only includes the inviteRequest option.">
+{
+  "protocols": {
+    "inviteRequest": "https://saas.example/interactions/123/invite-request/response"
+  }
+}
+        </pre>
+
+        <p>
+The protocol response enables protocol execution to be delegated to third-party
+service providers through the HTTPS domain trust model, similar to the
+delegation mechanism described in the <a href="#get-exchange-protocols">Get
+Exchange Protocols</a> section. For example, the website `app.example` can
+delegate the operation of the exchange to a partner `saas.example` by including
+the `saas.example` domain in the list of protocols.
+        </p>
+
+        <p>
+When the [=interaction URL=] is fetched using any unrecognized `Accept` header,
+a `text/html` document MUST be returned with directions instructing a human
+being to use specific software that understands how to process interaction URLs.
+        </p>
+
+        <p class="note" title="Mapping to exchange URLs">
+Some coordinator implementations will implement the protocols endpoint as a pass
+through to a protocols endpoint for an exchange instance. For example, a GET on
+`https://app.example/interactions/z8n38Dp7a?iuv=1` will result in a pass-through
+GET on `https://app.example/workflows/123/exchanges/987/protocols`, which would
+return the response above. Implementing interaction URLs in this way can
+provide an easier implementation path.
+        </p>
+
+      </section>
+
+      <section>
+        <h4>`inviteRequest` Interaction Protocol</h4>
+        <p>
+The `inviteRequest` interaction protocol is used by a local system to signal to
+the remote system that it would like an invitation to a remote system via a
+specific URL, such as a website where an individual can engage in a use-case
+specific interaction. If the `inviteRequest` interaction protocol is selected,
+the local system sends data using an HTTP POST to instruct the remote system
+where to send the individual. A couple examples of the POST data are shown below.
+These examples intend to highlight that this specification does not state any
+requirements as to how the "url" field is formatted, but does recommend that an
+implementer of this interaction mechanism make use of a unique ID:
+        </p>
+
+        <pre class="example nohighlight" title="A response to an invitation request, for checking out at a store">
+{
+  "url": "https://website.example/checkout/8372974",
+  "purpose": "Checkout at ShopCo",
+  "referenceId": "417bcaf2-14d9-11f0-99d7-9f094678517b"
+}
+        </pre>
+
+        <pre class="example nohighlight" title="A response to an invitation request, to fill out an online form">
+{
+  "url": "https://website.example/forms/7864165",
+  "purpose": "Fill out online form",
+  "referenceId": "d4a6e5b8-1715-4654-8e47-e68b311756d1"
+}
+        </pre>
+      </section>
+
+      <section>
+        <h4>`vcapi` Interaction Protocol</h4>
+        <p>
+The `vcapi` interaction protocol is used to initiate a specific [=exchange=]
+as described in Section [[[#participate-in-an-exchange]]].
+        </p>
+
+        <pre class="example nohighlight" title="A VC-API interaction protocol request">
+{
+  "verifiablePresentationRequest": {
+    "query": [{
+      "type": "QueryByExample",
+      "credentialQuery": [{
+        "reason": "Please provide your student ID.",
+        "example": {
+          "@context": [
+            "https://www.w3.org/ns/credentials/v2",
+            "https://www.w3.org/ns/credentials/examples/v2",
+          ],
+          "type": "StudentIdCredential",
+          "credentialSubject": {
+            "studentId": ""
+          },
+        },
+        "trustedIssuer": [{
+          "issuer": "did:web:university.example"
+        }]
+      }]
+    }],
+    "challenge": "5e34826e-14da-11f0-98a5-8b1c0a196728",
+    "domain": "university.example"
+  }
+}
+        </pre>
+
+      </section>
+
+    </section>
+
+    <section>
+      <h3>Error Handling</h3>
+      <p>
+When an implementation detects an anomaly while processing a document, a
+<dfn>ProblemDetails</dfn> object can be used to report the issue to other
+software systems. The interfaces for these objects follow [[RFC9457]]
+to encode the data. A [=ProblemDetails=] [=map=] consists of the following
+properties:
+      </p>
+
+      <dl>
+        <dt>type</dt>
+        <dd>
+The `type` [=map/key=] MUST be present and its value MUST be a URL
+identifying the type of problem.
+        </dd>
+        <dt>title</dt>
+        <dd>
+The `title` [=map/key=] SHOULD provide a short but specific human-readable
+string for the problem.
+        </dd>
+        <dt>detail</dt>
+        <dd>
+The `detail` [=map/key=] SHOULD provide a longer human-readable string for the
+problem.
+        </dd>
+      </dl>
+
+      <p>
+Leveraging [=map/keys=] such as `detail`, and `instance` is encouraged, to
+provide more contextual feedback about the error, while being conscious of
+security concerns and hence not disclosing sensitive information.
+      </p>
+
+      <p>
+The following problem description types are defined by this specification:
+      </p>
+
+      <dl>
+        <dt id="UNKNOWN_OPTION_PROVIDED">
+https://www.w3.org/TR/vcalm#UNKNOWN_OPTION_PROVIDED
+        </dt>
+        <dd>
+An option that is unknown to the implementation was provided to the API call.
+        </dd>
+      </dl>
+
+      <p>
+Further lists of [=ProblemDetails=] that might be reported by implementations
+can be found in the following specifications:
+      </p>
+
+      <ul>
+        <li>
+<a data-cite="VC-DATA-MODEL-2.0#problem-details">
+Section 7.2: Problem Details</a> in the [[[VC-DATA-MODEL-2.0]]] specification.
+        </li>
+        <li>
+<a data-cite="VC-DATA-INTEGRITY#processing-errors">
+Section 4.7: Processing Errors</a> in the [[[VC-DATA-INTEGRITY]]] specification.
+        </li>
+        <li>
+<a data-cite="VC-DATA-INTEGRITY#processing-errors">
+Section 3.5: Processing Errors</a> in the [[[VC-BITSTRING-STATUS-LIST]]]
+specification.
+        </li>
+      </ul>
+
+      <pre class="example" title="An example of a ProblemDetails object">
+{
+  "type": "https://www.w3.org/TR/vc-data-model#CRYPTOGRAPHIC_SECURITY_ERROR",
+  "status": 400,
+  "title": "CRYPTOGRAPHIC_SECURITY_ERROR",
+  "detail": "The cryptographic security mechanism couldn't be verified. This is likely due to a malformed proof or an invalid verificationMethod."
+}
+      </pre>
+
+      <p class="issue">
+The example `type` URLs above will work in the future after VCDM v2.0 becomes a
+global standard. To ensure the error links to the appropriate location, you can
+replace the base URL of `https://www.w3.org/TR/vc-data-model` with
+`www.w3.org/TR/vc-data-model-2.0` for the time being.
+      </p>
+
+      <p class="advisement" title="Sanitize error details in production">
+Implementers are strongly advised to sanitize all server errors in production
+environments, as not doing so can lead to information disclosure.
+      </p>
+
+      <p>
+It is recommended to avoid raising errors while performing verification, and
+instead gather ProblemDetails objects to include in the verification results.
+      </p>
+
+      <section>
+        <h3>Verification Errors vs. Warnings</h3>
+
+        <p>
+This specification defines a distinction between a verification error and a
+verification warning. Errors are `ProblemDetails` relating to cryptography,
+data model, and malformed context and are unrecoverable. Warnings are
+`ProblemDetails` relating to status and validity periods and might be
+recoverable or leave the subsequent action to the discretion of the
+application.
+        </p>
+
+        <p>
+If an error is included, the `verified` property of the `VerificationResponse`
+object MUST be set to `false`; if no errors are included, it MUST be set to
+`true`.
+        </p>
+
+        <pre class="example" title="An example verification response containing warnings and errors.">
+{
+  "verified": false,
+  "document": verifiableCredential,
+  "mediaType": "application/vc",
+  "controller": issuer,
+  "controllerDocument": didDocument,
+  "warnings": [ProblemDetails],
+  "errors": [ProblemDetails]
+}
+        </pre>
+
+      </section>
+    </section>
+
+  </section>
+
+  <section class="appendix">
+    <h2>Privacy Considerations</h2>
+    <p>
+    </p>
+
+    <section>
+      <h3>Delegation</h3>
+
+      <p>
+[=Verifiable credentials=] [[VC-DATA-MODEL-2.0]] are a standard data model
+designed to mitigate risks of misuse and fraud. As a data model, <a>verifiable
+credentials</a> are protocol-neutral and consider at least two types of
+entities: [=issuer=] and [=subject=]. When the subject of a <a>verifiable
+credential</a> is a natural person or linked to a natural person, privacy and
+human rights can be impacted by the vastly more efficient processing of
+standardized [=verifiable credentials=] as compared to their analog
+ancestors.
+      </p>
+
+      <p>
+Technology, in the form of standardized APIs and protocols for issuing
+[=verifiable credentials=], further enhances the efficiency of processing
+[=verifiable credentials=] and adds to the risks of unforeseen privacy and
+human rights consequences.
+      </p>
+
+      <p>
+[=Verifiable credentials=] issuance has a request phase and a delivery phase.
+The request might be made by the [=subject=] or another role, and delivery
+can be to a client that might or might not be controlled by the subject.
+Delegation is highly relevant for both phases. The [=issuer=] might delegate
+processing of the request to a separate entity. The subject, for their part,
+might also delegate the ability to request a [=verifiable credential=] to a
+separate entity. Note that the subject might not always have the capability or
+ability to perform delegation. Examples include a new born baby, a pet, and a
+person with dementia. So the request might be performed by a third party who was
+not delegated by the subject. The ability to delegate is a third dimension in
+the enhanced efficiency of processing [=verifiable credentials=] and has
+impact on privacy and human rights.
+      </p>
+
+      <p>
+The architecture described in this specification is designed for market
+acceptance through a combination of efficiency and respect for privacy and human
+rights. APIs and protocols for processing [=verifiable credentials=] do not
+favor delegation by the issuer role over delegation by the subject role.
+      </p>
+    </section>
+
+    <section>
+      <h3>"Phoning Home" Considered Harmful</h3>
+
+      <p>
+It is considered a bad privacy practice for a [=verifier=] to contact an
+[=issuer=] about a specific [=verifiable credential=]. This
+practice is known as "phoning home" and can result in a mismatch
+in privacy expectations between [=holders=], [=issuers=],
+[=verifiers=], and other parties expressed in a [=verifiable credential=].
+Phoning home enables [=issuers=] to correlate unsuspecting parties with
+the use of certain [=verifiable credentials=] which can violate
+privacy expectations that each entity might have regarding the use
+of those credentials. For example, what is expected by the [=holder=] to be
+a private interaction between them and the [=verifier=] becomes one where
+the [=issuer=] is notified of the interaction.
+      </p>
+
+      <p>
+There are some interactions where contacting the [=issuer=] in a
+privacy-preserving manner upholds the privacy expectations of the [=holder=].
+For example, contacting the [=issuer=] to get revocation status information
+in a privacy-respecting manner, such as through a status list that provides
+group privacy can be acceptable as long as the [=issuer=] is not able to
+single out which [=verifiable credential=] is being queried based on the
+retrieval of the status list. For more information on one such mechanism
+see the [[[VC-BITSTRING-STATUS-LIST]]] specification.
+      </p>
+
+      <p>
+[=Verifiers=] are urged to not "phone home" in ways that will create
+privacy violations. When retrieving content that is linked from a
+[=verifiable credential=], using mechanisms such as [[[?RFC9458]]] and
+aggressively caching results can improve the privacy characteristics of the
+ecosystem.
+      </p>
+
+    </section>
+  </section>
+
+  <section class="appendix">
+    <h2>Security Considerations</h2>
+    <p>
+    </p>
+
+    <section>
+      <h3>Unknown Proof Types</h3>
+
+      <p>
+[=Holder coordinator=] implementations, such as digital wallet software, can
+receive and store [=verifiable credentials=] that include [=data integrity
+proof|proofs=] that are not understood by the software, however, these [=data
+integrity proof|proofs=] are not to be presented by the implementation. A
+[=verifiable credential=] with several [=data integrity proof|proofs=], some of
+which the implementation understands and others that it does not, can be
+presented by the implementation provided that the proof of choice is understood
+by the implementation and the others are removed prior to presentation.
+Implementations maintain allow lists of understood [=data integrity
+proof|proofs=] and ensure that any [=data integrity proof|proofs=] not present
+are stripped prior to presentation.
+      </p>
+
+      <p>
+Implementations can use the presence of unknown [=data integrity proof|proofs=]
+as potential adoption signals in a decentralized ecosystem. It is also important
+for implementers to understand that in the
+<a href="#architecture-overview">three party model</a>, the [=holder
+coordinator=] acts as a conduit between the [=issuer=] and the [=verifier=],
+enabling interoperability between the two even if/when the [=holder
+coordinator=] doesn't necessarily implement [=verification=] of certain [=data
+integrity proof|proofs=]. As an example in another space: "Web browsers were
+able to download and store PDF files prior to adding their own PDF-reader
+functionality" — this kind of decentralized innovation, interoperability, and
+progressive enhancement is important in the three party model and more
+generally in scalable, decentralized ecosystems. It is also important to help
+reduce centralization by not forcing people to adopt specific new and different
+software just to store a [=verifiable credential=] that has at least one proof
+on it that their current software does not (yet) understand.
+      </p>
+
+      <p>
+A [=holder coordinator=] might be able to present some [=data integrity
+proof|proofs=] even when it does not have the software to verify them,
+but this needs to be understood with certainty, not guessed. That is,
+when adding a copy of a stored [=verifiable credential=] to a presentation,
+[=holder=] software needs to remove any [=data integrity proof|proofs=]
+that it does not explicitly know it can safely present. Any
+[=data integrity proof|proofs=] that software does explicitly know it can
+safely present can remain. For example, a digital wallet that can verify
+an `ecdsa-rdfc-2019`
+[=data integrity proof|proof=], but not an `ecdsa-jcs-2019` [=data integrity
+proof|proof=], can still present either. Other [=data integrity proof|proofs=],
+such as those that offer [=selective disclosure=] and / or [=unlinkable
+disclosure=] features require
+<a data-cite="?VC-DATA-INTEGRITY#transformation">transformation</a> (that is, a
+base proof is transformed to a derived proof plus a "reveal document") and,
+therefore, a wallet will not be able to [=presentation|present=] these [=data
+integrity proof|proofs=] unless the wallet has implemented the procedures for
+deriving a proof. It is vital that a wallet not present a base proof by
+accident, as it might include information that is secret to the [=holder=].
+      </p>
+    </section>
+
+    <section>
+      <h3>Use of HTTPS for Interaction URLs</h3>
+
+      <p>
+This specification strongly suggests the use of HTTPS for interaction URLs
+for the following reasons:
+      </p>
+
+      <ul>
+        <li>
+The HTTPS URL used in an interaction firmly establishes trust in the
+interaction based on the existing and well understood same-origin trust model
+used by browsers.
+        </li>
+        <li>
+The initial URL provided establishes trust such that subsequent protocols used
+in the interaction can be simply and safely delegated or outsourced to other
+systems, some of which can be in a separate domain.
+        </li>
+        <li>
+Graphical interfaces that need to gather consent can use domain names, which
+are understood well enough by the general population to combat phishing attacks.
+        </li>
+        <li>
+Protocols that require stronger verification of any party can use
+protocol-specific mechanisms, such as [=verifiable credentials=], to verify
+the [=holder=], [=issuer=], or [=verifier=] during a particular protocol
+exchange.
+        </li>
+      </ul>
+
+      <p>
+Using protocol schemes that are not rooted in the HTTPS trust model requires
+separate encryption protocol, key management, and trust models to be used, which
+are often less broadly developed and deployed and require much more development
+and analysis to determine the threat and privacy model.
+      </p>
+
+    </section>
+
+    <section>
+      <h3>Deletion</h3>
+
+      <p>
+The APIs provided by this specification enable the deletion of
+[=verifiable credentials=] and [=verifiable presentations=] from
+[=storage services=]. The result of these deletions
+and the side-effects they might cause are out of scope for this specification.
+However, implementers are advised to understand the various ways deletion can be
+implemented. There are at least two types of deletion that are contemplated by
+this specification.
+      </p>
+
+      <p>
+<dfn>Partial deletion</dfn> marks a record for deletion but continues to store
+some or all of the original information. This mode of operation can be useful if
+there are audit requirements for all credentials and/or presentations over
+a particular time period, or if recovering an original credential might be a
+useful feature to provide.
+      </p>
+      <p>
+<dfn>Complete deletion</dfn> purges all information related to a given
+[=verifiable credential=] or [=verifiable presentation=] in a way that
+is unrecoverable. This mode of operation can be useful when removing information
+that is outdated and beyond the needs of any audit or when responding to any
+sort of "<a href="https://en.wikipedia.org/wiki/Right_to_be_forgotten">right
+to be forgotten</a>" request.
+      </p>
+      <p>
+When deleting a [=verifiable credential=], handling of its status
+information needs to be considered. Some use cases might call for deletion
+of a particular [=verifiable credential=] to also set the revocation
+and suspension bits of that [=verifiable credential=], such that any sort of
+status check for the deleted credential fails and use of the credential is
+halted.
+      </p>
+      <p>
+Given the scenarios above, implementers are advised to allow the system actions
+that occur after a delete to be configurable, such that system flexibility is
+sufficient to address any [=verifiable credential=] use case.
+      </p>
+    </section>
+
+    <section>
+      <h3>Payload Sizes</h3>
+      <p>
+Larger transactions can trigger DoS incidents. It's recommended to configure the
+payload size accepted by endpoints at an instance level.
+      </p>
+    </section>
+
+    <section>
+      <h3>Additional Validation</h3>
+      <p>
+In most cases, simply verifying the proof might not be sufficient to properly
+handle the received data. [=Verifier services=] are expected to configure additional
+validation steps based on their use cases. To define such additional
+validations, implementers can refer to specifications such as
+<a data-cite="?VC-DATA-INTEGRITY#resource-integrity">Section 2.3: Resource
+Integrity</a> and
+<a data-cite="?VC-DATA-INTEGRITY#Contexts and Vocabularies">Section 2.4:
+Contexts and Vocabularies</a>
+in the [[[?VC-DATA-INTEGRITY]]] specification where further information can be
+found about context handling and integrity verification.
+      </p>
+      <p>
+Improper validation will often lead to security vulnerabilities.
+      </p>
+      <p>
+Additional validation steps can be accounted for when returning a verification
+response object, through the problem details.
+      </p>
+    </section>
+
+    <section>
+      <h3>Secure Coding Practices</h3>
+
+      <p>
+Implementers are urged to use industry standard secure coding practices when
+implementing this specification. Even deeply experienced software developers can
+make mistakes and the use of secure coding checklists and vulnerability scanning
+software can catch errors that would result in security compromises. Following
+checklists and guides such as the
+<a href="https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/">
+OWASP Secure Coding Practices Checklist</a> and the
+<a href="https://owasp.org/www-project-web-security-testing-guide/">
+OWASP Web Security Testing Guide</a> can help reduce the chance of insecure
+implementations.
+      </p>
+    </section>
+
+    <section>
+      <h3>Other Security Considerations</h3>
+
+      <p>
+Since the interfaces to manage the lifecycle of [=verifiable credentials=]
+described by this specification are generalized in nature, the security
+implications of their use might not be immediately apparent to readers.
+To understand the sort of security
+concerns one might need to consider in a complete software system, implementers
+are urged to read about how this technology can be used by the
+[[[?VC-DATA-MODEL-2.0]]] specification (specifically the section
+on <a data-cite="?VC-DATA-MODEL-2.0#security-considerations">
+Verifiable Credential Security Considerations</a>), as well as the
+[[[?VC-DATA-INTEGRITY]]] specification (specifically the section
+on <a data-cite="?VC-DATA-INTEGRITY#security-considerations">
+Data Integrity Security Considerations</a>).
+      </p>
+    </section>
+
+  </section>
+
+  <section class="appendix">
+    <h2>Relationship to Other Specifications</h2>
+
+    <p>
+The lifecycle of a [=verifiable credential=] includes the creation of a
+[=workflow=], an initial interaction to engage in an [=exchange=], issuance,
+status management, local credential administration, presentation, verification, and validation. This
+specification defines an HTTP-based API for [=verifiable credential=] lifecycle
+management that can be used by [=issuers=], [=holders=], and [=verifiers=].
+There are other specifications, such as the [[[DCAPI]]], [[[OID4VCI]]], and
+[[[OID4VP]]] that might seem to provide similar functionality to this
+specification. This section explains what other specifications have been
+considered before the standardization of this specification, and how this
+specification differs from other specifications in the ecosystem.
+    </p>
+
+    <p>
+Fundamentally, this specification is the only specification that is focused on
+the entire lifecycle management of [=verifiable credentials=]. It is agnostic to
+credential format, credential query language, and credential delivery protocol. Any
+credential format that is expressible as a [=verifiable credential=] or an
+<a href="VC-DATA-MODEL-2.0#enveloped-verifiable-credentials">enveloped
+verifiable credential</a> can be used with this specification. Similarly,
+credential delivery protocols such as [[[OID4VCI]]] or [[[OID4VP]]] can be used
+in [=interactions=] and [=exchanges=] defined by this specification. Finally,
+this specification supports multiple credential query languages to provide for
+flexibility as technologies improve and market verticals specialize.
+    </p>
+
+    <p>
+This specification defines APIs for the entirety of [=verifiable credential=]
+lifecycle management because not doing so creates opportunities for vendor
+lock-in. No other specification exists that provides interfaces that prevent
+vendor lock throughout the lifecycle management of [=verifiable credentials=].
+    </p>
+  </section>
+
+  <section class="appendix">
+    <h2>Acknowledgements</h2>
+    <p>
+The Working Group thanks the following individuals for their contributions
+to this specification: <span class="issue">The final list of acknowledgements
+will be compiled at the end of the Candidate Recommendation phase.</span>
+    </p>
+    <p>
+Portions of the work on this specification have been funded by the United States
+Department of Homeland Security's Silicon Valley Innovation Program under
+contracts
+70RSAT20T00000003,
+70RSAT20T00000010,
+70RSAT20T00000029,
+70RSAT20T00000031,
+70RSAT20T00000033,
+and
+70RSAT20T00000043.
+The content of this specification does not necessarily
+reflect the position or the policy of the U.S. Government and no official
+endorsement should be inferred.
+    </p>
+
+    <p>
+Development of this specification has
+also been supported by the <a href="https://w3c-ccg.github.io/">W3C Credentials
+Community Group</a>, chaired by Kim Hamilton Duffy, Heather Vescent,
+and Wayne Chang.
+    </p>
+
+  </section>
+
+</body>
 </html>
