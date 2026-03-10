@@ -61,10 +61,9 @@
         },
         "acceptedIssuers": {
           "type": "array",
-          "description": "List of accepted issuer DIDs or URIs",
+          "description": "List of accepted issuer DIDs or verifiable recognition credentials.",
           "items": {
-            "type": "string",
-            "format": "uri"
+            "$ref": "#/$defs/AcceptedIssuer"
           },
           "minItems": 1
         },
@@ -72,7 +71,7 @@
           "type": "array",
           "description": "List of accepted cryptographic suites for credential proofs",
           "items": {
-            "$ref": "#/$defs/Cryptosuite"
+            "$ref": "#/$defs/AcceptedCryptosuite"
           },
           "minItems": 1
         },
@@ -80,7 +79,7 @@
           "type": "array",
           "description": "List of accepted envelope formats for credentials",
           "items": {
-            "$ref": "#/$defs/Envelope"
+            "$ref": "#/$defs/AcceptedEnvelope"
           },
           "minItems": 1
         }
@@ -165,7 +164,7 @@
       },
       "required": ["@context", "type", "credentialSubject"]
     },
-    "Cryptosuite": {
+    "AcceptedCryptosuite": {
       "type": "object",
       "description": "Specification of an accepted cryptographic suite",
       "properties": {
@@ -182,7 +181,28 @@
       },
       "required": ["cryptosuite"]
     },
-    "Envelope": {
+    "AcceptedIssuer": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL of an accepted issuer, such as a DID"
+        },
+        {
+          "type": "object",
+          "description": "A verifiable recognition credential reference that contains accepted issuers",
+          "properties": {
+            "recognizedIn": {
+              "type": "string",
+              "format": "uri",
+              "description": "The URL of the verifiable recognition credential"
+            }
+          },
+          "required": ["recognizedIn"]
+        }
+      ]
+    },
+    "AcceptedEnvelope": {
       "type": "object",
       "description": "Specification of an accepted credential envelope format",
       "properties": {
