@@ -1016,7 +1016,7 @@ components:
           type: string
           description: The date and time (expressed as an XML Schema dateTimeStamp) that the exchange expires.
         variables:
-          $ref: "#/components/schemas/ExchangeVariables"
+          $ref: "#/components/schemas/CreateExchangeVariables"
         openId:
           $ref: "#/components/schemas/OpenIdExchangeConfig"
     ExchangeParticipationResponse:
@@ -1080,7 +1080,7 @@ components:
         lastError:
           $ref: "./components/ProblemDetails.yml#/components/schemas/ProblemDetails"
         variables:
-          $ref: "#/components/schemas/ExchangeVariables"
+          $ref: "#/components/schemas/GetExchangeVariables"
     WorkflowStep:
       type: object
       description: Object containing information about a workflow step.
@@ -1151,7 +1151,7 @@ components:
               variables:
                 oneOf:
                   - type: string
-                  - $ref: "#/components/schemas/ExchangeVariables"
+                  - $ref: "#/components/schemas/GetExchangeVariables"
             oneOf:
               - required:
                   - credentialTemplateId
@@ -1197,7 +1197,10 @@ components:
           description: The name of the next step in the sequence. Passing nextStep is OPTIONAL. This field MUST NOT be present on the final step configuration.
         openId:
           $ref: "#/components/schemas/OpenIdExchangeConfig"
-    ExchangeVariables:
+    CreateExchangeVariables:
+      type: object
+      description: Variables needed for creating an exchange.
+    GetExchangeVariables:
       type: object
       description: Variables needed for an exchange.
       properties:
