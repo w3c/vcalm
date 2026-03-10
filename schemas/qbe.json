@@ -163,10 +163,8 @@
       }
     },
     "AcceptedCryptosuite": {
-      "type": "object",
-      "description": "Specification of an accepted cryptographic suite",
-      "properties": {
-        "cryptosuite": {
+      "oneOf": [
+        {
           "type": "string",
           "description": "The name of the cryptographic suite",
           "examples": [
@@ -175,9 +173,25 @@
             "bbs-2023",
             "ecdsa-sd-2023"
           ]
+        },
+        {
+          "type": "object",
+          "description": "Specification of an accepted cryptographic suite",
+          "properties": {
+            "cryptosuite": {
+              "type": "string",
+              "description": "The name of the cryptographic suite",
+              "examples": [
+                "eddsa-rdfc-2022",
+                "ecdsa-rdfc-2019",
+                "bbs-2023",
+                "ecdsa-sd-2023"
+              ]
+            }
+          },
+          "required": ["cryptosuite"]
         }
-      },
-      "required": ["cryptosuite"]
+      ]
     },
     "AcceptedIssuer": {
       "oneOf": [
@@ -188,12 +202,24 @@
         },
         {
           "type": "object",
+          "description": "An accepted issuer identified by URL, such as a DID",
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uri",
+              "description": "The URL of the accepted issuer, such as a DID"
+            }
+          },
+          "required": ["id"]
+        },
+        {
+          "type": "object",
           "description": "A verifiable recognition credential reference that contains accepted issuers",
           "properties": {
             "recognizedIn": {
               "type": "string",
               "format": "uri",
-              "description": "The URL of the verifiable recognition credential"
+              "description": "The URL of the verifiable recognition credential that contains accepted issuers"
             }
           },
           "required": ["recognizedIn"]
@@ -201,10 +227,8 @@
       ]
     },
     "AcceptedEnvelope": {
-      "type": "object",
-      "description": "Specification of an accepted credential envelope format",
-      "properties": {
-        "mediaType": {
+      "oneOf": [
+        {
           "type": "string",
           "description": "The media type of the envelope format",
           "examples": [
@@ -213,9 +237,25 @@
             "application/vc+sd-jwt",
             "application/vc+cose"
           ]
+        },
+        {
+          "type": "object",
+          "description": "Specification of an accepted credential envelope format",
+          "properties": {
+            "mediaType": {
+              "type": "string",
+              "description": "The media type of the envelope format",
+              "examples": [
+                "application/mdoc",
+                "application/vc+jwt",
+                "application/vc+sd-jwt",
+                "application/vc+cose"
+              ]
+            }
+          },
+          "required": ["mediaType"]
         }
-      },
-      "required": ["mediaType"]
+      ]
     }
   }
 }
