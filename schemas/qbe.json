@@ -83,8 +83,7 @@
           },
           "minItems": 1
         }
-      },
-      "required": ["reason", "example"]
+      }
     },
     "CredentialExample": {
       "type": "object",
@@ -161,8 +160,7 @@
           ],
           "description": "The issuer of the credential"
         }
-      },
-      "required": ["@context", "type", "credentialSubject"]
+      }
     },
     "AcceptedCryptosuite": {
       "type": "object",
