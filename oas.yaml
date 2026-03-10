@@ -1332,7 +1332,7 @@ components:
         - required:
             - inviteRequest
         - required:
-            - vcalm
+            - vcapi
     InviteResponse:
       type: object
       description: Object for a continuation URL for an interaction, along with a purpose for a given interaction.
