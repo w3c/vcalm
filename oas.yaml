@@ -1151,7 +1151,7 @@ components:
               variables:
                 oneOf:
                   - type: string
-                  - $ref: "#/components/schemas/GetExchangeVariables"
+                  - $ref: "#/components/schemas/CreateExchangeVariables"
             oneOf:
               - required:
                   - credentialTemplateId
