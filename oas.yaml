@@ -301,22 +301,14 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - type: object
-                  properties:
-                    verifiablePresentationRequest:
-                      $ref: "./components/VerifiablePresentationRequest.yml#/components/schemas/VerifiablePresentationRequest"
-                - type: object
-                  properties:
-                    verifiablePresentation:
-                      $ref: "./components/VerifiablePresentation.yml#/components/schemas/VerifiablePresentation"
+              $ref: "#/components/schemas/ExchangeParticipationClientMessage"
       responses:
         "200":
           description: Exchange progressed.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExchangeParticipationResponse"
+                $ref: "#/components/schemas/ExchangeParticipationServerMessage"
         "400":
           description: Invalid input
         "401":
@@ -926,7 +918,7 @@ components:
           description: The ID that will be used for the created workflow. Passing an ID is OPTIONAL.
         initialStep:
           type: string
-          description: The step from the above set that the exchange starts on. Passing intialStep is REQUIRED.
+          description: The step from the above set that the exchange starts on. Passing initialStep is REQUIRED.
         controller:
           type: string
           description: An OPTIONAL property that specifies the root controller of the instance, which can be used by systems supporting authorization mechanisms like Authorization Capabilities (ZCAPs), which rely on object capabilities. This value can be used in conjunction with the <code>authorization</code> property to simultaneously allow other authorization mechanisms.
@@ -1019,23 +1011,63 @@ components:
           $ref: "#/components/schemas/CreateExchangeVariables"
         openId:
           $ref: "#/components/schemas/OpenIdExchangeConfig"
-    ExchangeParticipationResponse:
+    ExchangeParticipationClientMessage:
       type: object
-      description: Either what the exchange is expecting next or a result of the exchange.
+      description: A message from the client to the server during an exchange.
       oneOf:
         - type: object
+          description: An empty object to initiate the exchange or request what the exchange is expecting to complete the next step.
+          additionalProperties: false
+        - type: object
+          required:
+            - verifiablePresentationRequest
           properties:
             verifiablePresentationRequest:
               $ref: "./components/VerifiablePresentationRequest.yml#/components/schemas/VerifiablePresentationRequest"
+            referenceId:
+              type: string
+              description: When the server previously sent a referenceId, the client SHOULD include it here to aid debugging and message correlation. The value SHOULD be a urn:uuid value.
         - type: object
+          required:
+            - verifiablePresentation
           properties:
             verifiablePresentation:
               $ref: "./components/VerifiablePresentation.yml#/components/schemas/VerifiablePresentation"
+            referenceId:
+              type: string
+              description: When the server previously sent a referenceId, the client SHOULD include it here to aid debugging and message correlation. The value SHOULD be a urn:uuid value.
+    ExchangeParticipationServerMessage:
+      type: object
+      description: A message from the server to the client during an exchange.
+      oneOf:
         - type: object
+          required:
+            - verifiablePresentationRequest
+          properties:
+            verifiablePresentationRequest:
+              $ref: "./components/VerifiablePresentationRequest.yml#/components/schemas/VerifiablePresentationRequest"
+            referenceId:
+              type: string
+              description: An optional identifier to correlate exchange messages. A server MAY include this value; if present, the client SHOULD include it in its next message. The value SHOULD be a urn:uuid value.
+        - type: object
+          required:
+            - verifiablePresentation
+          properties:
+            verifiablePresentation:
+              $ref: "./components/VerifiablePresentation.yml#/components/schemas/VerifiablePresentation"
+            referenceId:
+              type: string
+              description: An optional identifier to correlate exchange messages. A server MAY include this value; if present, the client SHOULD include it in its next message. The value SHOULD be a urn:uuid value.
+        - type: object
+          required:
+            - redirectUrl
           properties:
             redirectUrl:
               type: string
               description: The URL the exchange wishes to redirect the client to.
+            referenceId:
+              type: string
+              description: An optional identifier to correlate exchange messages. A server MAY include this value; if present, the client SHOULD include it in its next message. The value SHOULD be a urn:uuid value.
     GetExchangeProtocolsResponse:
       type: object
       additionalProperties: false

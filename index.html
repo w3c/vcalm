@@ -2456,6 +2456,12 @@ links to resources from other domains to render a web page.
             If the x-componentTableLink isn't updated to match the corresponding Component Table link will break.-->
         <h4>Participate in an Exchange</h4>
         <p>
+A server MAY include a <code>referenceId</code> property in an exchange
+message. If the client receives a <code>referenceId</code>, it SHOULD
+include the same <code>referenceId</code> in its next message to the server.
+This aids in debugging and ensures that potentially delayed or misordered
+messages are linked to the correct request. The value of
+<code>referenceId</code> SHOULD be a <code>urn:uuid:</code> value.
         </p>
 
         <div class="api-detail"
