@@ -1017,6 +1017,7 @@ components:
       oneOf:
         - type: object
           description: An empty object to initiate the exchange or request what the exchange is expecting to complete the next step.
+          properties: {}
           additionalProperties: false
         - type: object
           required:
@@ -1079,7 +1080,11 @@ components:
               type: string
               description: An optional identifier to correlate exchange messages. A server MAY include this value; if present, the client SHOULD include it in its next message. The value SHOULD be a urn:uuid value.
         - type: object
-          description: An empty object indicating the server wishes to terminate the exchange.
+          description: An object empty of exchange continuation properties indicating the server wishes to terminate the exchange.
+          properties:
+            referenceId:
+              type: string
+              description: An optional identifier to correlate exchange messages. A server MAY include this value; if present, the client SHOULD include it in its next message, if there is a next message to send. The value SHOULD be a urn:uuid value.
           additionalProperties: false
     GetExchangeProtocolsResponse:
       type: object
