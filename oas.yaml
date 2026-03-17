@@ -1036,6 +1036,16 @@ components:
             referenceId:
               type: string
               description: When the server previously sent a referenceId, the client SHOULD include it here to aid debugging and message correlation. The value SHOULD be a urn:uuid value.
+        - type: object
+          required:
+            - redirectUrl
+          properties:
+            redirectUrl:
+              type: string
+              description: A client MAY send an interaction URL to the server as a redirectUrl, inviting the server to become the client for a different related exchange starting with that interaction URL. A server MAY engage with this redirectUrl.
+            referenceId:
+              type: string
+              description: When the server previously sent a referenceId, the client SHOULD include it here to aid debugging and message correlation. The value SHOULD be a urn:uuid value.
     ExchangeParticipationServerMessage:
       type: object
       description: A message from the server to the client during an exchange.
@@ -1068,6 +1078,9 @@ components:
             referenceId:
               type: string
               description: An optional identifier to correlate exchange messages. A server MAY include this value; if present, the client SHOULD include it in its next message. The value SHOULD be a urn:uuid value.
+        - type: object
+          description: An empty object indicating the server wishes to terminate the exchange.
+          additionalProperties: false
     GetExchangeProtocolsResponse:
       type: object
       additionalProperties: false
