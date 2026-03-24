@@ -863,34 +863,56 @@ a path within that domain (e.g., <code>website.example/api</code>).
         <section class="notoc">
           <h4>OAuth 2.0</h4>
           <p>
-  If the OAuth 2.0 Authorization Framework [[RFC6749]] is utilized for
-  authorization, the access tokens utilized by clients MAY be OAuth 2.0 Bearer
-  Tokens [[RFC6750]] or any other valid OAuth 2.0 token type. Any valid OAuth 2.0
-  grant type MAY be used to request the access tokens. However, OAuth 2.0 MUST be
-  implemented in the following way:
+If the OAuth 2.0 Authorization Framework [[RFC6749]] is used for authorization,
+the access tokens used by clients MAY be OAuth 2.0 Bearer Tokens [[RFC6750]] or
+any other valid OAuth 2.0 token type. Any valid OAuth 2.0 grant type MAY be used
+to request the access tokens.
+          </p>
+          <table class="simple">
+            <thead>
+              <th>VCALM OAuth 2.0 Scope Syntax</th>
+            </thead>
+            <tr>
+              <td style="font-family: monospace;">
+scope     = operation ":" path-absolute (defined in [[RFC3986]])<br>
+operation = "read" / "write"
+              </td>
+            </tr>
+          </table>
+          <p>
+The `read` operation enables operations that do not create or update resources
+in the system to be performed on the provided path, or any path containing the
+provided path as a prefix. The `write` operation enables operations that
+create and/or update resources in the system to be performed on the provided
+path, or any path containing the provided path as a prefix.
           </p>
           <p>
-  OAuth2 tokens for this purpose have an audience of the particular issuer
-  instance, e.g., `origin/issuers/zc612332f3`.
-          </p>
-          <p>
-  The scopes are generalized to read/write actions on particular endpoints, as
-  follows:
+Examples of OAuth 2.0 scopes are shown below:
           </p>
           <ul>
             <li>
-  `read:/` would allow reading on any API on a particular instance.
+`read:/` would allow reading via any API on any particular instance.
             </li>
             <li>
-  `write:/` would allow writing on any API on a particular instance.
+`write:/` would allow creation and modification via any API on any particular
+instance.
+            </li>
+            <li>
+`read:/issuers/z19oNgowF5rQkDPiajxdD1uTG/` would allow reading from any endpoint
+on the `z19oNgowF5rQkDPiajxdD1uTG` issuer instance.
+            </li>
+            <li>
+`write:/issuers/z19oNgowF5rQkDPiajxdD1uTG/credentials/issue` would allow writing
+on any API on a particular instance.
             </li>
           </ul>
-          <p>
-  `write:/credentials/issue` would only allow writing to that particular API.
-          </p>
-          <p>
-  Other authorization mechanisms that support delegation might be defined in the
-  future.
+
+          <p class="advisement" title="Avoid use of broad scopes">
+Broad OAuth 2.0 scopes such as `read:/` and `write:/` can lead to security
+vulnerabilities in multi-tenant environments, such as when multiple [=issuer
+coordinators=] might use different [=issuer=] [=instances=] hosted on the same
+[=issuer service=]. It is advised that OAuth 2.0 scopes are kept as narrow as
+possible without becoming overly burdensome to security administrators.
           </p>
         </section>
 
