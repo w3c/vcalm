@@ -71,6 +71,12 @@
         status: "WD",
         publisher: "OpenID Foundation"
       },
+      "VC-RECOGNITION": {
+        title: "Verifiable Credentials for Recognition v1.0",
+        href: "https://w3c-ccg.github.io/vc-recognition/",
+        status: "WD",
+        publisher: "OpenID Foundation"
+      }
     },
     xref: [
       "web-platform", "infra", "vc-data-model-2.0", "did", "vc-data-integrity"
@@ -1374,9 +1380,18 @@ including its <code>@context</code>, <code>type</code>, and optionally
           <tr>
             <td>acceptedIssuers</td>
             <td>
-An OPTIONAL array of objects specifying accepted [=issuers=] for the requested
-credential. Each object MAY contain an <code>issuer</code> property with a
-value that is an [=issuer=] identifier.
+An OPTIONAL array of items specifying accepted [=issuers=], or lists that
+contain accepted issuers, for the requested credential. Each item MUST be either
+1) a [=URL=] that identifies an [=issuer=] in the `issuer` property of the
+received [=verifiable credential=], or 2) an object containing a `type` property
+that is set to `VerifiableRecognitionCredential` and an `id` value that points
+to such a credential as defined in the [[[VC-RECOGNITION]]] specification;
+the list contains recognized issuers that are acceptable to the [=verifier=].
+Valid example values include:
+<ul>
+  <li><code>["did:web:blue-issuer.example", "https://red-issuer.example/"]</code></li>
+  <li><code>[{"id": "https://url.example/list.vc", "type": "VerifiableRecognitionCredential"}]</code></li>
+</ul>
             </td>
           </tr>
           <tr>
