@@ -1177,6 +1177,8 @@ components:
           description: An optional step directive that tells the exchange to handle challenge management via a VCALM verifier service it has a zcap for.
         verifiablePresentationRequest:
           $ref: "./components/VerifiablePresentationRequest.yml#/components/schemas/VerifiablePresentationRequest"
+        verifiablePresentation:
+          $ref: "./components/VerifiablePresentation.yml#/components/schemas/VerifiablePresentation"
         callback:
           type: object
           description: A callback that will be called after this step executes.

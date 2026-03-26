@@ -2243,6 +2243,19 @@ a DID Authentication step and a credential delivery step:
         </pre>
 
         <p>
+A step MAY inlcude a `verifiablePresentation` to explicitly express a
+Verifiable Presentation to be used in that step. This presentation could be
+composed via other variables in an exchange and can be augmented with any
+additional Verifiable Credentials that might be issued during the step (per
+`issueRequests`). This supports use cases where specific Verifiable
+Presentation versions are required, specific sub-types of Verifiable
+Presentations are required, or specific Verifiable Presentation contents are
+required, including previously out-of-band issued Verifiable Credentials that
+are to be delivered in the workflow step.
+        </p>
+
+
+        <p>
 Some workflows will need to reference custom variables in one or more
 of their steps. In this case, the coordinator will need
 to provide the appropriate value(s) for the variable(s) when it
