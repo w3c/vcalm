@@ -2157,6 +2157,23 @@ of an exchange. Here is a basic workflow configuration that contains
 a DID Authentication step and a credential delivery step:
         </p>
 
+        <p>
+A step that includes an `issueRequests` array contains one or more issue
+request objects. Each issue request object identifies a credential template
+to use, either by its identifier (`credentialTemplateId`) or by its
+zero-based index (`credentialTemplateIndex`) in the workflow's
+`credentialTemplates` array. An issue request object MAY also include a
+`variables` property to provide values to be used when evaluating the
+credential template. By default, the result of each issue request is included
+in the verifiable presentation that is sent to the exchange client in the same
+step. An issue request object MAY include an optional `result` property
+whose value is a string that identifies an exchange variable name where the
+result of the issue request is to be stored. This enables greater composition,
+as subsequent steps can reference the stored result, or the exchange can end
+and a party with access to the exchange state can obtain the result for use in
+another exchange or via some other mechanism.
+        </p>
+
         <pre class="example nohighlight" title="A Basic Workflow">
 {
   "id": "9fd3bc6d-4a04-4b3d-a983-3482d0586626",
@@ -3744,7 +3761,8 @@ list credential accordingly.
     "issue": {
       "issueRequests": [
         {
-          "credentialTemplateIndex": 0
+          "credentialTemplateIndex": 0,
+          "result": "issuedExampleNameCredentialResult"
         }
       ]
     }
