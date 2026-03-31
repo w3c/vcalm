@@ -1202,6 +1202,9 @@ components:
                 oneOf:
                   - type: string
                   - $ref: "#/components/schemas/CreateExchangeVariables"
+              result:
+                type: string
+                description: If present, identifies where the result of the issue request is to be stored. The value MUST be either the name of a top-level variable in the exchange's variables object or a JSON pointer to any variable within the exchange's variables object.
             oneOf:
               - required:
                   - credentialTemplateId
