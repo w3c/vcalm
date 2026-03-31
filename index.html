@@ -880,11 +880,11 @@ operation = "read" / "write"
             </tr>
           </table>
           <p>
-The `read` operation enables operations that do not create or update resources
-in the system to be performed on the provided path, or any path containing the
-provided path as a prefix. The `write` operation enables operations that
-create and/or update resources in the system to be performed on the provided
-path, or any path containing the provided path as a prefix.
+The `read` operation enables actions that do not create or update resources in
+the system to be performed on the provided path, or on any path containing the
+provided path as a prefix. The `write` operation enables actions that create
+and/or update resources in the system to be performed on the provided path, or
+on any path that contains the provided path as a prefix.
           </p>
           <p>
 Examples of OAuth 2.0 scopes are shown below:
@@ -898,7 +898,6 @@ Examples of OAuth 2.0 scopes are shown below:
 instance.
             </li>
             <li>
-`read:/issuers/z19oNgowF5rQkDPiajxdD1uTG/` would allow reading from any endpoint
 `read:/exchanges` would allow reading exchanges from any particular
 workflow instance.
             </li>
@@ -912,7 +911,7 @@ API on any particular issuer instance.
 Broad OAuth 2.0 scopes such as `read:/` and `write:/` can lead to security
 vulnerabilities in multi-tenant environments, such as when multiple [=issuer
 coordinators=] might use different [=issuer=] [=instances=] hosted on the same
-[=issuer service=]. It is advised that OAuth 2.0 scopes are kept as narrow as
+[=issuer service=]. It is advised that OAuth 2.0 scopes be kept as narrow as
 possible without becoming overly burdensome to security administrators.
           </p>
         </section>
