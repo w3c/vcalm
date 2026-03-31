@@ -198,7 +198,7 @@
         {
           "type": "string",
           "format": "uri",
-          "description": "A URL that identifies an accepted issuer, such as a DID",
+          "description": "A URL, such as a DID, that identifies an accepted issuer",
           "examples": [
             "did:web:red-issuer.example",
             "https://blue-issuer.example/"
