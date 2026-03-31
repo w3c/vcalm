@@ -198,31 +198,56 @@
         {
           "type": "string",
           "format": "uri",
-          "description": "The URL of an accepted issuer, such as a DID"
+          "description": "A URL that identifies an accepted issuer, such as a DID",
+          "examples": [
+            "did:web:red-issuer.example",
+            "https://blue-issuer.example/"
+          ]
         },
         {
           "type": "object",
-          "description": "An accepted issuer identified by URL, such as a DID",
+          "description": "An object identifying an accepted issuer by URL",
           "properties": {
             "id": {
               "type": "string",
               "format": "uri",
-              "description": "The URL of the accepted issuer, such as a DID"
+              "description": "A URL that identifies an accepted issuer, such as a DID"
             }
           },
-          "required": ["id"]
+          "required": ["id"],
+          "additionalProperties": false,
+          "examples": [
+            {"id": "did:web:green-issuer.example"}
+          ]
         },
         {
           "type": "object",
-          "description": "A verifiable recognition credential reference that contains accepted issuers",
+          "description": "A reference to a VerifiableRecognitionCredential whose list of recognized issuers is acceptable to the verifier",
           "properties": {
             "recognizedIn": {
-              "type": "string",
-              "format": "uri",
-              "description": "The URL of the verifiable recognition credential that contains accepted issuers"
+              "type": "object",
+              "description": "An object referencing a VerifiableRecognitionCredential",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "A URL pointing to the VerifiableRecognitionCredential"
+                },
+                "type": {
+                  "type": "string",
+                  "const": "VerifiableRecognitionCredential",
+                  "description": "The type of the recognition credential"
+                }
+              },
+              "required": ["id", "type"],
+              "additionalProperties": false
             }
           },
-          "required": ["recognizedIn"]
+          "required": ["recognizedIn"],
+          "additionalProperties": false,
+          "examples": [
+            {"recognizedIn": {"id": "https://url.example/list.vc", "type": "VerifiableRecognitionCredential"}}
+          ]
         }
       ]
     },
