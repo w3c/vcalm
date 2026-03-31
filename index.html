@@ -911,8 +911,12 @@ API on any particular issuer instance.
 Broad OAuth 2.0 scopes such as `read:/` and `write:/` can lead to security
 vulnerabilities in multi-tenant environments, such as when multiple [=issuer
 coordinators=] might use different [=issuer=] [=instances=] hosted on the same
-[=issuer service=]. It is advised that OAuth 2.0 scopes be kept as narrow as
-possible without becoming overly burdensome to security administrators.
+[=issuer service=]. Implementers are advised to ensure that access tokens
+expressed as JSON Web Tokens include an `aud` (audience) claim that identifies a
+specific instance for which the access token applies, allowing pinning an access
+token to a particular instance. It is advised that OAuth 2.0 scopes be kept as
+narrow as possible without becoming overly burdensome to security
+administrators.
           </p>
         </section>
 
