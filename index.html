@@ -72,7 +72,7 @@
         publisher: "OpenID Foundation"
       },
       "VC-RECOGNITION": {
-        title: "Verifiable Credentials for Recognition v1.0",
+        title: "Verifiable Credentials for Entity Recognition v1.0",
         href: "https://w3c-ccg.github.io/vc-recognition/",
         status: "WD",
         publisher: "OpenID Foundation"
@@ -1380,18 +1380,24 @@ including its <code>@context</code>, <code>type</code>, and optionally
           <tr>
             <td>acceptedIssuers</td>
             <td>
-An OPTIONAL array of items, or lists that contain items, that specify acceptable
-[=issuers=] for the requested credential. Each item MUST be either 1) a [=URL=]
-that identifies an [=issuer=] in the `issuer` property of the received
-[=verifiable credential=], or 2) an object containing a `type` property that is
-set to `VerifiableRecognitionCredential` and an `id` value that points to such
-a credential as defined in the [[[VC-RECOGNITION]]] specification. The items
-identify entities that the [=verifier=] recognizes and accepts as issuers of
-the [=verifiable credential=].
-Valid example values include:
+An OPTIONAL array of items, or lists that contain items, that identify entities
+that the [=verifier=] recognizes and accepts as issuers of the [=verifiable
+credential=]. Each item MUST be either 1) a [=URL=] that identifies an
+[=issuer=] in the `issuer` property of the received [=verifiable credential=],
+or 2) an object that contains an `id` property whose value is a [=URL=] that
+identifies an [=issuer=] in the `issuer` property of the received [=verifiable
+credential=], or 3) an object that contains a `recognizedIn` property that is
+associated with an object with a `type` property that is set to
+`VerifiableRecognitionCredential` and an `id` property with a [=URL=] value that
+points to such a credential as defined in the [[[VC-RECOGNITION]]]
+specification; the list contains recognized issuers that are acceptable to the
+[=verifier=]. Valid example values include:
+
 <ul>
-  <li><code>["did:web:blue-issuer.example", "https://red-issuer.example/"]</code></li>
-  <li><code>[{"id": "https://url.example/list.vc", "type": "VerifiableRecognitionCredential"}]</code></li>
+  <li>`did:web:red-issuer.example`</li>
+  <li>`https://blue-issuer.example/`</li>
+  <li>`{"id": "did:web:green-issuer.example"}`</li>
+  <li>`{"recognizedIn": {"id": "https://url.example/list.vc", "type": "VerifiableRecognitionCredential"}}`</li>
 </ul>
             </td>
           </tr>
