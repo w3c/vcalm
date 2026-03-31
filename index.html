@@ -1380,13 +1380,14 @@ including its <code>@context</code>, <code>type</code>, and optionally
           <tr>
             <td>acceptedIssuers</td>
             <td>
-An OPTIONAL array of items specifying accepted [=issuers=], or lists that
-contain accepted issuers, for the requested credential. Each item MUST be either
-1) a [=URL=] that identifies an [=issuer=] in the `issuer` property of the
-received [=verifiable credential=], or 2) an object containing a `type` property
-that is set to `VerifiableRecognitionCredential` and an `id` value that points
-to such a credential as defined in the [[[VC-RECOGNITION]]] specification;
-the list contains recognized issuers that are acceptable to the [=verifier=].
+An OPTIONAL array of items, or lists that contain items, that specify acceptable
+[=issuers=] for the requested credential. Each item MUST be either 1) a [=URL=]
+that identifies an [=issuer=] in the `issuer` property of the received
+[=verifiable credential=], or 2) an object containing a `type` property that is
+set to `VerifiableRecognitionCredential` and an `id` value that points to such
+a credential as defined in the [[[VC-RECOGNITION]]] specification. The items
+identify entities that the [=verifier=] recognizes and accepts as issuers of
+the [=verifiable credential=].
 Valid example values include:
 <ul>
   <li><code>["did:web:blue-issuer.example", "https://red-issuer.example/"]</code></li>
