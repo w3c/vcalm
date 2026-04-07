@@ -2294,6 +2294,22 @@ workflow step.
         </p>
 
         <p>
+A step MAY include a `redirectUrl` to specify a URL to send to the
+client that can be used to continue an interaction at another location.
+One use case for this is to send the user of an exchange client back to
+a coordinator website after an exchange has completed. Another use case
+is to return an <a>interaction URL</a> that allows a server to implement
+custom business rules during a continuing interaction without requiring
+the client to navigate to a web browser. For example, a first exchange
+could request information from a user and then return an
+<a>interaction URL</a> via `redirectUrl`. The client (e.g., a digital
+wallet) can determine that it is an <a>interaction URL</a> (the URL uses
+`?iuv=1`) and fetch it, causing the interaction server to run custom
+business logic and then returns a protocols object with another exchange
+to continue the interaction.
+        </p>
+
+        <p>
 Some workflows will need to reference custom variables in one or more
 of their steps. In this case, the coordinator will need
 to provide the appropriate value(s) for the variable(s) when it
