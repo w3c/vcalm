@@ -1,0 +1,286 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://w3c-ccg.github.io/vcalm/schemas/qbe.json",
+  "title": "QueryByExample Schema",
+  "description": "JSON Schema for QueryByExample queries used in Verifiable Presentation Requests",
+  "type": "object",
+  "properties": {
+    "verifiablePresentationRequest": {
+      "type": "object",
+      "description": "A request for a verifiable presentation",
+      "properties": {
+        "query": {
+          "type": "array",
+          "description": "A set of one or more queries sent by the verifier",
+          "items": {
+            "$ref": "#/$defs/Query"
+          },
+          "minItems": 1
+        },
+        "challenge": {
+          "type": "string",
+          "description": "A challenge, intended to prevent replay attacks, provided by the verifier"
+        },
+        "domain": {
+          "type": "string",
+          "description": "A domain, intended to prevent replay attacks, provided by the verifier and checked by the holder"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "Query": {
+      "type": "object",
+      "description": "A query object for requesting credentials",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of the query",
+          "const": "QueryByExample"
+        },
+        "credentialQuery": {
+          "$ref": "#/$defs/CredentialQuery"
+        },
+        "group": {
+          "type": "string",
+          "description": "Optional group identifier for logical AND/OR operations across queries"
+        }
+      },
+      "required": ["type", "credentialQuery"]
+    },
+    "CredentialQuery": {
+      "type": "object",
+      "description": "Detailed query parameters for requesting specific credentials",
+      "properties": {
+        "reason": {
+          "type": "string",
+          "description": "Human-readable reason for requesting this credential that is shown to a holder by their software"
+        },
+        "example": {
+          "$ref": "#/$defs/CredentialExample"
+        },
+        "acceptedIssuers": {
+          "type": "array",
+          "description": "List of accepted issuer DIDs or verifiable recognition credentials.",
+          "items": {
+            "$ref": "#/$defs/AcceptedIssuer"
+          },
+          "minItems": 1
+        },
+        "acceptedCryptosuites": {
+          "type": "array",
+          "description": "List of accepted cryptographic suites for credential proofs",
+          "items": {
+            "$ref": "#/$defs/AcceptedCryptosuite"
+          },
+          "minItems": 1
+        },
+        "acceptedEnvelopes": {
+          "type": "array",
+          "description": "List of accepted envelope formats for credentials",
+          "items": {
+            "$ref": "#/$defs/AcceptedEnvelope"
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "CredentialExample": {
+      "type": "object",
+      "description": "An example credential template showing the structure and types expected",
+      "properties": {
+        "@context": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  {
+                    "type": "object"
+                  }
+                ]
+              },
+              "minItems": 1
+            }
+          ],
+          "description": "The JSON-LD context for the credential"
+        },
+        "type": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1
+            }
+          ],
+          "description": "The type(s) of the credential being requested"
+        },
+        "credentialSubject": {
+          "type": "object",
+          "description": "Properties that the credential subject should have",
+          "properties": {
+            "type": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              ],
+              "description": "The type(s) of the credential subject"
+            }
+          }
+        },
+        "issuer": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "uri"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "description": "The issuer of the credential"
+        }
+      }
+    },
+    "AcceptedCryptosuite": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "The name of the cryptographic suite",
+          "examples": [
+            "eddsa-rdfc-2022",
+            "ecdsa-rdfc-2019",
+            "bbs-2023",
+            "ecdsa-sd-2023"
+          ]
+        },
+        {
+          "type": "object",
+          "description": "Specification of an accepted cryptographic suite",
+          "properties": {
+            "cryptosuite": {
+              "type": "string",
+              "description": "The name of the cryptographic suite",
+              "examples": [
+                "eddsa-rdfc-2022",
+                "ecdsa-rdfc-2019",
+                "bbs-2023",
+                "ecdsa-sd-2023"
+              ]
+            }
+          },
+          "required": ["cryptosuite"]
+        }
+      ]
+    },
+    "AcceptedIssuer": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "uri",
+          "description": "A URL, such as a DID, that identifies an accepted issuer",
+          "examples": [
+            "did:web:red-issuer.example",
+            "https://blue-issuer.example/"
+          ]
+        },
+        {
+          "type": "object",
+          "description": "An object identifying an accepted issuer by URL",
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uri",
+              "description": "A URL that identifies an accepted issuer, such as a DID"
+            }
+          },
+          "required": ["id"],
+          "additionalProperties": false,
+          "examples": [
+            {"id": "did:web:green-issuer.example"}
+          ]
+        },
+        {
+          "type": "object",
+          "description": "A reference to a VerifiableRecognitionCredential whose list of recognized issuers is acceptable to the verifier",
+          "properties": {
+            "recognizedIn": {
+              "type": "object",
+              "description": "An object referencing a VerifiableRecognitionCredential",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "A URL pointing to the VerifiableRecognitionCredential"
+                },
+                "type": {
+                  "type": "string",
+                  "const": "VerifiableRecognitionCredential",
+                  "description": "The type of the recognition credential"
+                }
+              },
+              "required": ["id", "type"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["recognizedIn"],
+          "additionalProperties": false,
+          "examples": [
+            {"recognizedIn": {"id": "https://url.example/list.vc", "type": "VerifiableRecognitionCredential"}}
+          ]
+        }
+      ]
+    },
+    "AcceptedEnvelope": {
+      "oneOf": [
+        {
+          "type": "string",
+          "description": "The media type of the envelope format",
+          "examples": [
+            "application/mdoc",
+            "application/vc+jwt",
+            "application/vc+sd-jwt",
+            "application/vc+cose"
+          ]
+        },
+        {
+          "type": "object",
+          "description": "Specification of an accepted credential envelope format",
+          "properties": {
+            "mediaType": {
+              "type": "string",
+              "description": "The media type of the envelope format",
+              "examples": [
+                "application/mdoc",
+                "application/vc+jwt",
+                "application/vc+sd-jwt",
+                "application/vc+cose"
+              ]
+            }
+          },
+          "required": ["mediaType"]
+        }
+      ]
+    }
+  }
+}
