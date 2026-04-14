@@ -1278,7 +1278,7 @@ the [=verifier=].
           <h4>Converting QueryByExample to JSON Pointers</h4>
 
           <p>
-When implementing [=selective disclosure=] features, it is often necessary to
+When implementing [=selective disclosure=] features, it is necessary to
 convert a QueryByExample `example` object into a list of JSON pointers that
 specify which fields should be revealed. The following algorithm provides a
 standardized way to perform this conversion:
@@ -1378,7 +1378,7 @@ FUNCTION prune_shallow_pointers(pointers):
   FOR EACH pointer IN pointers:
     is_deep = true
     FOR EACH p IN pointers:
-      IF length(pointer) < length(p) AND p starts with pointer:
+      IF length(pointer) &lt; length(p) AND p starts with pointer:
         is_deep = false
         BREAK
       END IF
