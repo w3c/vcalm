@@ -3765,6 +3765,25 @@ that list), and the new status value. The status service updates the status
 list credential accordingly.
       </p>
 
+      <p>
+Status mechanisms associate each [=verifiable credential=] with a
+<code>statusListIndex</code> in a list (see, for example, [[VC-BITSTRING-STATUS-LIST]]).
+Implementations that assign those indices usually track which values are in use so
+indices are not reused incorrectly and status updates modify the correct entry. When a
+status service supports more than one such tracker—such as separate allocators per
+tenant, deployment, or <code>statusPurpose</code>—the optional <code>indexAllocator</code>
+request field names which allocator context applies to this update. The same identifier
+would typically have been fixed or returned when the index was originally assigned at
+issuance (or when the list was provisioned), so issuance and status-update flows stay
+consistent even though list creation and credential issuance are separate API surfaces
+in this specification.
+      </p>
+
+      <p class="note" title="indexAllocator values">
+Permitted <code>indexAllocator</code> strings are implementation-defined; this
+specification does not mandate particular values or a discovery mechanism for them.
+      </p>
+
       <div class="api-detail"
         data-api-endpoint="post /credentials/status"></div>
     </section>
