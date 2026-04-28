@@ -3766,6 +3766,19 @@ list credential accordingly.
       </p>
 
       <p>
+Issuer instances are responsible for assigning one or more status entries to
+the Verifiable Credentials they issue. Issuer software is expected to ensure
+that it does not overallocate or misallocate status metadata (e.g., status
+lists or list indexes), as this overallocated, misallocated, or unused
+information can create privacy harms both to holders and issuers of Verifiable
+Credentials. In architectures that are highly available, horizontally scalable,
+or distributed, or any combination of these, this can can be especially
+challenging unless status allocation state is appropriately shared, identified,
+and referenced across disparate components. The `indexAllocator` field can be
+used to identify and refer to shared state, allowing for better coordination
+as well as atomic allocation and use of status metadata.
+      </p>
+      <p>
 Status mechanisms associate each [=verifiable credential=] with a
 <code>statusListIndex</code> in a list (see, for example, the [[[VC-BITSTRING-STATUS-LIST]]] specification).
 Implementations that assign those indices usually track which values are in use so
