@@ -840,7 +840,7 @@ components:
             internal bookkeeping (free lists, counters, per-tenant pools, etc.) so indices are
             not double-assigned and updates target the correct row. When multiple allocators
             exist—for example, separate pipelines per tenant, environment, or
-            `statusPurpose`—`indexAllocator` tells the service which registry or policy to
+            `statusPurpose` — `indexAllocator` tells the service which registry or policy to
             consult or update alongside `credentialId` and `credentialStatus`. Omission is
             allowed when the implementation infers a single default allocator or when
             `credentialStatus` already fully identifies the list entry. Allowed values are
