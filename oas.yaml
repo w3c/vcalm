@@ -873,16 +873,15 @@ components:
           "id": "https://issuer.example.com/credentials/status/lists/abc123",
           "verifiableCredential": {
             "@context": [
-              "https://www.w3.org/ns/credentials/v2",
-              "https://w3id.org/vc/status-list/2021/v1"
+              "https://www.w3.org/ns/credentials/v2"
             ],
             "id": "https://issuer.example.com/credentials/status/lists/abc123",
-            "type": ["VerifiableCredential", "StatusList2021Credential"],
+            "type": ["VerifiableCredential", "BitstringStatusListCredential"],
             "issuer": "did:example:issuer",
             "validFrom": "2024-01-01T00:00:00Z",
             "credentialSubject": {
               "id": "https://issuer.example.com/credentials/status/lists/abc123#list",
-              "type": "StatusList2021",
+              "type": "BitstringStatusList",
               "statusPurpose": "revocation",
               "encodedList": "H4sIAAAAAAAAA-3BMQEAAADCoPVPbQwfoAAAAACAP2A1AQAAZQAAAIA..."
             },
