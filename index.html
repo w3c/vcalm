@@ -3849,9 +3849,8 @@ list credential accordingly.
       <p>
 This first example has multiple steps, includes verification and issuance, supports both ZCAP and OAuth2 authorization, shows
 reuse of a credential template both with and without custom variables, and has a presentation schema check.
-It should be noted that this example currently uses VC1.0.
+The example uses Verifiable Credentials Data Model 2.0 (<code>validFrom</code>, <code>https://www.w3.org/ns/credentials/v2</code>).
       </p>
-      <span class="issue">This first example should be updated to use VC2.0</span>
       <pre class="example nohighlight" title="Example Workflow 1">
 {
   "id": "https://localhost:18443/workflows/z19mYrRgRuwN9PnezmhoJhBoV",
@@ -3862,7 +3861,7 @@ It should be noted that this example currently uses VC1.0.
     {
       "id": "urn:credential-template-1",
       "type": "jsonata",
-      "template": "\n  {\n    \"@context\": [\n      \"https://www.w3.org/2018/credentials/v1\",\n      'https://www.w3.org/2018/credentials/examples/v1'\n    ],\n    \"id\": credentialId,\n    \"type\": [\n      \"VerifiableCredential\",\n      \"UniversityDegreeCredential\"\n    ],\n    \"issuanceDate\": issuanceDate,\n    \"credentialSubject\": {\n      \"id\": results.verify.did,\n      \"degree\": {\n        \"type\": \"BachelorDegree\",\n        \"name\": \"Bachelor of Science and Arts\"\n      }\n    }\n  }\n"
+      "template": "\n  {\n    \"@context\": [\n      \"https://www.w3.org/ns/credentials/v2\",\n      'https://www.w3.org/ns/credentials/examples/v2'\n    ],\n    \"id\": credentialId,\n    \"type\": [\n      \"VerifiableCredential\",\n      \"UniversityDegreeCredential\"\n    ],\n    \"validFrom\": validFrom,\n    \"credentialSubject\": {\n      \"id\": results.verify.did,\n      \"degree\": {\n        \"type\": \"BachelorDegree\",\n        \"name\": \"Bachelor of Science and Arts\"\n      }\n    }\n  }\n"
     }
   ],
   "steps": {
@@ -3885,8 +3884,8 @@ It should be noted that this example currently uses VC1.0.
                 "reason": "We require a verifiable credential to pass this test",
                 "example": {
                   "@context": [
-                    "https://www.w3.org/2018/credentials/v1",
-                    "https://www.w3.org/2018/credentials/examples/v1"
+                    "https://www.w3.org/ns/credentials/v2",
+                    "https://www.w3.org/ns/credentials/examples/v2"
                   ],
                   "type": "UniversityDegreeCredential"
                 }
@@ -3944,10 +3943,10 @@ It should be noted that this example currently uses VC1.0.
                       "type": "array",
                       "items": [
                         {
-                          "const": "https://www.w3.org/2018/credentials/v1"
+                          "const": "https://www.w3.org/ns/credentials/v2"
                         },
                         {
-                          "const": "https://www.w3.org/2018/credentials/examples/v1"
+                          "const": "https://www.w3.org/ns/credentials/examples/v2"
                         }
                       ]
                     },
@@ -3968,7 +3967,7 @@ It should be noted that this example currently uses VC1.0.
                         }
                       ]
                     },
-                    "issuanceDate": {
+                    "validFrom": {
                       "type": "string"
                     },
                     "credentialSubject": {
@@ -4029,10 +4028,10 @@ It should be noted that this example currently uses VC1.0.
                         "type": "array",
                         "items": [
                           {
-                            "const": "https://www.w3.org/2018/credentials/v1"
+                            "const": "https://www.w3.org/ns/credentials/v2"
                           },
                           {
-                            "const": "https://www.w3.org/2018/credentials/examples/v1"
+                            "const": "https://www.w3.org/ns/credentials/examples/v2"
                           }
                         ]
                       },
@@ -4053,7 +4052,7 @@ It should be noted that this example currently uses VC1.0.
                           }
                         ]
                       },
-                      "issuanceDate": {
+                      "validFrom": {
                         "type": "string"
                       },
                       "credentialSubject": {
@@ -4113,7 +4112,7 @@ It should be noted that this example currently uses VC1.0.
           "credentialTemplateId": "urn:credential-template-1",
           "variables": {
             "credentialId": "urn:different",
-            "issuanceDate": "2024-01-01T00:00:00Z",
+            "validFrom": "2024-01-01T00:00:00Z",
             "results": {
               "verify": {
                 "did": "did:example:1"
