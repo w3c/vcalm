@@ -55,7 +55,7 @@ presentation of certain scenarios commonly encountered in API definitions,
 especially when dealing with `nullable` parameters or properties.
 
 Contributions to this repository should take place via [pull
-requests](https://github.com/w3c-ccg/vcalm/pulls), and should generally
+requests](https://github.com/w3c/vcalm/pulls), and should generally
 reference an issue and related discussion around the topic
 
 ## Best Practices
