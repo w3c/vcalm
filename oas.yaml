@@ -11,7 +11,7 @@ info:
     url: http://www.w3.org/Consortium/Legal/copyright-software.
   contact:
     name: GitHub Source Code
-    url: https://github.com/w3c-ccg/vcalm
+    url: https://github.com/w3c/vcalm
 paths:
   /credentials/issue:
     post:

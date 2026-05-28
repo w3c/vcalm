@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://w3c-ccg.github.io/vcalm/schemas/qbe.json",
+  "$id": "https://w3c.github.io/vcalm/schemas/qbe.json",
   "title": "QueryByExample Schema",
   "description": "JSON Schema for QueryByExample queries used in Verifiable Presentation Requests",
   "type": "object",
