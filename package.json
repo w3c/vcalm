@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/w3c-ccg/vcalm.git"
+    "url": "git+https://github.com/w3c/vcalm.git"
   },
   "keywords": [
     "VC",
@@ -20,9 +20,9 @@
   "author": "public-credentials@w3.org",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/w3c-ccg/vcalm/issues"
+    "url": "https://github.com/w3c/vcalm/issues"
   },
-  "homepage": "https://github.com/w3c-ccg/vcalm#readme",
+  "homepage": "https://github.com/w3c/vcalm#readme",
   "devDependencies": {
     "@redocly/cli": "^1.0.0-beta.102",
     "eslint": "^8.26.0",
