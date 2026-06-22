@@ -1424,7 +1424,9 @@ An OPTIONAL array specifying which cryptographic proof suites the [=verifier=]
 will accept. Each element SHOULD be an object with a <code>cryptosuite</code>
 property; however, for backwards compatibility, string values are also accepted
 and interpreted as the cryptosuite name for a Data Integrity proof. This enables
-the [=holder=] to select an appropriate proof format. Valid example values include:
+the [=holder=] to select an appropriate proof format. The presence of this property
+SHOULD be mutually exclusive with that of <code>acceptedEnvelopes</code>,
+which is only applicable to enveloped credentials. Valid example values include:
 <ul>
   <li><code>[{"cryptosuite": "eddsa-rdfc-2022"}, {"cryptosuite": "ecdsa-rdfc-2019"}]</code></li>
   <li><code>[{"cryptosuite": "bbs-2023"}, {"cryptosuite": "ecdsa-sd-2023"}]</code></li>
@@ -1439,7 +1441,9 @@ accept. Each element SHOULD be an object with a <code>mediaType</code> property;
 however, for backwards compatibility, string values are also accepted and
 interpreted as the media type for the envelope. This enables the [=holder=] to
 provide credentials in formats other than the default Data Integrity format.
-Valid example values include:
+The presence of this property SHOULD be mutually exclusive with that of
+<code>acceptedCryptosuites</code>, which is only applicable to JSON-LD credentials
+signed with a Data Integrity cryptosuite. Valid example values include:
 <ul>
   <li><code>[{"mediaType": "application/jwt"}]</code></li>
   <li><code>[{"mediaType": "application/vc+sd-jwt"}]</code></li>

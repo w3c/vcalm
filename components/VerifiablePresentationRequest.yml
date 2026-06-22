@@ -47,7 +47,7 @@ components:
                           type: string
                   "acceptedCryptosuites":
                     type: array
-                    description: Cryptographic proof suites the verifier will accept. Each element SHOULD be an object with a `cryptosuite` property; however, for backwards compatibility, string values are also accepted and interpreted as the cryptosuite name for a Data Integrity proof.
+                    description: Cryptographic proof suites the verifier will accept. Each element SHOULD be an object with a <code>cryptosuite</code> property; however, for backwards compatibility, string values are also accepted and interpreted as the cryptosuite name for a Data Integrity proof. This enables the holder to select an appropriate proof format. The presence of this property SHOULD be mutually exclusive with that of <code>acceptedEnvelopes</code>, which is only applicable to enveloped credentials.
                     items:
                       oneOf:
                         - type: string
@@ -61,7 +61,7 @@ components:
                           example: [{"cryptosuite": "eddsa-rdfc-2022"}, {"cryptosuite": "bbs-2023"}, {"cryptosuite": "ecdsa-sd-2023"}]
                   "acceptedEnvelopes":
                     type: array
-                    description: Envelope formats the verifier will accept. Each element SHOULD be an object with a `mediaType` property; however, for backwards compatibility, string values are also accepted and interpreted as the media type for the envelope.
+                    description: Envelope formats the verifier will accept. Each element SHOULD be an object with a <code>mediaType</code> property; however, for backwards compatibility, string values are also accepted and interpreted as the media type for the envelope. This enables the holder to provide credentials in formats other than the default Data Integrity format. The presence of this property SHOULD be mutually exclusive with that of <code>acceptedCryptosuites</code>, which is only applicable to JSON-LD credentials signed with a Data Integrity cryptosuite.
                     items:
                       oneOf:
                         - type: string
