@@ -1398,13 +1398,13 @@ including its <code>@context</code>, <code>type</code>, and optionally
             <td>
 An OPTIONAL array of items, or lists that contain items, that identify entities
 that the [=verifier=] recognizes and accepts as issuers of the [=verifiable
-credential=]. Each item MUST be either 1) a [=URL=] that identifies an
+credential=]. Each item MUST be either 1) a [[URL]] that identifies an
 [=issuer=] in the `issuer` property of the received [=verifiable credential=],
-or 2) an object that contains an `id` property whose value is a [=URL=] that
+or 2) an object that contains an `id` property whose value is a [[URL]] that
 identifies an [=issuer=] in the `issuer` property of the received [=verifiable
 credential=], or 3) an object that contains a `recognizedIn` property that is
 associated with an object with a `type` property that is set to
-`VerifiableRecognitionCredential` and an `id` property with a [=URL=] value that
+`VerifiableRecognitionCredential` and an `id` property with a [[URL]] value that
 points to such a credential as defined in the [[[VC-RECOGNITION]]]
 specification; the list contains recognized issuers that are acceptable to the
 [=verifier=]. Valid example values include:
