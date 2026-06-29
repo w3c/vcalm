@@ -1422,10 +1422,10 @@ specification; the list contains recognized issuers that are acceptable to the
             <td>
 An OPTIONAL array specifying which cryptographic proof suites the [=verifier=]
 will accept. Each element SHOULD be an object with a <code>cryptosuite</code>
-property; however, for backwards compatibility, string values are also accepted
-and interpreted as the cryptosuite name for a Data Integrity proof. This enables
-the [=holder=] to select an appropriate proof format. The presence of this property
-SHOULD be mutually exclusive with that of <code>acceptedEnvelopes</code>,
+property referencing a Data Integrity cryptosuite name or <code>Ed25519Signature2020</code>.
+However, for backwards compatibility, string values are also accepted and
+interpreted as the cryptosuite name. This enables the [=holder=] to select an
+appropriate proof format. This property MAY be used independently of <code>acceptedEnvelopes</code>,
 which is only applicable to enveloped credentials. Valid example values include:
 <ul>
   <li><code>[{"cryptosuite": "eddsa-rdfc-2022"}, {"cryptosuite": "ecdsa-rdfc-2019"}]</code></li>
@@ -1437,13 +1437,14 @@ which is only applicable to enveloped credentials. Valid example values include:
             <td>acceptedEnvelopes</td>
             <td>
 An OPTIONAL array specifying which envelope formats the [=verifier=] will
-accept. Each element SHOULD be an object with a <code>mediaType</code> property;
-however, for backwards compatibility, string values are also accepted and
-interpreted as the media type for the envelope. This enables the [=holder=] to
+accept. Each element SHOULD be an object with a <code>mediaType</code>
+property referencing the media type for the envelope.
+However, for backwards compatibility, string values are also accepted and
+interpreted as the media type. This enables the [=holder=] to
 provide credentials in formats other than the default Data Integrity format.
-The presence of this property SHOULD be mutually exclusive with that of
-<code>acceptedCryptosuites</code>, which is only applicable to JSON-LD credentials
-signed with a Data Integrity cryptosuite. Valid example values include:
+This property MAY be used independently of <code>acceptedCryptosuites</code>,
+which is only applicable to JSON-LD credentials
+signed with an acceptable cryptosuite. Valid example values include:
 <ul>
   <li><code>[{"mediaType": "application/jwt"}]</code></li>
   <li><code>[{"mediaType": "application/vc+sd-jwt"}]</code></li>

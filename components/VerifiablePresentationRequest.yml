@@ -47,21 +47,21 @@ components:
                           type: string
                   "acceptedCryptosuites":
                     type: array
-                    description: Cryptographic proof suites the verifier will accept. Each element SHOULD be an object with a <code>cryptosuite</code> property; however, for backwards compatibility, string values are also accepted and interpreted as the cryptosuite name for a Data Integrity proof. This enables the holder to select an appropriate proof format. The presence of this property SHOULD be mutually exclusive with that of <code>acceptedEnvelopes</code>, which is only applicable to enveloped credentials.
+                    description: Cryptographic proof suites the verifier will accept. Each element SHOULD be an object with a <code>cryptosuite</code> property referencing a Data Integrity cryptosuite name or <code>Ed25519Signature2020</code>. However, for backwards compatibility, string values are also accepted and interpreted as the cryptosuite name. This enables the holder to select an appropriate proof format. This property MAY be used independently of <code>acceptedEnvelopes</code>, which is only applicable to enveloped credentials.
                     items:
                       oneOf:
                         - type: string
                           description: A cryptosuite name (shorthand for an object with cryptosuite).
-                          example: ["eddsa-rdfc-2022", "bbs-2023", "ecdsa-sd-2023"]
+                          example: ["eddsa-rdfc-2022", "bbs-2023", "ecdsa-sd-2023", "Ed25519Signature2020"]
                         - type: object
                           properties:
                             "cryptosuite":
                               type: string
                               description: The name of the cryptosuite.
-                          example: [{"cryptosuite": "eddsa-rdfc-2022"}, {"cryptosuite": "bbs-2023"}, {"cryptosuite": "ecdsa-sd-2023"}]
+                          example: [{"cryptosuite": "eddsa-rdfc-2022"}, {"cryptosuite": "bbs-2023"}, {"cryptosuite": "ecdsa-sd-2023"}, {"cryptosuite": "Ed25519Signature2020"}]
                   "acceptedEnvelopes":
                     type: array
-                    description: Envelope formats the verifier will accept. Each element SHOULD be an object with a <code>mediaType</code> property; however, for backwards compatibility, string values are also accepted and interpreted as the media type for the envelope. This enables the holder to provide credentials in formats other than the default Data Integrity format. The presence of this property SHOULD be mutually exclusive with that of <code>acceptedCryptosuites</code>, which is only applicable to JSON-LD credentials signed with a Data Integrity cryptosuite.
+                    description: Envelope formats the verifier will accept. Each element SHOULD be an object with a <code>mediaType</code> property referencing the media type for the envelope. However, for backwards compatibility, string values are also accepted and interpreted as the media type. This enables the holder to provide credentials in formats other than the default Data Integrity format. This property MAY be used independently of <code>acceptedCryptosuites</code>, which is only applicable to JSON-LD credentials signed with an acceptable cryptosuite.
                     items:
                       oneOf:
                         - type: string
