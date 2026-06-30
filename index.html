@@ -882,27 +882,28 @@ provided path as a prefix. The `write` operation enables actions that create
 and/or update resources in the system to be performed on the provided path, or
 on any path that contains the provided path as a prefix. In order to enforce the
 principle of least privilege, implementers SHOULD apply the following best practices:
-<ol>
-  <li>
+          </p>
+          <ol>
+            <li>
 Ensure that access tokens expressed as JSON Web Tokens include an `aud` (audience)
 claim that identifies a specific instance for which the access token applies,
 allowing the token to be pinned to a particular instance. For multi-tenant deployments,
 this SHOULD include the component instance of interest.
 Example `aud` value: `https://vcalm-instances.example.com/issuers/b77c9b57-c321-4d14-902c-8f442a37707d`.
-  </li>
-  <li>
+            </li>
+            <li>
 Include the entire API path (excluding the domain and component instance, which are captured in `aud`)
 in the scopes configured for the OAuth 2.0 issuer (see examples below).
-  </li>
-  <li>
+            </li>
+            <li>
 Refer to Section [[[#component-overview]]] to determine which scopes to include in
-access tokens distributed to clients, based on the HTTP verb
-(e.g., `GET` -> `read`, `POST` -> `write`) and the expected caller.
-  </li>
-</ol>
-          </p>
+access tokens distributed to clients, based on the HTTP method
+(e.g., `GET` -> `read`, `POST` -> `write`) and the expected caller
+of the API endpoint of interest.
+            </li>
+          </ol>
           <p>
-Examples of OAuth 2.0 scopes are shown below:
+Examples of valid OAuth 2.0 scopes are shown below:
           </p>
           <ul>
             <li>
