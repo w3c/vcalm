@@ -76,6 +76,12 @@
         href: "https://www.w3.org/TR/vc-recognized-entities/",
         status: "WD",
         publisher: "W3C"
+      },
+      "ZCAP": {
+        title: "Authorization Capabilities for Linked Data v0.3",
+        href: "https://w3c-ccg.github.io/zcap-spec/",
+        status: "WD",
+        publisher: "W3C Credentials Community Group"
       }
     },
     xref: [
@@ -854,6 +860,148 @@ a path within that domain (e.g., <code>website.example/api</code>).
   in those requests. An example of such a forbidden protocol is HTTP Basic
   Authentication [[RFC7617]].
           </p>
+        </section>
+
+        <section class="notoc">
+          <h4>Authorization Capabilities</h4>
+          <p>
+If Authorization Capabilities (zcaps) are used for authorization,
+the administrator SHOULD delegate a zcap with the appropriate
+format as defined in [[[ZCAP]]] and as required for the use case.
+This includes appropriate values for the controller, invocation target,
+and allowed actions, among other important properties.
+          </p>
+          <pre class="example nohighlight" title="VCALM Delegated Capability">
+{
+  "@context": [
+    "https://w3id.org/zcap/v1",
+    "https://w3id.org/security/suites/ed25519-2020/v1"
+  ],
+  "id": "urn:uuid:cdc77118-6bfa-11ec-aceb-10bf48838a41",
+  "parentCapability": "urn:zcap:root:https%3A%2F%2Fvcalm-instances.example.com%2Fissuers%2Fb77c9b57-c321-4d14-902c-8f442a37707d%2Fworkflows%2Fa6513552-8e5a-4efa-b36e-1fb2a8e06822%2Fexchanges",
+  "controller": "did:key:z6MknBxrctS4KsfiBsEaXsfnrnfNYTvDjVpLYYUAN6PX2EfG",
+  "invocationTarget": "https://vcalm-instances.example.com/issuers/b77c9b57-c321-4d14-902c-8f442a37707d/workflows/a6513552-8e5a-4efa-b36e-1fb2a8e06822/exchanges",
+  "expires": "2027-06-30T16:45:73Z",
+  "allowedAction": [
+    "write",
+    "read"
+  ],
+  "proof": {
+    "type": "Ed25519Signature2020",
+    "created": "2026-06-30T16:45:73Z",
+    "verificationMethod": "did:key:z6MkfWKcvBiKCfNgz5UUGseNt37t4dguEvFgJ9XvX2UV6zB9#z6MkfWKcvBiKCfNgz5UUGseNt37t4dguEvFgJ9XvX2UV6zB9",
+    "proofPurpose": "capabilityDelegation",
+    "capabilityChain": [
+      "urn:zcap:root:https%3A%2F%2Fvcalm-instances.example.com%2Fissuers%2Fb77c9b57-c321-4d14-902c-8f442a37707d%2Fworkflows%2Fa6513552-8e5a-4efa-b36e-1fb2a8e06822%2Fexchanges"
+    ],
+    "proofValue": "z3t9BCQyF21MDVYmLKc9zbLreqx4wBtQnUsd5aqyoWS5FfhapRz7QjPNLcgKAornUVmJR4ZjbGpuxRFnffxX1ZjtF"
+  }
+}
+          </pre>
+          <p>
+The `read` action enables operations that do not create or update resources in
+the system to be performed on the provided path, or on any path containing the
+provided path as a prefix, as permitted by `invocationTarget` and `allowedAction`
+in the zcap. The `write` action enables operations that create and/or update
+resources in the system to be performed on the provided path, or on any path
+that contains the provided path as a prefix, as permitted by `invocationTarget`
+and `allowedAction` in the zcap. In order to enforce the principle of
+least privilege, implementers SHOULD apply the following best practices:
+          </p>
+          <ol>
+            <li>
+Ensure that zcaps identify a specific URL that references resources via the `invocationTarget` property
+and the client that is authorized to access those resources via the `controller` property.
+This enables the zcap to be pinned to a particular client and server (along with its resources).
+Example `invocationTarget` value: `https://vcalm-instances.example.com/issuers/b77c9b57-c321-4d14-902c-8f442a37707d/workflows/a6513552-8e5a-4efa-b36e-1fb2a8e06822`.
+Example `controller` value: `did:key:z6MknBxrctS4KsfiBsEaXsfnrnfNYTvDjVpLYYUAN6PX2EfG`.
+            </li>
+            <li>
+Refer to Section [[[#component-overview]]] to determine which `invocationTarget`
+and `allowedAction` values to include in zcaps distributed to clients,
+based on the HTTP method
+(e.g., `GET` -> `read`, `POST` -> `write`) and the expected caller
+of the API endpoint of interest.
+            </li>
+          </ol>
+          <p>
+Examples of valid delegated capability subsets are shown below:
+          </p>
+          <ul>
+            <li>
+              <h4>
+Allow a client controller to retrieve the configuration
+of a particular workflow instance
+(distribute zcaps with this subset to an administrator)
+              </h4>
+              <pre title="Retrieve Workflow Configuration">
+{
+  ...
+  "controller": "did:key:z6MknBxrctS4KsfiBsEaXsfnrnfNYTvDjVpLYYUAN6PX2EfG",
+  "invocationTarget": "https://vcalm-instances.example.com/issuers/b77c9b57-c321-4d14-902c-8f442a37707d/workflows/a6513552-8e5a-4efa-b36e-1fb2a8e06822",
+  "allowedAction": [
+    "read"
+  ],
+  ...
+}
+              </pre>
+            </li>
+            <li>
+              <h4>
+Allow a client controller to create an exchange
+on a particular workflow instance
+(distribute zcaps with this subset to a coordinator)
+              </h4>
+              <pre title="Create Exchange">
+{
+  ...
+  "controller": "did:key:z6MknBxrctS4KsfiBsEaXsfnrnfNYTvDjVpLYYUAN6PX2EfG",
+  "invocationTarget": "https://vcalm-instances.example.com/issuers/b77c9b57-c321-4d14-902c-8f442a37707d/workflows/a6513552-8e5a-4efa-b36e-1fb2a8e06822/exchanges",
+  "allowedAction": [
+    "write"
+  ],
+  ...
+}
+              </pre>
+            </li>
+            <li>
+              <h4>
+Allow a client controller to retrieve the state of an exchange
+originating from a particular workflow instance
+(distribute zcaps with this subset to a coordinator)
+              </h4>
+              <pre title="Retrieve Exchange State">
+{
+  ...
+  "controller": "did:key:z6MknBxrctS4KsfiBsEaXsfnrnfNYTvDjVpLYYUAN6PX2EfG",
+  "invocationTarget": "https://vcalm-instances.example.com/issuers/b77c9b57-c321-4d14-902c-8f442a37707d/workflows/a6513552-8e5a-4efa-b36e-1fb2a8e06822/exchanges",
+  "allowedAction": [
+    "read"
+  ],
+  ...
+}
+              </pre>
+            </li>
+            <li>
+              <h4>
+Allow a client controller to access the credential issuance API endpoint
+on the issuer instance identified in the zcap
+(distribute zcaps with this subset to an issuer coordinator or
+a workflow service)
+              </h4>
+              <pre title="Issue Credential">
+{
+  ...
+  "controller": "did:key:z6MknBxrctS4KsfiBsEaXsfnrnfNYTvDjVpLYYUAN6PX2EfG",
+  "invocationTarget": "https://vcalm-instances.example.com/issuers/b77c9b57-c321-4d14-902c-8f442a37707d/credentials/issue",
+  "allowedAction": [
+    "write"
+  ],
+  ...
+}
+              </pre>
+            </li>
+          </ul>
         </section>
 
         <section class="notoc">
