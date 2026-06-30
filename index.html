@@ -880,26 +880,48 @@ The `read` operation enables actions that do not create or update resources in
 the system to be performed on the provided path, or on any path containing the
 provided path as a prefix. The `write` operation enables actions that create
 and/or update resources in the system to be performed on the provided path, or
-on any path that contains the provided path as a prefix.
+on any path that contains the provided path as a prefix. In order to enforce the
+principle of least privilege, implementers SHOULD apply the following best practices:
           </p>
+          <ol>
+            <li>
+Ensure that access tokens expressed as JSON Web Tokens include an `aud` (audience)
+claim that identifies a specific instance for which the access token applies,
+allowing the token to be pinned to a particular instance. For multi-tenant deployments,
+this SHOULD include the component instance of interest.
+Example `aud` value: `https://vcalm-instances.example.com/issuers/b77c9b57-c321-4d14-902c-8f442a37707d`.
+            </li>
+            <li>
+Include the entire API path (excluding the domain and component instance, which are captured in `aud`)
+in the scopes configured for the OAuth 2.0 issuer (see examples below).
+            </li>
+            <li>
+Refer to Section [[[#component-overview]]] to determine which scopes to include in
+access tokens distributed to clients, based on the HTTP method
+(e.g., `GET` -> `read`, `POST` -> `write`) and the expected caller
+of the API endpoint of interest.
+            </li>
+          </ol>
           <p>
-Examples of OAuth 2.0 scopes are shown below:
+Examples of valid OAuth 2.0 scopes are shown below:
           </p>
           <ul>
             <li>
-`read:/` would allow reading via any API on any particular instance.
+`read:/workflows/a6513552-8e5a-4efa-b36e-1fb2a8e06822` would allow a client to retrieve the configuration of a particular workflow instance
+(distribute access tokens with this scope to an administrator).
             </li>
             <li>
-`write:/` would allow creation and modification via any API on any particular
-instance.
+`write:/workflows/a6513552-8e5a-4efa-b36e-1fb2a8e06822/exchanges` would allow a client to create an exchange on a particular workflow instance
+(distribute access tokens with this scope to a coordinator).
             </li>
             <li>
-`read:/exchanges` would allow reading exchanges from any particular
-workflow instance.
+`read:/workflows/a6513552-8e5a-4efa-b36e-1fb2a8e06822/exchanges` would allow a client to retrieve the state of an exchange originating from a particular workflow instance
+(distribute access tokens with this scope to a coordinator).
             </li>
             <li>
-`write:/credentials/issue` would allow writing to the credential issuance
-API on any particular issuer instance.
+`write:/credentials/issue` would allow a client to access the credential issuance API endpoint on the
+issuer instance identified in the audience (if provided, else any issuer instance) of the access token
+(distribute access tokens with this scope to an issuer coordinator or a workflow service).
             </li>
           </ul>
 
@@ -909,10 +931,9 @@ vulnerabilities in multi-tenant environments, such as when multiple [=issuer
 coordinators=] might use different [=issuer=] [=instances=] hosted on the same
 [=issuer service=]. Implementers are advised to ensure that access tokens
 expressed as JSON Web Tokens include an `aud` (audience) claim that identifies a
-specific instance for which the access token applies, allowing pinning an access
-token to a particular instance. It is advised that OAuth 2.0 scopes be kept as
-narrow as possible without becoming overly burdensome to security
-administrators.
+specific instance for which the access token applies, allowing the token
+to be pinned to a particular instance. It is advised that OAuth 2.0 scopes be
+kept as narrow as possible without becoming overly burdensome to security administrators.
           </p>
         </section>
 
