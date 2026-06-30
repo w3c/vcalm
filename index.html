@@ -886,7 +886,7 @@ principle of least privilege, implementers SHOULD apply the following best pract
   <li>
 Ensure that access tokens expressed as JSON Web Tokens include an `aud` (audience)
 claim that identifies a specific instance for which the access token applies,
-allowing pinning an access token to a particular instance. For multi-tenant deployments,
+allowing the token to be pinned to a particular instance. For multi-tenant deployments,
 this SHOULD include the component instance of interest.
 Example `aud` value: `https://vcalm-instances.example.com/issuers/b77c9b57-c321-4d14-902c-8f442a37707d`.
   </li>
@@ -907,7 +907,7 @@ Examples of OAuth 2.0 scopes are shown below:
           <ul>
             <li>
 `read:/workflows/a6513552-8e5a-4efa-b36e-1fb2a8e06822` would allow a client to retrieve the configuration of a particular workflow instance
-(distribute access tokens with this scope to an admin).
+(distribute access tokens with this scope to an administrator).
             </li>
             <li>
 `write:/workflows/a6513552-8e5a-4efa-b36e-1fb2a8e06822/exchanges` would allow a client to create an exchange on a particular workflow instance
@@ -930,10 +930,9 @@ vulnerabilities in multi-tenant environments, such as when multiple [=issuer
 coordinators=] might use different [=issuer=] [=instances=] hosted on the same
 [=issuer service=]. Implementers are advised to ensure that access tokens
 expressed as JSON Web Tokens include an `aud` (audience) claim that identifies a
-specific instance for which the access token applies, allowing pinning an access
-token to a particular instance. It is advised that OAuth 2.0 scopes be kept as
-narrow as possible without becoming overly burdensome to security
-administrators.
+specific instance for which the access token applies, allowing the token
+to be pinned to a particular instance. It is advised that OAuth 2.0 scopes be
+kept as narrow as possible without becoming overly burdensome to security administrators.
           </p>
         </section>
 
