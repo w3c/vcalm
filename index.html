@@ -1358,9 +1358,12 @@ or missing `group` values are processed as "OR" operations.
       },
       <span class="comment">// (Optional) Specify credentials from particular acceptedIssuers or
       // delegates of the authority</span>
-      "acceptedIssuers": [{
-        "issuer": "did:web:authority.example"
-      }]
+      "acceptedIssuers": [
+        {
+          "id": "did:web:authority.example"
+        },
+        "did:web:different-issuer.example"
+      ]
     }
   }],
   "challenge": "3182bdea-63d9-11ea-b6de-3b7c1404d57f",
