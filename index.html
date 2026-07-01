@@ -2141,6 +2141,114 @@ credentials at a layer above. See the appendices that follow for examples of
 workflows and exchanges that use specific verifiable presentation requests and
 verifiable credentials.
       </p>
+      <section id="reference-workflow-step-processing" class="informative">
+        <h4>Reference workflow step processing algorithm</h4>
+        <p>
+This specification does not mandate a single internal implementation for advancing
+an [=exchange=]. The algorithm below documents <em>one</em> possible approach for
+walking workflow steps until the workflow service must return a partial
+<code>response</code> to the exchange client (for example, to ask for a
+[=verifiable presentation=]), until the exchange completes, or until the exchange
+fails or times out. Implementations MAY differ in ordering, persistence, error
+handling, and protocol bindings; hooks such as <code>prepareStep</code>,
+<code>validateReceivedPresentation</code>, <code>inputRequired</code>, and
+<code>isStepComplete</code> exist precisely so that the same logical loop can be
+adapted when exchanges are fronted by this HTTP API,
+OpenID for Verifiable Presentations (OID4VP), OpenID for Verifiable Credential
+Issuance (OID4VCI), invite-based flows, or other interaction mechanisms. The
+<code>response</code> object produced when the loop pauses or finishes can be
+returned directly to clients using this API or mapped into other protocol
+messages as needed.
+        </p>
+
+        <pre class="nohighlight" title="Reference exchange step processing">
+ 0. Receive `workflow` and `exchange` as inputs and `receivedPresentation` and
+    `receivedPresentationRequest` as optional inputs.
+ 1. Initialize `step` and `response` to `null`.
+ 2. If `exchange.state` is `complete` or `invalid`, throw a `NotAllowedError`.
+ 3. If `exchange.state` is `pending`, set it to `active`.
+ 4. Continuously loop to process exchange steps, optionally saving any error
+    thrown as `exchange.lastError`. Other algorithm steps will return out of the
+    loop when a full response is generated, input from the exchange client is required
+    or the exchange times out. An implementation-specific maximum step count MAY be
+    optionally enforced to handle misconfigured workflows.
+    4.1. Set `step` to the current step (evaluating a step template as needed).
+    4.2. Call sub-algorithm `prepareStep` hook, passing `workflow`, `exchange`,
+         `step`, `receivedPresentation`, and `receivedPresentationRequest` to perform
+         any protocol-specific custom step preparation. If `prepareStep` returns a
+         `prepareResult` with `receivedPresentation` and/or
+         `receivedPresentationRequest` set, then update `receivedPresentation` and/or
+         `receivedPresentationRequest` accordingly.
+    4.3. If `receivedPresentation` is set, then call the
+         `validateReceivedPresentation` sub-algorithm, passing `workflow`, `exchange`,
+         `step`, and `receivedPresentation`.
+    4.4. If `receivedPresentationRequest` is set, call the
+         `validateReceivedPresentationRequest` sub-algorithm, passing `exchange`,
+         `step`, and `receivedPresentationRequest`.
+    4.5. If the implementation supports blocking callbacks that can return
+         results to be added to exchange variables (or return errors), call the
+         callback and store its results in
+         `exchange.variables.results[exchange.step].callbackResults` or throw any
+         error received.
+    4.6. Set `isInputRequired` to the result of calling the `inputRequired`
+         sub-algorithm hook passing `step` and `receivedPresentation` to perform any
+         protocol-specific input checks.
+    4.7. If `isInputRequired` is `true`:
+         4.7.1. If `response` is `null`, set it to an empty object.
+         4.7.2. If `step.verifiablePresentationRequest` is set, call the
+                `createVerifiablePresentationRequest` sub-algorithm, passing
+                `workflow`, `exchange`, `step`, and `response`.
+         4.7.3. Save the exchange (and call any non-blocking callback in the step) and
+                return `response`.
+    4.8. Set `issueToClient` to `true` if `step.issueRequests` includes any issuer
+         requests for VCs that are to be sent to the client (`issueRequest.result` is
+         NOT set), otherwise set it to `false`.
+    4.9. If `step.verifiablePresentation` is set or `issueToClient` is `true`:
+         4.9.1. If `response` is not `null`:
+                4.9.1.1. If `response.verifiablePresentationRequest` is not set, set
+                         it to an empty object (to indicate that the exchange is not
+                         yet complete).
+                4.9.1.2. Save the exchange (and call any non-blocking callback in the
+                         step).
+                4.9.1.3. Return `response`.
+         4.9.2. Set `response` to an empty object.
+         4.9.3. If `step.verifiablePresentation` is set, set
+                `response.verifiablePresentation` to a copy of it, otherwise set
+                `response.verifiablePresentation` to a new, empty, Verifiable
+                Presentation (using VCDM 2.0 by default, but a custom configuration
+                could specify another version).
+   4.10. Perform every issue request (optionally in parallel), returning an error
+         response to the client if any fails (note: implementations can optionally
+         implement failure recovery or retry issue requests at their own discretion):
+         4.10.1. For each issue request where `result` is set to an exchange variable
+                 path or name, save the issued credential in the referenced exchange
+                 variable.
+         4.10.2. For each issue request where `result` is not specified, save the
+                 issued credential in `response.verifiablePresentation`, i.e., for a
+                 VCDM presentation, append the issued credential to
+                 `response.verifiablePresentation.verifiableCredential`.
+   4.11. If `response.verifiablePresentation` is set and the step configuration
+         indicates it should be signed, sign the presentation (e.g., by using a VCALM
+         holder instance's `/presentations/create` endpoint).
+   4.12. Call subalgorithm `isStepComplete`, passing `workflow`, `exchange`, `step`,
+         `receivedPresentation`, and `receivedPresentationRequest` to perform any
+         protocol-specific behavior to determine if the step is complete. Set
+         `stepComplete` to the result of `isStepComplete`, defaulting to `true`.
+   4.13. If `stepComplete` is `true`:
+         4.13.1. If `step.redirectUrl` is set:
+                 4.13.1.1. If `response` is `null` then set it to an empty object.
+                 4.13.1.2. Set `response.redirectUrl` to `step.redirectUrl`.
+         4.13.2. If `step.nextStep` is not set then set `exchange.state` to
+                 `complete`.
+         4.13.3. Otherwise, delete `exchange.variables.results[step.nextStep]` if it
+                 exists, and set `exchange.step` to `step.nextStep`.
+   4.14. Save the exchange (and call any non-blocking callback in the step).
+   4.15. If `exchange.state` is `complete`, return `response` if it is not `null`,
+         otherwise return an empty object.
+   4.16. Set `receivedPresentation` to `null` and loop.
+        </pre>
+      </section>
+
       <p class="note"
          title="Workflow Step and Credential Examples">
 Minimum viable examples of both step and credential templates, as well as a couple
