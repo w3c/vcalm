@@ -4479,6 +4479,182 @@ and contains a `callbackUrl` to demonstrate the callback feature.
     </section>
   </section>
 
+<section class="appendix">
+    <h2>Swimlane Examples for Issuance, Verification, and Presentation</h2>
+
+    <h3>Issuance of a VC to a requesting holder</h3>
+    <p>
+      The following example details a [=holder=] requesting the issuance of a
+      [=verifiable credential=] from an [=issuer=].
+    </p>
+
+    <figure>
+        <pre class="mermaid" style="max-width:100%">
+sequenceDiagram
+    participant H as Holder
+    participant HC as Holder Coordinator
+    participant HS as Holder Service
+    participant IWF as Issuer Workflow Service
+    participant IC as Issuer Coordinator
+    participant IS as Issuer Service
+    
+    Note over H,IS: Prerequisite: Exchange created by Issuer Coordinator
+    
+    H->>HC: Request credential
+    HC->>IWF: POST /workflows/123/exchanges/abc ({})
+
+    Note left of IWF: Initiate exchange by POSTing an empty JSON object.
+
+    IWF->>IC: Coordinate
+    IC->>IC: Apply buisiness rules
+    IC->>IWF: Return VPR (auth request)
+    IWF->>HC: Verifiable Presentation Request
+    
+    HC->>H: (optional) Show consent prompt
+    H->>HC: Approve
+    
+    HC->>HC: Create VP with auth
+    HC->>IWF: POST /workflows/123/exchanges/abc ({verifiablePresentation})
+    IWF->>IC: Validate VP
+    
+    IC->>IS: POST /credentials/issue
+    IS->>IC: Verifiable Credential
+    
+    IC->>IWF: Return VC
+    IWF->>HC: {verifiablePresentation: [VC]}
+    HC->>HS: Store VC
+    HS->>HC: Storage success
+    HC->>H: Display success
+        </pre>
+        <figcaption>
+Issuance of a credential to the requesting holder. 
+        </figcaption>
+    </figure>
+
+    <h3>Verification of a single VC</h3>
+    <p>
+      The following diagram details verification of a single [=verifiable credential=]
+      upon request by a [=holder=]. `GET /credentials/{id}` is used, with the [=holder
+      coordinator=] doing the work of generating the [=verifiable presentation=] that
+      is then sent to the [=verifier=]. In contrast to the preceding issuance example,
+      the verifier does not make any auth request in this [=workflow=]. If the
+      [=verifier=] wanted, they could do another back-and-forth with the [=holder=]
+      before deciding to verify the provided [=verifiable presentation=].
+    </p>
+    <figure>
+        <pre class="mermaid" style="max-width:100%">
+sequenceDiagram
+    participant H as Holder
+    participant HC as Holder Coordinator
+    participant HS as Holder Service
+    participant VWF as Verifier Workflow Service
+    participant VC as Verifier Coordinator
+    participant VS as Verifier Service
+    
+    Note over H,VS: Prerequisite: Exchange created by Verifier Coordinator
+    
+    H->>HC: Request verification of VC-098
+    HC->>HS: GET /credentials/{id} (id:VC-098)
+    HS->>HC: Requested VC-098
+    HC->>HC: Create VP with auth and selected VC-098 to verify
+    HC->>VWF: POST /workflows/456/exchanges/ghi ({createdVP})
+
+    Note left of VWF: Initiate exchange including the created VP.
+
+    VWF->>VC: Validate VP
+    VC->>VC: Apply buisiness rules
+    VC->>VC: Extract contained VC-098 from VP
+    VC->>VS: POST /credentials/verify ({extractedVC-098})
+
+    VS->>VC: Verification Result
+    VC->>VWF: Verification result
+    VWF->>HC: Verification result
+    HC->>H: Display verification result
+        </pre>
+        <figcaption>
+Verification of a single credential.
+        </figcaption>
+    </figure>
+
+    <h3>Verification of a multiple VCs</h3>
+    <p>
+      The following diagram details the verification of multiple [=verifiable credential=]
+      at the request of a [=holder=]. It shows the use of the POST /presentations to create the
+      [=verifiable presentation=], with the [=holder service=]  doing the work of generating
+      the [=verifiable presentation=] that is sent to the [=verifier=]. The [=workflow=]
+      shown here does not have the verifier doing any auth request as seen in the issuance example 
+      above. If the [=verifier=] wanted they could do another back and forth with the [=holder=]
+      before deciding to verify the provided [=verifiable presentation=].
+    </p>
+    <figure>
+        <pre class="mermaid" style="max-width:100%">
+sequenceDiagram
+    participant H as Holder
+    participant HC as Holder Coordinator
+    participant HS as Holder Service
+    participant VWF as Verifier Workflow Service
+    participant VC as Verifier Coordinator
+    participant VS as Verifier Service
+    
+    Note over H,VS: Prerequisite: Exchange created by Verifier Coordinator
+    
+    H->>HC: Request verification of a set of VCs
+    HC->>HS: POST /presentations ({setofVCs})
+    HS->>HS: Create VP with specified VCs
+    HS->>HC: Requested VP
+    HC->>VWF: POST /workflows/456/exchanges/ghi ({verifiablePresentation})
+
+    Note left of VWF: Initiate exchange including the requested VP.
+
+    VWF->>VC: Validate VP
+    VC->>VC: Apply buisiness rules
+    VC->>VS: POST /presentations/verify ({verifiablePresentation})
+
+    VS->>VC: Verification Result
+    VC->>VWF: Verification result
+    VWF->>HC: Verification result
+    HC->>H: Display verification result
+        </pre>
+        <figcaption>
+Verification of multiple credentials in one presentation.
+        </figcaption>
+    </figure>
+
+    <h3>Presentation of a VC in person</h3>
+    <p>
+      The following diagram details the presentation of a [=verifiable credential=] at the
+      request of a [=holder=] to another person, Alice, who might be a [=verifier=] or
+      another [=holder=]. The presenting [=holder=] uses `GET /presentations/{id}`, 
+      which implies that this [=holder=] has presented this same credential in the past, and the [=holder coordinator=] knows the id to request the existing presentation.
+    </p>
+    <figure>
+        <pre class="mermaid" style="max-width:100%">
+sequenceDiagram
+    participant H as Holder
+    participant HC as Holder Coordinator
+    participant HS as Holder Service
+    participant A as Alice
+    participant AHC as Alice's Holder Coordinator
+    
+    H->>HC: Select VC to present
+    HC->>HS: GET /presentations/{id} (id:presentationId)
+    HS->>HS: Generate VP with selected VC
+    HS->>HC: Generated VP
+
+    HC->>HC: Encode VP as QR Code
+    HC->>H: Display QR Code
+
+    H->>A: Show displayed QR Code
+    A->>AHC: Start camera
+    AHC->>HC: Scan presented QR Code
+        </pre>
+        <figcaption>
+Presentation of a VC in person
+        </figcaption>
+    </figure>
+   
+  </section>
+
   <section class="appendix">
     <h2>Relationship to Other Specifications</h2>
 
