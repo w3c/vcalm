@@ -2768,6 +2768,11 @@ Minimum viable examples of both step and credential templates, as well as a coup
 more complex workflow templates, can be found in the appendix <a href="#workflow-step-and-template-examples">Workflow Step and Template Examples</a>.
       </p>
       <p>
+An informative reference algorithm for walking [=exchange=] steps until client
+input is required or a response is ready is provided in Appendix
+[[[#reference-workflow-step-processing-algorithm]]].
+      </p>
+      <p>
 A given interaction with an exchange is expected to be short-lived but
 other mechanisms can be used to enable longer or multi-stage interactions.
 Examples of other interaction mechanisms include SMS, email, web notifications,
@@ -4892,6 +4897,267 @@ and contains a `callbackUrl` to demonstrate the callback feature.
   }
 }
       </pre>
+    </section>
+  </section>
+
+  <section class="appendix informative" id="reference-workflow-step-processing-algorithm">
+    <h2>Reference Workflow Step Processing Algorithm</h2>
+
+    <p>
+This appendix is non-normative.
+    </p>
+
+    <p>
+This specification does not mandate a single internal implementation for
+advancing an [=exchange=]. The algorithm below documents <em>one</em> possible
+approach for walking [=workflow=] steps until the [=workflow service=] must
+return a partial <code>response</code> to the exchange client (for example, to
+ask for a [=verifiable presentation=]), until the exchange completes, or until
+the exchange fails or times out. Implementations MAY differ in ordering,
+persistence, error handling, and protocol bindings.
+    </p>
+
+    <p>
+Hooks such as <code>prepareStep</code>,
+<code>validateReceivedPresentation</code>,
+<code>validateReceivedPresentationRequest</code>, <code>inputRequired</code>,
+<code>createVerifiablePresentationRequest</code>, and
+<code>isStepComplete</code> exist so that the same logical loop can be adapted
+when exchanges are fronted by this HTTP API, OpenID for Verifiable Presentations
+(OID4VP), OpenID for Verifiable Credential Issuance (OID4VCI), invite-based
+flows, or other interaction mechanisms. The <code>response</code> object
+produced when the loop pauses or finishes can be returned directly to clients
+using this API or mapped into other protocol messages as needed.
+    </p>
+
+    <section>
+      <h3 id="process-exchange-steps">Process Exchange Steps</h3>
+
+      <p>
+The following algorithm processes an exchange by repeatedly evaluating the
+current workflow step. Required inputs are a workflow configuration ([=map=]
+<var>workflow</var>) and an exchange ([=map=] <var>exchange</var>). Optional
+inputs are a received [=verifiable presentation=] ([=map=]
+<var>receivedPresentation</var>) and a received [=verifiable presentation
+request=] ([=map=] <var>receivedPresentationRequest</var>). A response object
+([=map=] <var>response</var>), which MAY be empty, is produced as output, or an
+error is raised.
+      </p>
+
+      <ol class="algorithm">
+        <li>
+Initialize <var>step</var> and <var>response</var> to <code>null</code>.
+        </li>
+        <li>
+If <var>exchange</var>.<code>state</code> is <code>complete</code> or
+<code>invalid</code>, throw a <code>NotAllowedError</code>.
+        </li>
+        <li>
+If <var>exchange</var>.<code>state</code> is <code>pending</code>, set it to
+<code>active</code>.
+        </li>
+        <li>
+Continuously loop to process exchange steps, optionally saving any error thrown
+as <var>exchange</var>.<code>lastError</code>. Return out of the loop when a
+full response is generated, input from the exchange client is required, or the
+exchange times out. An implementation-specific maximum step count MAY be
+enforced to handle misconfigured workflows. In each iteration:
+          <ol class="algorithm">
+            <li>
+Set <var>step</var> to the current step (evaluating a step template as needed).
+            </li>
+            <li>
+Call the <code>prepareStep</code> hook, passing <var>workflow</var>,
+<var>exchange</var>, <var>step</var>, <var>receivedPresentation</var>, and
+<var>receivedPresentationRequest</var>, to perform any protocol-specific step
+preparation. If <code>prepareStep</code> returns a result with
+<code>receivedPresentation</code> and/or
+<code>receivedPresentationRequest</code> set, update
+<var>receivedPresentation</var> and/or <var>receivedPresentationRequest</var>
+accordingly.
+            </li>
+            <li>
+If <var>receivedPresentation</var> is set, call
+<code>validateReceivedPresentation</code>, passing <var>workflow</var>,
+<var>exchange</var>, <var>step</var>, and <var>receivedPresentation</var>.
+            </li>
+            <li>
+If <var>receivedPresentationRequest</var> is set, call
+<code>validateReceivedPresentationRequest</code>, passing <var>exchange</var>,
+<var>step</var>, and <var>receivedPresentationRequest</var>.
+            </li>
+            <li>
+If the implementation supports blocking callbacks that can return results to be
+added to exchange variables (or return errors), call the callback and store its
+results in
+<code>exchange.variables.results[exchange.step].callbackResults</code>, or throw
+any error received.
+            </li>
+            <li>
+Set <var>isInputRequired</var> to the result of calling the
+<code>inputRequired</code> hook, passing <var>step</var> and
+<var>receivedPresentation</var>, to perform any protocol-specific input checks.
+            </li>
+            <li>
+If <var>isInputRequired</var> is <code>true</code>:
+              <ol class="algorithm">
+                <li>
+If <var>response</var> is <code>null</code>, set it to an empty object.
+                </li>
+                <li>
+If <var>step</var>.<code>verifiablePresentationRequest</code> is set, call
+<code>createVerifiablePresentationRequest</code>, passing <var>workflow</var>,
+<var>exchange</var>, <var>step</var>, and <var>response</var>.
+                </li>
+                <li>
+Save the exchange (and call any non-blocking callback in the step) and return
+<var>response</var>.
+                </li>
+              </ol>
+            </li>
+            <li>
+Set <var>issueToClient</var> to <code>true</code> if
+<var>step</var>.<code>issueRequests</code> includes any issuer requests for
+[=verifiable credentials=] that are to be sent to the client
+(<code>issueRequest.result</code> is not set); otherwise set it to
+<code>false</code>.
+            </li>
+            <li>
+If <var>step</var>.<code>verifiablePresentation</code> is set or
+<var>issueToClient</var> is <code>true</code>:
+              <ol class="algorithm">
+                <li>
+If <var>response</var> is not <code>null</code>:
+                  <ol class="algorithm">
+                    <li>
+If <var>response</var>.<code>verifiablePresentationRequest</code> is not set,
+set it to an empty object (to indicate that the exchange is not yet complete).
+                    </li>
+                    <li>
+Save the exchange (and call any non-blocking callback in the step).
+                    </li>
+                    <li>
+Return <var>response</var>.
+                    </li>
+                  </ol>
+                </li>
+                <li>
+Set <var>response</var> to an empty object.
+                </li>
+                <li>
+If <var>step</var>.<code>verifiablePresentation</code> is set, set
+<var>response</var>.<code>verifiablePresentation</code> to a copy of it;
+otherwise set <var>response</var>.<code>verifiablePresentation</code> to a new,
+empty [=verifiable presentation=] (using [[VC-DATA-MODEL-2.0]] by default; a
+custom configuration MAY specify another version).
+                </li>
+              </ol>
+            </li>
+            <li>
+Perform every issue request (optionally in parallel), returning an error
+response to the client if any fails. Implementations MAY implement failure
+recovery or retry issue requests at their own discretion:
+              <ol class="algorithm">
+                <li>
+For each issue request where <code>result</code> is set to an exchange variable
+path or name, save the issued credential in the referenced exchange variable.
+                </li>
+                <li>
+For each issue request where <code>result</code> is not specified, save the
+issued credential in
+<var>response</var>.<code>verifiablePresentation</code> (for a VCDM
+presentation, append it to
+<code>response.verifiablePresentation.verifiableCredential</code>).
+                </li>
+              </ol>
+            </li>
+            <li>
+If <var>response</var>.<code>verifiablePresentation</code> is set and the step
+configuration indicates it should be signed, sign the presentation (for example,
+by using a VCALM holder instance's <code>/presentations</code> create endpoint).
+            </li>
+            <li>
+Call <code>isStepComplete</code>, passing <var>workflow</var>,
+<var>exchange</var>, <var>step</var>, <var>receivedPresentation</var>, and
+<var>receivedPresentationRequest</var>, to perform any protocol-specific
+behavior to determine if the step is complete. Set <var>stepComplete</var> to
+the result, defaulting to <code>true</code>.
+            </li>
+            <li>
+If <var>stepComplete</var> is <code>true</code>:
+              <ol class="algorithm">
+                <li>
+If <var>step</var>.<code>redirectUrl</code> is set:
+                  <ol class="algorithm">
+                    <li>
+If <var>response</var> is <code>null</code>, set it to an empty object.
+                    </li>
+                    <li>
+Set <var>response</var>.<code>redirectUrl</code> to
+<var>step</var>.<code>redirectUrl</code>.
+                    </li>
+                  </ol>
+                </li>
+                <li>
+If <var>step</var>.<code>nextStep</code> is not set, set
+<var>exchange</var>.<code>state</code> to <code>complete</code>.
+                </li>
+                <li>
+Otherwise, delete
+<code>exchange.variables.results[step.nextStep]</code> if it exists, and set
+<var>exchange</var>.<code>step</code> to
+<var>step</var>.<code>nextStep</code>.
+                </li>
+              </ol>
+            </li>
+            <li>
+Save the exchange (and call any non-blocking callback in the step).
+            </li>
+            <li>
+If <var>exchange</var>.<code>state</code> is <code>complete</code>, return
+<var>response</var> if it is not <code>null</code>; otherwise return an empty
+object.
+            </li>
+            <li>
+Set <var>receivedPresentation</var> to <code>null</code> and continue the loop.
+            </li>
+          </ol>
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h3 id="workflow-processing-hooks">Protocol and implementation hooks</h3>
+
+      <p>
+The following hooks are intentionally underspecified so that implementations can
+bind the reference loop to a particular protocol or deployment:
+      </p>
+
+      <ul>
+        <li>
+<code>prepareStep</code> — optional protocol-specific preparation before
+validating client input for the current step.
+        </li>
+        <li>
+<code>validateReceivedPresentation</code> /
+<code>validateReceivedPresentationRequest</code> — validate a client-supplied
+presentation or presentation request against the current step.
+        </li>
+        <li>
+<code>inputRequired</code> — determine whether the loop must pause and return a
+response (typically including a presentation request) to the client.
+        </li>
+        <li>
+<code>createVerifiablePresentationRequest</code> — populate
+<code>response.verifiablePresentationRequest</code> from the step configuration
+and exchange variables.
+        </li>
+        <li>
+<code>isStepComplete</code> — determine whether the current step is finished and
+the exchange may advance to <code>nextStep</code> or <code>complete</code>.
+        </li>
+      </ul>
     </section>
   </section>
 
