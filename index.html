@@ -1920,8 +1920,29 @@ Initialize <var>actualValues</var> to <var>actualValue</var> normalized to a
 [=list=] containing only <var>actualValue</var>).
                     </li>
                     <li>
-If no element in <var>actualValues</var> is strictly equal to any element in
-<var>expectedValue</var>, return <code>false</code>.
+At least one element <var>expectedElement</var> in <var>expectedValue</var>
+MUST match at least one element <var>actualElement</var> in
+<var>actualValues</var>. An <var>expectedElement</var> matches an
+<var>actualElement</var> if any of the following is true:
+                      <ol class="algorithm">
+                        <li>
+<var>expectedElement</var> is a [=map=], <var>actualElement</var> is a
+[=map=], and this algorithm returns <code>true</code> when called with
+<var>expectedElement</var> as <var>expectedObject</var> and
+<var>actualElement</var> as <var>actualObject</var>.
+                        </li>
+                        <li>
+<var>expectedElement</var> is not a [=map=] and
+<var>actualElement</var> is strictly equal to <var>expectedElement</var>.
+                        </li>
+                        <li>
+<var>expectedElement</var> is not a [=map=] and numeric coercion applies:
+both <var>actualElement</var> and <var>expectedElement</var> can be
+interpreted as numeric values (using the same eligibility rules as for
+primitive values below), and their numeric values are equal.
+                        </li>
+                      </ol>
+If no such matching pair exists, return <code>false</code>.
                     </li>
                   </ol>
                 </li>
@@ -1984,13 +2005,15 @@ Initialize <var>object</var> to a copy of <var>example</var> with the
             <li>
 Initialize <var>pointers</var> to the list of JSON Pointers that identify every
 value in <var>object</var> (for example, by treating <var>object</var> as a
-tree and emitting a pointer for each leaf value).
+tree and emitting a pointer for each leaf value, including properties whose
+value is an empty [=string=]).
             </li>
             <li>
-Add any VCDM mandatory reveal pointers appropriate for the credential's data
-model version to <var>pointers</var>. For [[VC-DATA-MODEL-2.0]], these include
-at least <code>/type</code> and <code>/issuer</code> when those properties are
-required to be disclosed by the securing mechanism in use.
+Append <code>/type</code> and <code>/issuer</code> to <var>pointers</var> if
+they are not already present. These pointers are the deterministic mandatory
+reveal paths for selective disclosure conversion under
+[[VC-DATA-MODEL-2.0]]. Securing mechanisms MAY require additional mandatory
+pointers at issuance time; those are outside the scope of this conversion.
             </li>
             <li>
 Set <var>pointers</var> to the result of running the algorithm in Section
@@ -2003,10 +2026,12 @@ Return <var>pointers</var>.
 
           <p>
 The following example uses the Permanent Resident Card QueryByExample from this
-section. After removing <code>@context</code>, generating pointers, adding
-mandatory VCDM 2.0 reveal pointers, ensuring
-<code>credentialSubject</code> coverage, pruning shallow pointers, and
-normalizing <code>type</code> pointers, a conforming conversion produces:
+section. After removing <code>@context</code>, generating leaf pointers
+(including <code>/credentialSubject/birthCountry</code> from the empty-string
+claim), appending the mandatory <code>/type</code> and <code>/issuer</code>
+pointers, ensuring <code>credentialSubject</code> coverage, pruning shallow
+pointers, and normalizing <code>type</code> pointers, a conforming conversion
+produces:
           </p>
 
           <pre class="example nohighlight" title="QueryByExample example converted to selectivePointers">
@@ -2020,9 +2045,9 @@ normalizing <code>type</code> pointers, a conforming conversion produces:
           </pre>
 
           <p>
-In this result, <code>/type</code> and <code>/issuer</code> are the explicit
-mandatory reveal pointers for the VC Data Model 2.0 securing mechanism in use,
-and <code>/credentialSubject/birthCountry</code> is the claim requested by the
+In this result, <code>/type</code> and <code>/issuer</code> are always added by
+the conversion algorithm as mandatory reveal pointers, and
+<code>/credentialSubject/birthCountry</code> is the claim requested by the
 example (via an empty-string value). These pointers are suitable for use as
 <code>selectivePointers</code> when deriving a credential for presentation.
           </p>
