@@ -1,0 +1,2 @@
+index.html?specStatus=ED&shortName=vcalm-1.0 respec
+threat-model/index.html?specStatus=ED&shortName=vcalm-1.0/threat-model respec
