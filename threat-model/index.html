@@ -114,6 +114,17 @@
   <script src="threats/t27-workflow-variables-allow-workflow-template-to-be-misused.js"></script>
   <script src="threats/t28-callback-urls-during-workflows-slow-to-respond.js"></script>
   <script src="threats/t29-ecosystem-gatekeeping-in-the-name-of-security-or-privacy.js"></script>
+  <script src="threats/t30-issuance-request-and-or-delivery-made-by-third-party.js"></script>
+  <script src="threats/t31-unintended-data-leak-due-to-third-party-processing.js"></script>
+  <script src="threats/t32-malicious-entity-acts-on-behalf-of-incapable-party.js"></script>
+  <script src="threats/t33-verifier-phones-home-about-specific-verifiable-credential.js"></script>
+  <script src="threats/t34-unknown-proof-types.js"></script>
+  <script src="threats/t35-interaction-url-does-not-use-https.js"></script>
+  <script src="threats/t36-deletion-request-only-results-in-partial-deletion-of-credential.js"></script>
+  <script src="threats/t37-credential-deletion-violates-legal-regulation.js"></script>
+  <script src="threats/t38-mishandled-status-information-upon-credential-deletion-reveals-information.js"></script>
+  <script src="threats/t39-large-payload-triggers-denial-of-service-dos.js"></script>
+  <script src="threats/t40-improper-credential-validation-leads-to-security-vulnerabilities.js"></script>
 </head>
 
 <body>
@@ -725,6 +736,53 @@
     </section>
   </section>
   
+
+  <section class="appendix">
+    <h2>Security Considerations</h2>
+    <p>
+      This section details additional security considerations that were not 
+      found to have direct threats related to this specification but the group
+      still wanted to highlight. 
+    </p>
+
+    <section>
+      <h3>Secure Coding Practices</h3>
+
+      <p>
+        Implementers are urged to use industry standard secure coding practices when
+        implementing this specification. Even deeply experienced software developers can
+        make mistakes and the use of secure coding checklists and vulnerability scanning
+        software can catch errors that would result in security compromises. Following
+        checklists and guides such as the
+        <a href="https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/">
+        OWASP Secure Coding Practices Checklist</a> and the
+        <a href="https://owasp.org/www-project-web-security-testing-guide/">
+        OWASP Web Security Testing Guide</a> can help reduce the chance of insecure
+        implementations.
+      </p>
+    </section>
+
+    <section>
+      <h3>Other Security Considerations</h3>
+
+      <p>
+        Since the interfaces to manage the lifecycle of [=verifiable credentials=]
+        described by this specification are generalized in nature, the security
+        implications of their use might not be immediately apparent to readers.
+        To understand the sort of security
+        concerns one might need to consider in a complete software system, implementers
+        are urged to read about how this technology can be used by the
+        [[[?VC-DATA-MODEL-2.0]]] specification (specifically the section
+        on <a data-cite="?VC-DATA-MODEL-2.0#security-considerations">
+        Verifiable Credential Security Considerations</a>), as well as the
+        [[[?VC-DATA-INTEGRITY]]] specification (specifically the section
+        on <a data-cite="?VC-DATA-INTEGRITY#security-considerations">
+        Data Integrity Security Considerations</a>).
+      </p>
+    </section>
+
+  </section>
+
 
 </body>
 

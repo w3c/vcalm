@@ -3700,290 +3700,14 @@ object MUST be set to `false`; if no errors are included, it MUST be set to
 
   </section>
 
-  <section class="appendix">
-    <h2>Privacy Considerations</h2>
-    <p>
-    </p>
-
-    <section>
-      <h3>Delegation</h3>
-
+  <section class="appendix informative">
+    <h2>Threat Model</h2>
       <p>
-[=Verifiable credentials=] [[VC-DATA-MODEL-2.0]] are a standard data model
-designed to mitigate risks of misuse and fraud. As a data model, <a>verifiable
-credentials</a> are protocol-neutral and consider at least two types of
-entities: [=issuer=] and [=subject=]. When the subject of a <a>verifiable
-credential</a> is a natural person or linked to a natural person, privacy and
-human rights can be impacted by the vastly more efficient processing of
-standardized [=verifiable credentials=] as compared to their analog
-ancestors.
+        This section details the general threat model for this specification
+        including security considerations, privacy considerations, and market
+        competition considerations.
       </p>
 
-      <p>
-Technology, in the form of standardized APIs and protocols for issuing
-[=verifiable credentials=], further enhances the efficiency of processing
-[=verifiable credentials=] and adds to the risks of unforeseen privacy and
-human rights consequences.
-      </p>
-
-      <p>
-[=Verifiable credentials=] issuance has a request phase and a delivery phase.
-The request might be made by the [=subject=] or another role, and delivery
-can be to a client that might or might not be controlled by the subject.
-Delegation is highly relevant for both phases. The [=issuer=] might delegate
-processing of the request to a separate entity. The subject, for their part,
-might also delegate the ability to request a [=verifiable credential=] to a
-separate entity. Note that the subject might not always have the capability or
-ability to perform delegation. Examples include a new born baby, a pet, and a
-person with dementia. So the request might be performed by a third party who was
-not delegated by the subject. The ability to delegate is a third dimension in
-the enhanced efficiency of processing [=verifiable credentials=] and has
-impact on privacy and human rights.
-      </p>
-
-      <p>
-The architecture described in this specification is designed for market
-acceptance through a combination of efficiency and respect for privacy and human
-rights. APIs and protocols for processing [=verifiable credentials=] do not
-favor delegation by the issuer role over delegation by the subject role.
-      </p>
-    </section>
-
-    <section>
-      <h3>"Phoning Home" Considered Harmful</h3>
-
-      <p>
-It is considered a bad privacy practice for a [=verifier=] to contact an
-[=issuer=] about a specific [=verifiable credential=]. This
-practice is known as "phoning home" and can result in a mismatch
-in privacy expectations between [=holders=], [=issuers=],
-[=verifiers=], and other parties expressed in a [=verifiable credential=].
-Phoning home enables [=issuers=] to correlate unsuspecting parties with
-the use of certain [=verifiable credentials=] which can violate
-privacy expectations that each entity might have regarding the use
-of those credentials. For example, what is expected by the [=holder=] to be
-a private interaction between them and the [=verifier=] becomes one where
-the [=issuer=] is notified of the interaction.
-      </p>
-
-      <p>
-There are some interactions where contacting the [=issuer=] in a
-privacy-preserving manner upholds the privacy expectations of the [=holder=].
-For example, contacting the [=issuer=] to get revocation status information
-in a privacy-respecting manner, such as through a status list that provides
-group privacy can be acceptable as long as the [=issuer=] is not able to
-single out which [=verifiable credential=] is being queried based on the
-retrieval of the status list. For more information on one such mechanism
-see the [[[VC-BITSTRING-STATUS-LIST]]] specification.
-      </p>
-
-      <p>
-[=Verifiers=] are urged to not "phone home" in ways that will create
-privacy violations. When retrieving content that is linked from a
-[=verifiable credential=], using mechanisms such as [[[?RFC9458]]] and
-aggressively caching results can improve the privacy characteristics of the
-ecosystem.
-      </p>
-
-    </section>
-  </section>
-
-  <section class="appendix">
-    <h2>Security Considerations</h2>
-    <p>
-    </p>
-
-    <section>
-      <h3>Unknown Proof Types</h3>
-
-      <p>
-[=Holder coordinator=] implementations, such as digital wallet software, can
-receive and store [=verifiable credentials=] that include [=data integrity
-proof|proofs=] that are not understood by the software, however, these [=data
-integrity proof|proofs=] are not to be presented by the implementation. A
-[=verifiable credential=] with several [=data integrity proof|proofs=], some of
-which the implementation understands and others that it does not, can be
-presented by the implementation provided that the proof of choice is understood
-by the implementation and the others are removed prior to presentation.
-Implementations maintain allow lists of understood [=data integrity
-proof|proofs=] and ensure that any [=data integrity proof|proofs=] not present
-are stripped prior to presentation.
-      </p>
-
-      <p>
-Implementations can use the presence of unknown [=data integrity proof|proofs=]
-as potential adoption signals in a decentralized ecosystem. It is also important
-for implementers to understand that in the
-<a href="#architecture-overview">three party model</a>, the [=holder
-coordinator=] acts as a conduit between the [=issuer=] and the [=verifier=],
-enabling interoperability between the two even if/when the [=holder
-coordinator=] doesn't necessarily implement [=verification=] of certain [=data
-integrity proof|proofs=]. As an example in another space: "Web browsers were
-able to download and store PDF files prior to adding their own PDF-reader
-functionality" — this kind of decentralized innovation, interoperability, and
-progressive enhancement is important in the three party model and more
-generally in scalable, decentralized ecosystems. It is also important to help
-reduce centralization by not forcing people to adopt specific new and different
-software just to store a [=verifiable credential=] that has at least one proof
-on it that their current software does not (yet) understand.
-      </p>
-
-      <p>
-A [=holder coordinator=] might be able to present some [=data integrity
-proof|proofs=] even when it does not have the software to verify them,
-but this needs to be understood with certainty, not guessed. That is,
-when adding a copy of a stored [=verifiable credential=] to a presentation,
-[=holder=] software needs to remove any [=data integrity proof|proofs=]
-that it does not explicitly know it can safely present. Any
-[=data integrity proof|proofs=] that software does explicitly know it can
-safely present can remain. For example, a digital wallet that can verify
-an `ecdsa-rdfc-2019`
-[=data integrity proof|proof=], but not an `ecdsa-jcs-2019` [=data integrity
-proof|proof=], can still present either. Other [=data integrity proof|proofs=],
-such as those that offer [=selective disclosure=] and / or [=unlinkable
-disclosure=] features require
-<a data-cite="?VC-DATA-INTEGRITY#transformation">transformation</a> (that is, a
-base proof is transformed to a derived proof plus a "reveal document") and,
-therefore, a wallet will not be able to [=presentation|present=] these [=data
-integrity proof|proofs=] unless the wallet has implemented the procedures for
-deriving a proof. It is vital that a wallet not present a base proof by
-accident, as it might include information that is secret to the [=holder=].
-      </p>
-    </section>
-
-    <section>
-      <h3>Use of HTTPS for Interaction URLs</h3>
-
-      <p>
-This specification strongly suggests the use of HTTPS for [=interaction URLs=]
-for the following reasons:
-      </p>
-
-      <ul>
-        <li>
-The HTTPS URL used in an interaction firmly establishes trust in the
-interaction based on the existing and well understood same-origin trust model
-used by browsers.
-        </li>
-        <li>
-The initial URL provided establishes trust such that subsequent protocols used
-in the interaction can be simply and safely delegated or outsourced to other
-systems, some of which can be in a separate domain.
-        </li>
-        <li>
-Graphical interfaces that need to gather consent can use domain names, which
-are understood well enough by the general population to combat phishing attacks.
-        </li>
-        <li>
-Protocols that require stronger verification of any party can use
-protocol-specific mechanisms, such as [=verifiable credentials=], to verify
-the [=holder=], [=issuer=], or [=verifier=] during a particular protocol
-exchange.
-        </li>
-      </ul>
-
-      <p>
-Using protocol schemes that are not rooted in the HTTPS trust model requires
-separate encryption protocol, key management, and trust models to be used, which
-are often less broadly developed and deployed and require much more development
-and analysis to determine the threat and privacy model.
-      </p>
-
-    </section>
-
-    <section>
-      <h3>Deletion</h3>
-
-      <p>
-The APIs provided by this specification enable the deletion of
-[=verifiable credentials=] and [=verifiable presentations=] from
-[=storage services=]. The result of these deletions
-and the side-effects they might cause are out of scope for this specification.
-However, implementers are advised to understand the various ways deletion can be
-implemented. There are at least two types of deletion that are contemplated by
-this specification.
-      </p>
-
-      <p>
-<dfn>Partial deletion</dfn> marks a record for deletion but continues to store
-some or all of the original information. This mode of operation can be useful if
-there are audit requirements for all credentials and/or presentations over
-a particular time period, or if recovering an original credential might be a
-useful feature to provide.
-      </p>
-      <p>
-<dfn>Complete deletion</dfn> purges all information related to a given
-[=verifiable credential=] or [=verifiable presentation=] in a way that
-is unrecoverable. This mode of operation can be useful when removing information
-that is outdated and beyond the needs of any audit or when responding to any
-sort of "<a href="https://en.wikipedia.org/wiki/Right_to_be_forgotten">right
-to be forgotten</a>" request.
-      </p>
-      <p>
-When deleting a [=verifiable credential=], handling of its status
-information needs to be considered. Some use cases might call for deletion
-of a particular [=verifiable credential=] to also set the revocation
-and suspension bits of that [=verifiable credential=], such that any sort of
-status check for the deleted credential fails and use of the credential is
-halted.
-      </p>
-      <p>
-Given the scenarios above, implementers are advised to allow the system actions
-that occur after a delete to be configurable, such that system flexibility is
-sufficient to address any [=verifiable credential=] use case.
-      </p>
-    </section>
-
-    <section>
-      <h3>Payload Sizes</h3>
-      <p>
-Larger transactions can trigger DoS incidents. It's recommended to configure the
-payload size accepted by endpoints at an instance level.
-      </p>
-    </section>
-
-    <section>
-      <h3>Additional Validation</h3>
-      <p>
-In most cases, simply verifying the proof might not be sufficient to properly
-handle the received data. [=Verifier services=] are expected to configure additional
-validation steps based on their use cases. To define such additional
-validations, implementers can refer to specifications such as
-<a data-cite="?VC-DATA-INTEGRITY#resource-integrity">Section 2.3: Resource
-Integrity</a> and
-<a data-cite="?VC-DATA-INTEGRITY#contexts-and-vocabularies">Section 2.4:
-Contexts and Vocabularies</a>
-in the [[[?VC-DATA-INTEGRITY]]] specification where further information can be
-found about context handling and integrity verification.
-      </p>
-      <p>
-Improper validation will often lead to security vulnerabilities.
-      </p>
-      <p>
-Additional validation steps can be accounted for when returning a verification
-response object, through the problem details.
-      </p>
-    </section>
-
-    <section>
-      <h3>Secure Coding Practices</h3>
-
-      <p>
-Implementers are urged to use industry standard secure coding practices when
-implementing this specification. Even deeply experienced software developers can
-make mistakes and the use of secure coding checklists and vulnerability scanning
-software can catch errors that would result in security compromises. Following
-checklists and guides such as the
-<a href="https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/">
-OWASP Secure Coding Practices Checklist</a> and the
-<a href="https://owasp.org/www-project-web-security-testing-guide/">
-OWASP Web Security Testing Guide</a> can help reduce the chance of insecure
-implementations.
-      </p>
-    </section>
-
-    <section>
-      <h3>Threat Model</h3>
       <p>
         A <a href="threat-model/index.html">threat model for the VCALM specification</a> has been created
         based on a use case of a first responder onboarding themselves to a new incident. This use case was chosen because it could be simplified
@@ -3991,27 +3715,26 @@ implementations.
         responder credential. This enabled the data flow diagram in the threat model to detail both the [=verification=] and issuance steps, in the 
         same workflow. 
       </p>
-    </section>
+    
+    <section class="notoc">
+        <h3>Security Considerations</h4>
+        <p>
+          W3C is migrating to a holistic threat modelling approach and is in the process
+          of deprecating the Security Considerations sections in new specifications.
+          Please refer to Appendix [[[#threat-model]]] for documentation related to
+          security considerations.
+        </p>
+      </section>
 
-    <section>
-      <h3>Other Security Considerations</h3>
-
-      <p>
-Since the interfaces to manage the lifecycle of [=verifiable credentials=]
-described by this specification are generalized in nature, the security
-implications of their use might not be immediately apparent to readers.
-To understand the sort of security
-concerns one might need to consider in a complete software system, implementers
-are urged to read about how this technology can be used by the
-[[[?VC-DATA-MODEL-2.0]]] specification (specifically the section
-on <a data-cite="?VC-DATA-MODEL-2.0#security-considerations">
-Verifiable Credential Security Considerations</a>), as well as the
-[[[?VC-DATA-INTEGRITY]]] specification (specifically the section
-on <a data-cite="?VC-DATA-INTEGRITY#security-considerations">
-Data Integrity Security Considerations</a>).
-      </p>
-    </section>
-
+      <section class="notoc">
+        <h3>Privacy Considerations</h4>
+        <p>
+          W3C is migrating to a holistic threat modelling approach and is in the process
+          of deprecating the Privacy Considerations sections in new specifications. Please
+          refer to Appendix [[[#threat-model]]] for documentation related to privacy
+          considerations.
+        </p>
+      </section>
   </section>
 
   <section class="appendix">
