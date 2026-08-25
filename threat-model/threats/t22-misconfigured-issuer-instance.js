@@ -8,6 +8,7 @@
             { id: "R27", name: "Robust Testing", type: "Reduce", desc: "Each workflow and individual endpoint on all processes should have robust testing to ensure expected results." }
         ],
         elements: ["P4", "P5", "P7"],
+        tags: ["security"],
         taxonomyName: "STRIDE",
         taxonomyClass: "Elevation of Privilege"
     };

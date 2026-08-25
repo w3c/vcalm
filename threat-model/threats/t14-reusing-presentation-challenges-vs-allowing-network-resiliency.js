@@ -7,6 +7,7 @@
             { id: "R14", name: "Domain-Bound Verification Challenges", type: "Reduce", desc: "Embed unique, strictly single-use, cryptographic challenges, combined with pins to the target audience domain(s) inside presentation request and response objects." }
         ],
         elements: ["P1", "P5", "F7", "F8", "F12", "F19"],
+        tags: ["security"],
         taxonomyName: "STRIDE",
         taxonomyClass: "Spoofing"
     };

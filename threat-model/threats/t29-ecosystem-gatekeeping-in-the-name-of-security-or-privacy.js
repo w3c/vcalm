@@ -5,6 +5,7 @@
         desc: "Primary ecosystem actors choose to restrict their support of particular protocols or data formats in the name of security or privacy whereas in reality they are trying to push the ecosystem to adopt their solution.",
         response: [],
         elements: ["E1"],
+        tags: ["market competition"],
         taxonomyName: "TODO",
         taxonomyClass: "TODO"
     };

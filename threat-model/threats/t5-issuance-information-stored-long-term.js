@@ -9,6 +9,7 @@
             { id: "R24", name: "Secure Data Vaults", type: "Transfer", desc: "If some user data needs to be saved for an appropriate legal reason, ensure that the data is not stored with the primary issuance software and has minimal or no publicly accessible endpoints." }
         ],
         elements: ["P5", "P7"],
+        tags: ["privacy"],
         taxonomyName: "STRIDE",
         taxonomyClass: "Information Disclosure"
     };

@@ -8,6 +8,7 @@
             { id: "R23", name: "Maintain Modern Operational Security", type: "Reduce", desc: "Ensure systems that have a reason to store any form of user related data have the most up to date security and surrounding policy practices." }
         ],
         elements: ["P1", "P3", "P4", "P5", "P6", "P7", "P8", "P9"],
+        tags: ["security", "privacy"],
         taxonomyName: "STRIDE",
         taxonomyClass: "Spoofing"
     };

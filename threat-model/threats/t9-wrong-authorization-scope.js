@@ -7,6 +7,7 @@
             { id: "R4", name: "Granular Least Privilege Scoping", type: "Reduce", desc: "Enforce explicit, fine-grained access control scopes combined with server-side validation rules to verify the identity and permission layout of any invoking resource via object capabilities." }
         ],
         elements: ["P3", "P5", "P6", "P7", "P8", "P9"],
+        tags: ["security"],
         taxonomyName: "STRIDE",
         taxonomyClass: "Elevation of Privilege"
     };

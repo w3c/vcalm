@@ -8,6 +8,7 @@
             { id: "R2", name: "Event-Driven Architecture and Async Message Queues", type: "Reduce", desc: "Decouple direct synchronous processing loops by routing transactional requests into asynchronous, managed worker queues to shield critical database threads from flooding." }
         ],
         elements: ["P4"],
+        tags: ["security"],
         taxonomyName: "STRIDE",
         taxonomyClass: "Denial of Service"
     };

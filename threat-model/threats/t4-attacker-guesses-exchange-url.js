@@ -8,6 +8,7 @@
             { id: "R7", name: "Use Reasonable Time-to-Live", type: "Reduce", desc: "Assign the appropriate lifespan to a particular exchange URL for the given use case." }
         ],
         elements: ["P5", "F7", "F12", "D9"],
+        tags: ["security", "privacy"],
         taxonomyName: "STRIDE",
         taxonomyClass: "Spoofing"
     };

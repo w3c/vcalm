@@ -7,6 +7,7 @@
             { id: "R19", name: "Strict Filtering of Exchange States", type: "Reduce", desc: "Enforce explicit layers in the system API boundaries to isolate backend state-tracking structures from public consumer schemas." }
         ],
         elements: ["P4", "F23", "P5"],
+        tags: ["security"],
         taxonomyName: "STRIDE",
         taxonomyClass: "Information Disclosure"
     };

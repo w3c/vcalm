@@ -165,6 +165,7 @@
     }]
   };
   </script>
+  <link rel="stylesheet" href="threat-model/threats/threat-model.css" />
   <style>
 code {
   color: rgb(199, 73, 0);
@@ -3700,6 +3701,282 @@ object MUST be set to `false`; if no errors are included, it MUST be set to
 
   </section>
 
+  <section class="appendix informative">
+    <h2>Threat Model</h2>
+
+    <p>
+This section details the general threat model for this specification
+including security considerations, privacy considerations, and market
+competition considerations. It makes reference to <a href="threat-model/index.html">a detailed threat model</a>, which was created
+based on a use case of a first responder onboarding themselves to a new incident. This use case was chosen because it could be simplified
+to detail the issuance of a [=verifiable credential=] for the particular incident, predicated on the [=verification=] of an existing emergency 
+responder credential. This enabled the data flow diagram in the threat model to detail both the [=verification=] and issuance steps, in the 
+same workflow.
+    </p>
+
+    <section>
+      <h3>Target Threats</h3>
+      <ol class="threat-toc">
+        <li value="1">
+          <a href="threat-model/index.html#t1-dos-attacks-against-public-coordinator-endpoints">
+DoS Attacks Against Public Coordinator Endpoints
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+Attackers perform a denial of service attack against one or more public [=coordinator=] endpoints,
+causing severe degradation of availability for legitimate clients.
+        </li>
+        <li value="4">
+          <a href="threat-model/index.html#t4-attacker-guesses-exchange-url">
+Attacker Guesses Exchange URL
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> <span class="threat-tag threat-tag-privacy">privacy</span> —
+Exchange URLs use predictable structures with discoverable workflow IDs, allowing automated scripts to only need to guess a particular
+exchange ID to effectively hijack a given exchange.
+        </li>
+        <li value="5">
+          <a href="threat-model/index.html#t5-issuance-information-stored-long-term">
+Issuance Information Stored Long-Term
+          </a>
+          <span class="threat-tag threat-tag-privacy">privacy</span> —
+Private processing logs, transaction metadata, or raw PII related to credential issuance are preserved by the issuer for longer than needed,
+creating an unintentional honey pot that could be a target for attackers.
+        </li>
+        <li value="6">
+          <a href="threat-model/index.html#t6-stolen-authorization-tokens">
+Stolen Authorization Tokens
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> <span class="threat-tag threat-tag-privacy">privacy</span> —
+A malicious entity exfiltrates authorization tokens for any involved process, using them to spoof authenticated clients.
+Depending on the affected process this could lead to any number of attacks such as: providing malicious interaction URLs,
+modifying workflows, changing issuance or verification policies, corrupting or spoofing credential statuses, etc.
+        </li>
+        <li value="17">
+          <a href="threat-model/index.html#t17-leaking-information-due-to-status-list-vc-updates">
+Leaking Information Due to Status List VC Updates
+          </a>
+          <span class="threat-tag threat-tag-privacy">privacy</span> —
+External observers consistently query status services to discover some information about the system issuing credentials,
+whether that be the rate at which they are issued, how many get issued, or in extreme cases for little used systems,
+what credential was issued to whom and when.
+        </li>
+        <li value="19">
+          <a href="threat-model/index.html#t19-interaction-urls-leak-personal-ips">
+Interaction URLs Leak Personal IPs
+          </a>
+          <span class="threat-tag threat-tag-privacy">privacy</span> —
+Direct network connections to interaction URLs expose user IP metrics and geographic data to backend servers during verification checks.
+        </li>
+        <li value="21">
+          <a href="threat-model/index.html#t21-dos-for-exchange-state-polling">
+DoS for Exchange State Polling
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+High frequencies of client state queries block active thread loops on internal database engines, reducing API capacity and crashing systems.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h3>Implementation Threats</h3>
+      <ol class="threat-toc">
+        <li value="2">
+          <a href="threat-model/index.html#t2-attacker-bypasses-internal-security-to-issue-vc-to-attacker">
+Attacker Bypasses Internal Security to Issue VC to Attacker
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+An attacker bypasses internal architectural or network boundaries to directly invoke backend credential issuance services,
+forging or granting unauthorized credentials to themselves.
+        </li>
+        <li value="3">
+          <a href="threat-model/index.html#t3-interaction-urls-with-origins-that-do-not-match-coordinator-origin">
+Interaction URLs with Origins That Do Not Match Coordinator Origin
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> <span class="threat-tag threat-tag-privacy">privacy</span> —
+A coordinator provides an interaction URL whose web origin deviates from the coordinator host origin.
+In a non-malicious application: at best, this goes unnoticed by the user; at worst, it causes confusion for the user when they see
+they are being redirected away from the website they thought they were on or going to, possibly leading them to cancel the interaction.
+With a malicious actor, this would enable cross-site tracking or session hijacking exploits.
+        </li>
+        <li value="9">
+          <a href="threat-model/index.html#t9-wrong-authorization-scope">
+Wrong Authorization Scope
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+Access tokens contain overly wide authorization permission settings,
+allowing a compromised unprivileged sub-component to invoke unintended functions.
+        </li>
+        <li value="14">
+          <a href="threat-model/index.html#t14-reusing-presentation-challenges-vs-allowing-network-resiliency">
+Reusing Presentation Challenges vs Allowing Network Resiliency
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+Reusing cryptographic challenge tokens to bridge unreliable mobile connections
+allows network sniffers to capture presentation payloads and execute replay attacks.
+        </li>
+        <li value="15">
+          <a href="threat-model/index.html#t15-invalid-assignment-or-overallocation-of-status-list-indexes">
+Invalid Assignment or Overallocation of Status List Indexes
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+The issuer service incorrectly assigns multiple issued credentials to the same index in the status list, or assigns a credential to an index that is not in the list, leading to either incorrect or missing verification results.
+        </li>
+        <li value="16">
+          <a href="threat-model/index.html#t16-too-many-status-lists-created-for-too-small-of-a-population">
+Too Many Status Lists Created for Too Small of a Population
+          </a>
+          <span class="threat-tag threat-tag-privacy">privacy</span> —
+Deployed status lists map to tightly scoped population pools, reducing user tracking privacy and enabling passive metadata linkage.
+        </li>
+        <li value="18">
+          <a href="threat-model/index.html#t18-protocol-confusion-when-multiple-protocol-options-are-available">
+Protocol Confusion When Multiple Protocol Options Are Available
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+A mixed-profile deployment environment allows an adversary to intentionally submit legacy or insecure alternative versions of requests, tricking the coordinator into lowering validation rules.
+        </li>
+        <li value="20">
+          <a href="threat-model/index.html#t20-exchange-state-leaked-to-coordinator-frontend">
+Exchange State Leaked to Coordinator Frontend
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+Granular internal processing states bleed out into frontend responses, revealing sensitive system execution parameters to local client scraping or cross-site threats.
+        </li>
+        <li value="22">
+          <a href="threat-model/index.html#t22-misconfigured-issuer-instance">
+Misconfigured Issuer Instance
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+An issuer administrator misconfigures some aspect of the issuance software, whether that be the coordinator service or the workflow service related to issuing credentials, leading to false issuance or an incorrect rejection of an issuance request.
+        </li>
+        <li value="23">
+          <a href="threat-model/index.html#t23-misconfigured-status-instance">
+Misconfigured Status Instance
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+An incorrectly deployed status service allows unauthorized users to write unvetted status indicators or read metrics without proper authorization checks.
+        </li>
+        <li value="24">
+          <a href="threat-model/index.html#t24-misconfigured-verifier-instance">
+Misconfigured Verifier Instance
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+A verifier administrator misconfigures some aspect of the verification software, whether that be the coordinator service or the workflow service related to verifying credentials, leading to inaccurate or wrong verifications.
+        </li>
+        <li value="25">
+          <a href="threat-model/index.html#t25-failure-to-validate-verifier-results-and-semantic-contexts">
+Failure to Validate Verifier Results and Semantic Contexts
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+Verification components fail to parse nested semantic outcomes (like specialized `revoked=true` fields) or blindly fetch untrusted external JSON-LD schemas, causing unexpected remote execution patterns.
+        </li>
+        <li value="26">
+          <a href="threat-model/index.html#t26-misconfigured-workflow-instance">
+Misconfigured Workflow Instance
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+Flaws in one or more workflows allow a user client to bypass prerequisites, jumping directly into incorrect success or failure states.
+        </li>
+        <li value="27">
+          <a href="threat-model/index.html#t27-workflow-variables-allow-workflow-template-to-be-misused">
+Workflow Variables Allow Workflow Template to be Misused
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+Workflow variable options expose unintended workflow paths allowing misused workflows or malicious actors to achieve unintended outcomes for the workflow.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h3>External Threats</h3>
+      <ol class="threat-toc">
+        <li value="8">
+          <a href="threat-model/index.html#t8-issuer-authentication-leads-to-incorrect-vc-being-issued-to-attacker">
+Issuer Authentication Leads to Incorrect VC Being Issued to Attacker
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+Gaps or vulnerabilities within the initial enrollment or proofing layer
+let an attacker successfully spoof an identity verification checkpoint,
+resulting in a legitimate VC mapped to an illegitimate owner.
+        </li>
+        <li value="10">
+          <a href="threat-model/index.html#t10-interaction-url-leads-to-attacker-controlled-website">
+Interaction URL Leads to Attacker-Controlled Website
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> <span class="threat-tag threat-tag-privacy">privacy</span> —
+Malicious interaction URL directs users onto phishing, scam, or otherwise unwanted sites built to harvest private data.
+        </li>
+        <li value="11">
+          <a href="threat-model/index.html#t11-holder-shares-credential-with-attacker-for-the-purposes-of-replaying-the-credential">
+Holder Shares Credential with Attacker for the Purposes of Replaying the Credential
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> <span class="threat-tag threat-tag-privacy">privacy</span> —
+Social engineering tricks a [=holder=] into presenting an active Verifiable Credential to an adversarial [=verifier=] instance, which then replays the static payload string to a real provider.
+        </li>
+        <li value="12">
+          <a href="threat-model/index.html#t12-use-of-protocol-to-centralize-digital-credentials-ecosystem-and-lockout-competition">
+Use of Protocol to Centralize Digital Credentials Ecosystem and Lockout Competition
+          </a>
+          <span class="threat-tag">market competition</span> —
+Market-dominant platforms choose to only offer their chosen protocol for credential interactions, leading to many holder implementations omitting other protocols.
+        </li>
+        <li value="13">
+          <a href="threat-model/index.html#t13-interaction-url-read-from-qr-code-is-opened-by-unexpected-or-malicious-application">
+Interaction URL Read from QR Code is Opened by Unexpected or Malicious Application
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> <span class="threat-tag threat-tag-privacy">privacy</span> —
+A rogue app present on the [=holder's=] device registers matching protocol handlers, capturing deep link output from scanned QR strings, and takes control of the interaction.
+        </li>
+        <li value="29">
+          <a href="threat-model/index.html#t29-ecosystem-gatekeeping-in-the-name-of-security-or-privacy">
+Ecosystem Gatekeeping in the Name of Security or Privacy
+          </a>
+          <span class="threat-tag">market competition</span> —
+Primary ecosystem actors choose to restrict their support of particular protocols or data formats in the name of security or privacy whereas in reality they are trying to push the ecosystem to adopt their solution.
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h3>Dependency Threats</h3>
+      <ol class="threat-toc">
+        <li value="7">
+          <a href="threat-model/index.html#t7-revocation-list-unavailable">
+Revocation List Unavailable
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+Whether because an issuing business goes insolvent, permanently shuts down its operations, or simply decides to stop supporting a system, the status service becomes unreachable, breaking verification logic across the ecosystem.
+        </li>
+        <li value="28">
+          <a href="threat-model/index.html#t28-callback-urls-during-workflows-slow-to-respond">
+Callback URLs During Workflows Slow to Respond
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+Downstream consumer webhooks or internal endpoints process calls slowly, filling internal worker pools and triggering cascading system timeouts.
+        </li>
+      </ol>
+    </section>
+
+    <section class="notoc">
+      <h3>Security Considerations</h4>
+      <p>
+  W3C is migrating to a holistic threat modelling approach and is in the process
+  of deprecating the Security Considerations sections in new specifications.
+  Please refer to Appendix [[[#threat-model]]] for documentation related to
+  security considerations.
+      </p>
+    </section>
+
+    <section class="notoc">
+      <h3>Privacy Considerations</h4>
+      <p>
+  W3C is migrating to a holistic threat modelling approach and is in the process
+  of deprecating the Privacy Considerations sections in new specifications. Please
+  refer to Appendix [[[#threat-model]]] for documentation related to privacy
+  considerations.
+      </p>
+    </section>
+  </section>
+
   <section class="appendix">
     <h2>Privacy Considerations</h2>
     <p>
@@ -3979,17 +4256,6 @@ OWASP Secure Coding Practices Checklist</a> and the
 <a href="https://owasp.org/www-project-web-security-testing-guide/">
 OWASP Web Security Testing Guide</a> can help reduce the chance of insecure
 implementations.
-      </p>
-    </section>
-
-    <section>
-      <h3>Threat Model</h3>
-      <p>
-        A <a href="threat-model/index.html">threat model for the VCALM specification</a> has been created
-        based on a use case of a first responder onboarding themselves to a new incident. This use case was chosen because it could be simplified
-        to detail the issuance of a [=verifiable credential=] for the particular incident, predicated on the [=verification=] of an existing emergency 
-        responder credential. This enabled the data flow diagram in the threat model to detail both the [=verification=] and issuance steps, in the 
-        same workflow. 
       </p>
     </section>
 

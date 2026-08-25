@@ -6,11 +6,13 @@
         response: [
             { id: "R20", name: "Code Validation", type: "Reduce", desc: "Mandate that security configuration properties pass automated vulnerability configuration scanning checks before hitting production environments." },
             { id: "R21", name: "Cryptographically Bound Registry Permissions", type: "Reduce", desc: "Hardcode security dependencies requiring matching cryptographic signature assertions to stop unauthorized status modifications." },
+            { id: "R26", name: "Misconfigurations Happen", type: "Accept", desc: "Despite best efforts, people make mistakes and misconfigurations will happen." },
             { id: "R27", name: "Robust Testing", type: "Reduce", desc: "Each workflow and individual endpoint on all processes should have robust testing to ensure expected results." }
         ],
         elements: ["P7", "F17", "P8", "P6", "F14", "P9"],
+        tags: ["security"],
         taxonomyName: "STRIDE",
-        taxonomyClass: "Tampering"
+        taxonomyClass: "Elevation of Privilege"
     };
     window.ThreatModel.register(threat);
 })();

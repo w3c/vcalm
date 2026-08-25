@@ -7,6 +7,7 @@
             { id: "R18", name: "Deprecating Interfaces and Disabling Secure Fallbacks", type: "Reduce", desc: "Hardcode execution restrictions that block processing steps for legacy or unvetted fallback patterns, enforcing a strict validation policy for protocol specifications." }
         ],
         elements: ["D4", "P4", "F6", "P1"],
+        tags: ["security"],
         taxonomyName: "STRIDE",
         taxonomyClass: "Tampering"
     };

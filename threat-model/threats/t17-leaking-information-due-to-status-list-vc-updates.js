@@ -7,6 +7,7 @@
             { id: "R17", name: "Deterministic Batching Schedules and State Padding", type: "Reduce", desc: "Push state modifications to public status lists, on strict, standardized, scheduled intervals, and fill unallocated tracking bits with random placeholder configurations, instead of streaming real-time alerts." }
         ],
         elements: ["E1", "C5", "P7", "F17", "P8", "F6", "F14", "P9"],
+        tags: ["privacy"],
         taxonomyName: "STRIDE",
         taxonomyClass: "Information Disclosure"
     };
