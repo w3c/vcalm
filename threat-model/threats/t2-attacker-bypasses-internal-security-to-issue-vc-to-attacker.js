@@ -10,7 +10,7 @@
         elements: ["P7", "F16"],
         tags: ["security"],
         taxonomyName: "STRIDE",
-        taxonomyClass: "Elevation of Privilege, Spoofing"
+        taxonomyClass: "Elevation of Privilege"
     };
     window.ThreatModel.register(threat);
 })();
