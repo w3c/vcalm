@@ -1744,11 +1744,12 @@ produce the same output as this algorithm.
           </p>
 
           <p>
-Matching proceeds in two stages. First, if an <code>example</code> is present,
-each of its properties is treated as a requirement against
-<var>credential</var>. Second, if <code>acceptedIssuers</code> is present, the
-credential's issuer MUST be acceptable. The credential matches only if both
-stages succeed when present.
+Matching proceeds in two stages. The credential matches only if both stages
+succeed. First, if <code>example</code> is present, each of its properties is
+treated as a requirement against <var>credential</var>; if <code>example</code>
+is not present, this stage is a success. Second, if <code>acceptedIssuers</code>
+is present, the credential's issuer MUST be acceptable; if
+<code>acceptedIssuers</code> is not present, this stage is a success. 
           </p>
 
           <ol class="algorithm">
