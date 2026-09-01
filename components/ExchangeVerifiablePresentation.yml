@@ -1,0 +1,85 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0"
+  title: Simple W3C Verifiable Presentation Schema
+  description: This specifies a simplified W3C verifiable presentation schema sufficient for the purposes of VCALM.
+  license:
+    name: W3C Software and Document License
+    url: http://www.w3.org/Consortium/Legal/copyright-software.
+  contact:
+    name: GitHub Source Code
+    url: https://github.com/w3c/vcalm
+paths:
+components:
+  schemas:
+    ExchangeVerifiablePresentation:
+      description: >
+        A JSON-LD presentation document that also contains some exchange
+        specific data request. Used in an exchange as a response to a 
+        VPR that contains a request for data specific to the exchange, but
+        that is not contained within the response verifiable credentials 
+        themselves.
+      allOf:
+        - $ref: "./Presentation.yml#/components/schemas/PresentationDocument"
+        - type: object
+          properties:
+            exchangeData:
+              type: object
+              description: >
+                A JSON object that enables exchange specific data to be sent when a
+                VPR makes a request for some data not normally contained in a verifiable
+                presentation. To give some examples: if a VPR requests a VC using BBS, 
+                this field would contain the commitment information to create a pseudonym,
+                if a VPR asks for zcaps, this field would contain the reference IDs 
+                for each zcap to be generated, if a VPR request needs additional payment
+                information, this field would contain the requested data.
+      example:
+        {
+          "@context":
+            [
+                "https://www.w3.org/ns/credentials/v2",
+                "https://www.w3.org/ns/credentials/examples/v2",
+            ],
+          "holder": "did:example:123",
+          "type": "VerifiablePresentation",
+          "exchangeData": {...},
+          "verifiableCredential":
+            [
+                "@context":
+                  [
+                      "https://www.w3.org/ns/credentials/v2",
+                      "https://www.w3.org/ns/credentials/examples/v2",
+                  ],
+                "id": "http://example.gov/credentials/3732",
+                "type": ["VerifiableCredential", "UniversityDegreeCredential"],
+                "issuer": "did:example:123",
+                "validFrom": "2020-03-16T22:37:26.544Z",
+                "credentialSubject":
+                  {
+                    "id": "did:example:123",
+                    "degree":
+                      {
+                        "type": "BachelorDegree",
+                        "name": "Bachelor of Science and Arts",
+                      },
+                  },
+                "proof":
+                  {
+                    "type": "DataIntegrityProof",
+                    "cryptosuite": "eddsa-rdfc-2022",
+                    "created": "2020-04-02T18:28:08Z",
+                    "verificationMethod": "did:example:123#z6MksHh7qHWvybLg5QTPPdG2DgEjjduBDArV9EF9mRiRzMBN",
+                    "proofPurpose": "assertionMethod",
+                    "proofValue": "zaHXrr7AQdydBk3ahpCDpWbxfLokDqmCToYm2dyWvpcFVyWooC2he63w1f7UNQoAMKdhaRtcnaE2KTo5o5vTCcfw",
+                  },
+            ],
+          "proof":
+            {
+              "type": "DataIntegrityProof",
+              "cryptosuite": "ecdsa-rdfc-2019",
+              "created": "2020-04-02T18:28:08Z",
+              "verificationMethod": "did:example:123#z6MksHh7qHWvybLg5QTPPdG2DgEjjduBDArV9EF9mRiRzMBN",
+              "proofPurpose": "assertionMethod",
+              "proofValue": "zaHXrr7AQdydBk3ahpCDpWbxfLokDqmCToYm2dyWvpcFVyWooC2he63w1f7UNQoAMKdhaRtcnaE2KTo5o5vTCcfw",
+            },
+        }
