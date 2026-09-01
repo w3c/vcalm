@@ -13,6 +13,7 @@ paths:
 components:
   schemas:
     VerifiablePresentation:
+      type: object
       description: >
         A JSON-LD presentation document used where the API expects a secured
         verifiable presentation, such as in verify operations or in
