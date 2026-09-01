@@ -1713,6 +1713,423 @@ formats are also acceptable.
           such as <code>bbs-2023</code> or <code>ecdsa-sd-2023</code> in the <code>acceptedCryptosuites</code> array.
         </p>
 
+        <section>
+          <h4 id="matching-a-credential-to-a-querybyexample">Matching a Credential to a QueryByExample</h4>
+
+          <p>
+The following algorithm specifies how a conforming [=holder=] implementation
+determines whether a [=verifiable credential=] matches the selection criteria
+in a QueryByExample <code>credentialQuery</code> object. Required inputs are a
+[=verifiable credential=] ([=map=] <var>credential</var>) and a
+<code>credentialQuery</code> object ([=map=] <var>credentialQuery</var>). A
+boolean match result is produced as output. A conforming implementation MUST
+produce the same output as this algorithm.
+          </p>
+
+          <p>
+Matching proceeds in two stages. The credential matches only if both stages
+succeed. First, if <code>example</code> is present, each of its properties is
+treated as a requirement against <var>credential</var>; if <code>example</code>
+is not present, this stage is a success. Second, if <code>acceptedIssuers</code>
+is present, the credential's issuer MUST be acceptable; if
+<code>acceptedIssuers</code> is not present, this stage is a success. 
+          </p>
+
+          <ol class="algorithm">
+            <li>
+If <var>credential</var> is not a [=map=], return <code>false</code>.
+            </li>
+            <li>
+If <var>credentialQuery</var> contains an <code>example</code> property,
+initialize <var>example</var> to its value and perform the following steps:
+              <ol class="algorithm">
+                <li>
+If <var>example</var> contains an <code>@context</code> property, initialize
+<var>expectedContexts</var> to its value normalized to a [=list=], and
+initialize <var>credentialContexts</var> to the value of the
+<code>@context</code> property of <var>credential</var> normalized to a
+[=list=]. If the length of <var>credentialContexts</var> is less than the
+length of <var>expectedContexts</var>, return <code>false</code>. For each
+index <var>i</var> from <code>0</code> to the length of
+<var>expectedContexts</var> minus one, if
+<var>expectedContexts</var>[<var>i</var>] is not strictly equal to
+<var>credentialContexts</var>[<var>i</var>], return <code>false</code>.
+                </li>
+                <li>
+If <var>example</var> contains a <code>type</code> property, initialize
+<var>expectedTypes</var> to its value normalized to a [=list=], and initialize
+<var>credentialTypes</var> to the value of the <code>type</code> property of
+<var>credential</var> normalized to a [=list=]. If no value in
+<var>expectedTypes</var> is strictly equal to any value in
+<var>credentialTypes</var>, return <code>false</code>.
+                </li>
+                <li>
+Initialize <var>remaining</var> to a copy of <var>example</var> with the
+<code>@context</code> and <code>type</code> properties removed, if present. If
+<var>remaining</var> contains any properties, set <var>match</var> to the
+result of running the algorithm in Section
+[[[#matching-object-properties]]], passing <var>remaining</var> as
+<var>expectedObject</var> and <var>credential</var> as
+<var>actualObject</var>. If <var>match</var> is <code>false</code>, return
+<code>false</code>.
+                </li>
+              </ol>
+            </li>
+            <li>
+If <var>credentialQuery</var> contains an <code>acceptedIssuers</code>
+property, initialize <var>acceptedIssuers</var> to its value and perform the
+following steps:
+              <ol class="algorithm">
+                <li>
+Initialize <var>credentialIssuer</var> to the value of the
+<code>issuer</code> property of <var>credential</var>. If
+<var>credentialIssuer</var> is a [=map=], initialize
+<var>credentialIssuer</var> to the value of its <code>id</code> property.
+                </li>
+                <li>
+Initialize <var>issuerItems</var> to an empty [=list=]. For each
+<var>item</var> in <var>acceptedIssuers</var>, if <var>item</var> is a
+[=list=], append each of its elements to <var>issuerItems</var>; otherwise,
+append <var>item</var> to <var>issuerItems</var>.
+                </li>
+                <li>
+If no <var>item</var> in <var>issuerItems</var> is acceptable for
+<var>credentialIssuer</var>, return <code>false</code>. An <var>item</var> is
+acceptable if any of the following is true:
+                  <ol class="algorithm">
+                    <li>
+<var>item</var> is a [=string=] that is strictly equal to
+<var>credentialIssuer</var>.
+                    </li>
+                    <li>
+<var>item</var> is a [=map=] that contains an <code>id</code> property whose
+value is strictly equal to <var>credentialIssuer</var>.
+                    </li>
+                    <li>
+<var>item</var> is a [=map=] that contains a <code>recognizedIn</code>
+property, and <var>credentialIssuer</var> is recognized according to the
+[[[VC-RECOG-ENT]]] specification using that property's value.
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+            </li>
+            <li>
+Return <code>true</code>.
+            </li>
+          </ol>
+
+          <p class="note" title="Properties not used during matching">
+The <code>reason</code>, <code>acceptedCryptosuites</code>, and
+<code>acceptedEnvelopes</code> properties of a <code>credentialQuery</code>
+object are not used during credential matching. The <code>reason</code>
+property is intended for display to the [=holder=] by their software. The
+<code>acceptedCryptosuites</code> and <code>acceptedEnvelopes</code> properties
+inform the [=holder=]'s software about which proof mechanisms and envelope
+formats the [=verifier=] will accept, and are used during presentation
+construction rather than credential selection.
+          </p>
+
+          <p class="note" title="JSON structural matching">
+This algorithm compares JSON structure and values. It does not require JSON-LD
+compaction, expansion, or term rewriting. Implementations MAY apply JSON-LD
+transformations before matching, provided the boolean result is the same as
+this algorithm when run on the transformed inputs.
+          </p>
+        </section>
+
+        <section>
+          <h5 id="matching-object-properties">Matching Object Properties</h5>
+
+          <p>
+The following algorithm determines whether every property of an expected object
+is satisfied by an actual object. It is used recursively for nested objects
+such as <code>credentialSubject</code>. Required inputs are an expected object
+([=map=] <var>expectedObject</var>) and an actual object ([=map=]
+<var>actualObject</var>). A boolean is produced as output.
+          </p>
+
+          <ol class="algorithm">
+            <li>
+For each <var>propertyName</var> and <var>expectedValue</var> pair in
+<var>expectedObject</var>:
+              <ol class="algorithm">
+                <li>
+If <var>actualObject</var> does not contain a property named
+<var>propertyName</var>, return <code>false</code>.
+                </li>
+                <li>
+Initialize <var>actualValue</var> to the value of the
+<var>propertyName</var> property of <var>actualObject</var>.
+                </li>
+                <li>
+If <var>expectedValue</var> is an empty [=string=] (<code>""</code>), continue
+to the next property. An empty string indicates that the property MUST exist,
+but any value is acceptable.
+                </li>
+                <li>
+If <var>expectedValue</var> is a [=map=]:
+                  <ol class="algorithm">
+                    <li>
+If <var>expectedValue</var> contains no properties, continue to the next
+property. An empty map indicates that the property MUST exist, but any value is
+acceptable.
+                    </li>
+                    <li>
+If <var>actualValue</var> is a [=list=], then at least one element in
+<var>actualValue</var> MUST be a [=map=] for which this algorithm returns
+<code>true</code> when called with <var>expectedValue</var> as
+<var>expectedObject</var> and the element as <var>actualObject</var>. If no
+such element exists, return <code>false</code>.
+                    </li>
+                    <li>
+Otherwise, set <var>nestedMatch</var> to the result of running this algorithm
+with <var>expectedValue</var> as <var>expectedObject</var> and
+<var>actualValue</var> as <var>actualObject</var>. If <var>nestedMatch</var> is
+<code>false</code>, return <code>false</code>.
+                    </li>
+                  </ol>
+                </li>
+                <li>
+If <var>expectedValue</var> is a [=list=]:
+                  <ol class="algorithm">
+                    <li>
+If <var>expectedValue</var> contains no elements, continue to the next
+property. An empty list indicates that the property MUST exist, but any value
+is acceptable.
+                    </li>
+                    <li>
+Initialize <var>actualValues</var> to <var>actualValue</var> normalized to a
+[=list=] (if <var>actualValue</var> is not already a [=list=], wrap it in a
+[=list=] containing only <var>actualValue</var>).
+                    </li>
+                    <li>
+At least one element <var>expectedElement</var> in <var>expectedValue</var>
+MUST match at least one element <var>actualElement</var> in
+<var>actualValues</var>. An <var>expectedElement</var> matches an
+<var>actualElement</var> if any of the following is true:
+                      <ol class="algorithm">
+                        <li>
+<var>expectedElement</var> is a [=map=], <var>actualElement</var> is a
+[=map=], and this algorithm returns <code>true</code> when called with
+<var>expectedElement</var> as <var>expectedObject</var> and
+<var>actualElement</var> as <var>actualObject</var>.
+                        </li>
+                        <li>
+<var>expectedElement</var> is not a [=map=] and
+<var>actualElement</var> is strictly equal to <var>expectedElement</var>.
+                        </li>
+                        <li>
+<var>expectedElement</var> is not a [=map=] and numeric coercion applies:
+both <var>actualElement</var> and <var>expectedElement</var> can be
+interpreted as numeric values (using the same eligibility rules as for
+primitive values below), and their numeric values are equal.
+                        </li>
+                      </ol>
+If no such matching pair exists, return <code>false</code>.
+                    </li>
+                  </ol>
+                </li>
+                <li>
+Otherwise, <var>expectedValue</var> is a primitive value. Initialize
+<var>actualValues</var> to <var>actualValue</var> normalized to a [=list=]. At
+least one element in <var>actualValues</var> MUST satisfy one of the following:
+                  <ol class="algorithm">
+                    <li>
+The element is strictly equal to <var>expectedValue</var>.
+                    </li>
+                    <li>
+Numeric coercion: both the element and <var>expectedValue</var> can be
+interpreted as numeric values, and their numeric values are equal.
+Implementations SHOULD perform numeric coercion when equivalent numeric values
+are represented differently (for example, the [=string=] <code>"21"</code> and
+the number <code>21</code>). A value is eligible for coercion only if it is a
+[=string=] that represents a valid numeric value in its entirety; strings that
+contain non-numeric characters MUST NOT be coerced.
+                    </li>
+                  </ol>
+                </li>
+              </ol>
+            </li>
+            <li>
+Return <code>true</code>.
+            </li>
+          </ol>
+
+          <p class="note" title="Equivalence to JSON Pointer Map approach">
+This recursive property matching algorithm is functionally equivalent to
+flattening the expected object into a map of
+<a href="https://www.rfc-editor.org/rfc/rfc6901">JSON Pointer</a> paths paired
+with expected values, and then checking each path against the credential.
+Implementations MAY use either approach, provided the results are equivalent.
+See also Section [[[#converting-querybyexample-to-json-pointers]]].
+          </p>
+        </section>
+
+        <section>
+          <h4 id="converting-querybyexample-to-json-pointers">Converting QueryByExample to JSON Pointers</h4>
+
+          <p>
+The following algorithm converts a QueryByExample <code>example</code> object
+into a list of <a href="https://www.rfc-editor.org/rfc/rfc6901">JSON
+Pointers</a> that specify which fields to reveal for [=selective disclosure=],
+such as the <code>selectivePointers</code> option used with credential
+derivation (see Section [[[#derive-credential]]]). Required input is an
+example object ([=map=] <var>example</var>). An array of JSON Pointer strings
+(<var>pointers</var>) is produced as output. A conforming implementation that
+converts a QueryByExample <code>example</code> for [=selective disclosure=]
+MUST produce the same output as this algorithm.
+          </p>
+
+          <ol class="algorithm">
+            <li>
+Initialize <var>object</var> to a copy of <var>example</var> with the
+<code>@context</code> property removed, if present.
+            </li>
+            <li>
+Initialize <var>pointers</var> to the list of JSON Pointers that identify every
+value in <var>object</var> (for example, by treating <var>object</var> as a
+tree and emitting a pointer for each leaf value, including properties whose
+value is an empty [=string=]).
+            </li>
+            <li>
+Append <code>/type</code> and <code>/issuer</code> to <var>pointers</var> if
+they are not already present. These pointers are the deterministic mandatory
+reveal paths for selective disclosure conversion under
+[[VC-DATA-MODEL-2.0]]. Securing mechanisms MAY require additional mandatory
+pointers at issuance time; those are outside the scope of this conversion.
+            </li>
+            <li>
+Set <var>pointers</var> to the result of running the algorithm in Section
+[[[#adjust-reveal-pointers]]], passing <var>pointers</var>.
+            </li>
+            <li>
+Return <var>pointers</var>.
+            </li>
+          </ol>
+
+          <p>
+The following example uses the Permanent Resident Card QueryByExample from this
+section. After removing <code>@context</code>, generating leaf pointers
+(including <code>/credentialSubject/birthCountry</code> from the empty-string
+claim), appending the mandatory <code>/type</code> and <code>/issuer</code>
+pointers, ensuring <code>credentialSubject</code> coverage, pruning shallow
+pointers, and normalizing <code>type</code> pointers, a conforming conversion
+produces:
+          </p>
+
+          <pre class="example nohighlight" title="QueryByExample example converted to selectivePointers">
+{
+  "selectivePointers": [
+    "/type",
+    "/issuer",
+    "/credentialSubject/birthCountry"
+  ]
+}
+          </pre>
+
+          <p>
+In this result, <code>/type</code> and <code>/issuer</code> are always added by
+the conversion algorithm as mandatory reveal pointers, and
+<code>/credentialSubject/birthCountry</code> is the claim requested by the
+example (via an empty-string value). These pointers are suitable for use as
+<code>selectivePointers</code> when deriving a credential for presentation.
+          </p>
+        </section>
+
+        <section>
+          <h5 id="adjust-reveal-pointers">Adjust Reveal Pointers</h5>
+
+          <p>
+The following algorithm adjusts a list of JSON Pointers produced from a
+QueryByExample <code>example</code> so they are suitable for selective
+disclosure. Required input is an array of JSON Pointer strings
+(<var>pointers</var>). An array of JSON Pointer strings is produced as output.
+          </p>
+
+          <ol class="algorithm">
+            <li>
+If no pointer in <var>pointers</var> is equal to
+<code>/credentialSubject</code> and no pointer has
+<code>/credentialSubject/</code> as a prefix, append
+<code>/credentialSubject</code> to <var>pointers</var>.
+            </li>
+            <li>
+Set <var>pointers</var> to the result of running the algorithm in Section
+[[[#prune-shallow-pointers]]], passing <var>pointers</var>.
+            </li>
+            <li>
+Initialize <var>adjustedPointers</var> to an empty [=list=]. For each
+<var>pointer</var> in <var>pointers</var>:
+              <ol class="algorithm">
+                <li>
+Initialize <var>typeIndex</var> to the index of the substring
+<code>/type/</code> in <var>pointer</var>, or <code>-1</code> if it does not
+occur.
+                </li>
+                <li>
+If <var>typeIndex</var> is not <code>-1</code>, append the substring of
+<var>pointer</var> from the start through <code>/type</code> (that is, truncate
+any array index after <code>/type</code>) to <var>adjustedPointers</var>.
+Otherwise, append <var>pointer</var> to <var>adjustedPointers</var>.
+                </li>
+              </ol>
+            </li>
+            <li>
+Return <var>adjustedPointers</var>.
+            </li>
+          </ol>
+        </section>
+
+        <section>
+          <h5 id="prune-shallow-pointers">Prune Shallow Pointers</h5>
+
+          <p>
+The following algorithm retains only the deepest JSON Pointers from a list, so
+that a shallow pointer is removed when a deeper pointer under the same path
+exists. Required input is an array of JSON Pointer strings
+(<var>pointers</var>). An array of JSON Pointer strings is produced as output.
+          </p>
+
+          <p>
+For example, given
+<code>["/a/b", "/a/b/c", "/a/b/c/d"]</code>, the result is
+<code>["/a/b/c/d"]</code>.
+          </p>
+
+          <ol class="algorithm">
+            <li>
+Initialize <var>deep</var> to an empty [=list=].
+            </li>
+            <li>
+For each <var>pointer</var> in <var>pointers</var>:
+              <ol class="algorithm">
+                <li>
+Initialize <var>isDeep</var> to <code>true</code>.
+                </li>
+                <li>
+For each <var>other</var> in <var>pointers</var>:
+                  <ol class="algorithm">
+                    <li>
+If the length of <var>pointer</var> is less than the length of
+<var>other</var> and <var>other</var> starts with <var>pointer</var>, set
+<var>isDeep</var> to <code>false</code> and stop comparing for this
+<var>pointer</var>.
+                    </li>
+                  </ol>
+                </li>
+                <li>
+If <var>isDeep</var> is <code>true</code>, append <var>pointer</var> to
+<var>deep</var>.
+                </li>
+              </ol>
+            </li>
+            <li>
+Return <var>deep</var>.
+            </li>
+          </ol>
+        </section>
+
       </section>
 
       <section>
