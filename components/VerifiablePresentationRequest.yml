@@ -98,7 +98,44 @@ components:
                       type: string
                   "serviceEndpoint":
                     type: string
-                    description: A URL that can be utilized for interacting with the service for the purposes of responding to the Verifiable Presentation Request.
+                    description: A URL that can be used for interacting with the service for the purpose of responding to the Verifiable Presentation Request.
+        "credentialOffer":
+          type: array
+          description: An optional parameter that informs a recipient which potential VC(s) might be issued if the VPR is responded to. A responder can also use this to provide their own VPR with preferential constraints on the VC(s) they would prefer to receive.
+          items:
+            type: object
+            properties:
+              "mediaType":
+                type: string
+                description: The media type of the envelope format.
+                example: [{"mediaType": "application/vc"}]
+              "credential":
+                type: object
+                description: A minimally contextualized set of type information that informs the recipient what is being offered.
+                properties:
+                  "@context":
+                    type: array
+                    description: The JSON-LD context of the credential.
+                    items:
+                      type: string
+                  "type":
+                    type: array
+                    description: The JSON-LD type of the credential.
+                    items:
+                      type: string
+                  "proof":
+                    type: array
+                    description: Results, if any, of verifying the proof objects.
+                    items:
+                      type: object
+                      description: Information about the proofs used by the VC being described.
+                      properties:
+                        "type":
+                          type: string
+                          description: The type of proof that will be used. 
+                        "cryptosuite":
+                          type: string
+                          description: The cryptosuite used by the proof. 
       example:
         {
           "query": [{
@@ -126,6 +163,20 @@ components:
           }],
           "challenge": "3182bdea-63d9-11ea-b6de-3b7c1404d57f",
           "domain": "edu.example",
+          "credentialOffer": [{
+            "mediaType": "application/vc",
+            "credential": {
+              "@context": [
+                "https://www.w3.org/ns/credentials/v2",
+                "https://www.w3.org/ns/credentials/examples/v2"
+              ],
+              "type": "ExampleAlumniCredential",
+              "proof": [{
+                "type": "DataIntegrityProof",
+                "cryptosuite": "bbs-2023"
+              }]
+            }
+          }],
           "interact": {
             "service": [{
               "type": "UnmediatedPresentationService2021",
