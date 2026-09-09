@@ -3262,7 +3262,13 @@ URL, so an observer can complete the exchange with their own wallet first. See
 Shoulder Surfed Interaction URL Enables Cross-Device Pickup</a>, which
 recommends preferring pickup on the device already running the [=holder
 coordinator=], confirming receipt afterwards, and checking at presentation time
-that the presenter is the [=subject=].
+that the presenter is the [=subject=]. Where cross-device engagement is used, it
+is safer for the [=holder=] to initiate it, presenting their own
+[=interaction QR Code=] to the [=issuer=] or [=verifier=], than for the
+[=issuer=] or [=verifier=] to display one. The [=holder=] then explicitly
+confirms the website they are directed to or the flow that is started, as in the
+holder-initiated `inviteRequest` example above, so an observed code does not by
+itself carry an interaction forward.
         </p>
 
         <p class="note" title="Why wallet authorization bounce-backs are not recommended">
