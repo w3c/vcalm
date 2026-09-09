@@ -13,7 +13,7 @@
         {
             name: "External Threats",
             id: "threat-model-externnal-threats",
-            threats: ["T8", "T10", "T11", "T12", "T13", "T29", "T30", "T31", "T32", "T37"],
+            threats: ["T8", "T10", "T11", "T12", "T13", "T29", "T30", "T41", "T31", "T32", "T37"],
         },
         {
             name: "Dependency Threats",
