@@ -3254,6 +3254,33 @@ An interaction QR code for `https://app.example/interactions/z8n38Dp7a?iuv=1`
           </figcaption>
         </figure>
 
+        <p class="note" title="Cross-device pickup and observed QR codes">
+A displayed [=interaction QR Code=] is readable by anyone with line of sight,
+and initiating an [=exchange=] requires no authorization beyond the exchange
+URL, so an observer can complete the exchange with their own wallet first. See
+<a href="threat-model/index.html#t30-shoulder-surfed-interaction-url-enables-cross-device-pickup">T30:
+Shoulder Surfed Interaction URL Enables Cross-Device Pickup</a>, which
+recommends preferring pickup on the device already running the [=holder
+coordinator=], confirming receipt afterwards, and checking at presentation time
+that the presenter is the [=subject=].
+        </p>
+
+        <p class="note" title="Why wallet authorization bounce-backs are not recommended">
+Sending the [=holder=] back to the originating website to authorize their
+wallet is not recommended as a remedy. It costs every interaction usability to
+address a case that arises only where the screen is observable, and it does not
+close the gap, since software on the device can still intercept the handoff
+(<a href="threat-model/index.html#t13-interaction-url-read-from-qr-code-is-opened-by-unexpected-or-malicious-application">T13:
+Interaction URL Read from QR Code is Opened by Unexpected or Malicious
+Application</a>). Doing so requires distinguishing approved wallets from
+unapproved ones, with the effects described in
+<a href="threat-model/index.html#t12-use-of-protocol-to-centralize-digital-credentials-ecosystem-and-lockout-competition">T12:
+Use of Protocol to Centralize Digital Credentials Ecosystem and Lockout
+Competition</a> and
+<a href="threat-model/index.html#t29-ecosystem-gatekeeping-in-the-name-of-security-or-privacy">T29:
+Ecosystem Gatekeeping in the Name of Security or Privacy</a>.
+        </p>
+
       </section>
 
       <section>
