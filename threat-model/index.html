@@ -125,25 +125,26 @@
   <script src="threats/t38-mishandled-status-information-upon-credential-deletion-reveals-information.js"></script>
   <script src="threats/t39-large-payload-triggers-denial-of-service-dos.js"></script>
   <script src="threats/t40-improper-credential-validation-leads-to-security-vulnerabilities.js"></script>
+  <script src="threats/t41-shoulder-surfed-interaction-url.js"></script>
 </head>
 
 <body>
   <section id="abstract">
     <p>
-      This threat model describes known threats of 
-      Verifiable Credential API for Lifecycle Management (VCALM) specification at 
+      This threat model describes known threats of
+      Verifiable Credential API for Lifecycle Management (VCALM) specification at
       <a href="https://www.w3.org/TR/vcalm-1.0/">https://www.w3.org/TR/vcalm-1.0/</a>.
     </p>
     <p>
-      VCALM specifies an API that enables the usage of [[VC-DATA-MODEL-2.0]] 
-      throughout the lifetime of [=verifiable credentials=]. 
+      VCALM specifies an API that enables the usage of [[VC-DATA-MODEL-2.0]]
+      throughout the lifetime of [=verifiable credentials=].
     </p>
   </section>
   <section id="sotd">
     <p><em>
-      This section describes the status of this document at the time of its 
-      publication. A list of current W3C publications and the latest revision of 
-      this technical report can be found in the 
+      This section describes the status of this document at the time of its
+      publication. A list of current W3C publications and the latest revision of
+      this technical report can be found in the
       <a href="https://www.w3.org/TR/">W3C standards and drafts index</a>.
     </em></p>
 
@@ -152,49 +153,49 @@
       This is a draft of a new NOTE-track publication from the Verifiable Credentials WG.
     </p>
     <p>
-      This document was published by the 
+      This document was published by the
       <a href="https://www.w3.org/groups/wg/vc/">Verifiable Credentials Working Group</a> as an Editor&#39;s Draft.
     </p>
     <p>
       Publication as an Editor&#39;s Draft does not imply endorsement by W3C and its Members.</p>
     <p>
-      This is a draft document and may be updated, replaced, or obsoleted by other documents 
+      This is a draft document and may be updated, replaced, or obsoleted by other documents
       at any time. It is inappropriate to cite this document as other than a work in progress.
     </p>
     <p>
-      This document was produced by a group operating under the 
-      <a href="https://www.w3.org/policies/patent-policy/">W3C Patent Policy</a>. 
-      W3C maintains a <a href="https://www.w3.org/groups/wg/did/ipr">public list of any patent 
-        disclosures</a> made in connection with the deliverables of the group; that page also 
-        includes instructions for disclosing a patent. An individual who has actual knowledge 
-        of a patent that the individual believes contains 
-        <a href="https://www.w3.org/policies/patent-policy/#def-essential">Essential Claim(s)</a> 
-        must disclose the information in accordance with 
+      This document was produced by a group operating under the
+      <a href="https://www.w3.org/policies/patent-policy/">W3C Patent Policy</a>.
+      W3C maintains a <a href="https://www.w3.org/groups/wg/did/ipr">public list of any patent
+        disclosures</a> made in connection with the deliverables of the group; that page also
+        includes instructions for disclosing a patent. An individual who has actual knowledge
+        of a patent that the individual believes contains
+        <a href="https://www.w3.org/policies/patent-policy/#def-essential">Essential Claim(s)</a>
+        must disclose the information in accordance with
         <a href="https://www.w3.org/policies/patent-policy/#sec-Disclosure">section 6 of the W3C Patent Policy</a>.
       </p>
     <p>
-      This document is governed by the 
-      <a href="https://www.w3.org/policies/process/20250818/">18 August 2025 W3C Process Document</a>.   
+      This document is governed by the
+      <a href="https://www.w3.org/policies/process/20250818/">18 August 2025 W3C Process Document</a>.
     </p>
   </section>
   <section id="Introduction">
     <h2>Introduction</h2>
     <p>
-      VCALM provides a HTTP API for issuing, verifying, presenting, and managing Verifiable Credentials throughout their lifecycle. 
+      VCALM provides a HTTP API for issuing, verifying, presenting, and managing Verifiable Credentials throughout their lifecycle.
     </p>
     <p>
-      The lifecycle of any credential begins with a user initiating an interaction with a system. During this interaction business 
-      rules can be applied, and any number of qualifying interactions can occur that result in the user being issued a credential. 
-      The user then selects, or has pre-selected, their preferred [=holder=] software to have the credential delivered to and stored in. 
-      The user’s holder software securely stores the issued credential and makes it available for the user to make use of when and 
-      where they choose. A system receiving an issued credential can then make use of their [=verifier=] software to check the state of 
-      the submitted credential, and cryptographically confirm that the credential was issued by the claimed [=issuer=].  
+      The lifecycle of any credential begins with a user initiating an interaction with a system. During this interaction business
+      rules can be applied, and any number of qualifying interactions can occur that result in the user being issued a credential.
+      The user then selects, or has pre-selected, their preferred [=holder=] software to have the credential delivered to and stored in.
+      The user’s holder software securely stores the issued credential and makes it available for the user to make use of when and
+      where they choose. A system receiving an issued credential can then make use of their [=verifier=] software to check the state of
+      the submitted credential, and cryptographically confirm that the credential was issued by the claimed [=issuer=].
     </p>
     <p>
-      Due to the nature of Verifiable Credentials, the user is assured that regardless of where, and how many times 
-      they make use of the issued credential, no system can modify its contents. The issuing system can, for any reason, 
-      revoke or modify the status of an issued credential and downstream verification software can then make its own evaluation 
-      as to the validity of a credential based on its own business rules and logic. 
+      Due to the nature of Verifiable Credentials, the user is assured that regardless of where, and how many times
+      they make use of the issued credential, no system can modify its contents. The issuing system can, for any reason,
+      revoke or modify the status of an issued credential and downstream verification software can then make its own evaluation
+      as to the validity of a credential based on its own business rules and logic.
     </p>
     <p>
       A discussion of use cases can be found at <a href="https://w3c-ccg.github.io/vc-api-use-cases/">https://w3c-ccg.github.io/vc-api-use-cases/</a>.
@@ -216,32 +217,32 @@
         on <a data-cite="?VC-DATA-INTEGRITY#security-considerations">
         Data Integrity Security Considerations</a>).
       </p>
- 
+
     <section id="threat-model-description">
       <h3>Description</h3>
       <p>
         The general architecture used in the development of the VCALM specification has three primary logical roles, the [=verifier=], the [=issuer=], and the [=holder=].
         Each role is made up of a number of components, each of which can be run on an independent systems,
         or any number of which can be run on the same system.
-        It is also expected that some systems will implement various components across different roles, 
-        acting in the capacity of multiple roles during different interactions with users. 
+        It is also expected that some systems will implement various components across different roles,
+        acting in the capacity of multiple roles during different interactions with users.
       </p>
       <p>
-        The lifecycle of a Verifiable Credential begins with a user interacting with an [=issuer=]’s system, providing any necessary 
-        evidence for the [=issuer=] to decide to issue a Verifiable Credential to the holder. Once issued, the holder stores the credential 
-        in their holder software of choice. Holder software is sometimes called a digital wallet and can be embedded in a desktop or mobile device application. When the holder chooses to make use of their issued credential, they provide it during an 
-        interaction with a new system, which makes use of its [=verifier=] to verify that the provided credential is legitimate, 
-        and to check the status of the credential via the specified status service. 
+        The lifecycle of a Verifiable Credential begins with a user interacting with an [=issuer=]’s system, providing any necessary
+        evidence for the [=issuer=] to decide to issue a Verifiable Credential to the holder. Once issued, the holder stores the credential
+        in their holder software of choice. Holder software is sometimes called a digital wallet and can be embedded in a desktop or mobile device application. When the holder chooses to make use of their issued credential, they provide it during an
+        interaction with a new system, which makes use of its [=verifier=] to verify that the provided credential is legitimate,
+        and to check the status of the credential via the specified status service.
       </p>
       <p>
-        A holder can, at any point in time, delete a verifiable credential from their holder software; this does not revoke the 
-        credential on the [=issuer=]’s system, but rather simply deletes the [=holder=]'s copy of the credential. The credential can be 
-        recovered if the user can contact the [=issuer=] and satisfy any requirements the [=issuer=] has to re-issue the credential. 
+        A holder can, at any point in time, delete a verifiable credential from their holder software; this does not revoke the
+        credential on the [=issuer=]’s system, but rather simply deletes the [=holder=]'s copy of the credential. The credential can be
+        recovered if the user can contact the [=issuer=] and satisfy any requirements the [=issuer=] has to re-issue the credential.
       </p>
       <p>
-        An [=issuer=] can update the status of a credential based on any business rules, including to revoke the credential. 
-        This does not delete the credential from the holder’s system, but can affect the usage of the credential 
-        depending on how and where the user attempts to make use<br>of it. 
+        An [=issuer=] can update the status of a credential based on any business rules, including to revoke the credential.
+        This does not delete the credential from the holder’s system, but can affect the usage of the credential
+        depending on how and where the user attempts to make use<br>of it.
       </p>
       <h3 id="user-story">User Story</h3>
         <p>The below user story was the framework used in creating the DFD below.</p>
@@ -261,17 +262,17 @@
           </li>
           </ol>
       <h3 id="general-architecture-choices">General Architecture Choices</h3>
-        <p>All storage services were left off this diagram due to the interactions between them and their corresponding 
-          services being deemed irrelevant for this threat modeling exercise because the VCALM 
-          specification does not specify any API related to how a service talks to its storage. 
+        <p>All storage services were left off this diagram due to the interactions between them and their corresponding
+          services being deemed irrelevant for this threat modeling exercise because the VCALM
+          specification does not specify any API related to how a service talks to its storage.
           Such APIs should provide their own threat model for evaluation by implementers.</p>
       <h3 id="holder-architecture-choices">Holder Architecture Choices</h3>
-        <p>The holder is making use of a web-based digital wallet, not an independent wallet application. 
-          This means that the [=holder coordinator=] was modelled as being its own container within the holder’s 
-          browser rather than a separate container from the holder’s browser<br> but still on the holder’s device. 
+        <p>The holder is making use of a web-based digital wallet, not an independent wallet application.
+          This means that the [=holder coordinator=] was modelled as being its own container within the holder’s
+          browser rather than a separate container from the holder’s browser<br> but still on the holder’s device.
         </p>
       <h3 id="verifier-and-issuer-architecture-choices">Verifier and Issuer Architecture Choices</h3>
-        <p>To simplify the number of coordinators needed in the diagram, the State of Utopia’s Incident Command 
+        <p>To simplify the number of coordinators needed in the diagram, the State of Utopia’s Incident Command
           is acting as both [=issuer=] and [=verifier=], meaning they have a unified [=issuer coordinator=] and [=verifier coordinator=] process.
         </p>
 
@@ -287,65 +288,65 @@
       </figure>
     </section>
       <h3>Data Flow Description</h3>
-        <p>The interaction begins with <strong>Sachin</strong> (<a>E1</a>) opening his <strong>phone’s</strong> (<a>C1</a>) 
-          <strong>browser</strong> (<a>P2</a>) to the <strong>State of Utopia’s Incident Command website</strong> (<a>P4</a>) (<a>F0</a>). 
-          Here he navigates to find the incident he is traveling to and selects to register as an EMT for the incident (<a>F1</a>). 
-          The incident website needs proof that Sachin is a credentialed first responder and reaches out (<a>F2</a>) to its 
-          <strong>[=workflow service=]</strong> (<a>P5</a>) to create a new <strong>exchange URL</strong> (<a>D9</a>) to facilitate Sachin’s request. 
-          After creating the exchange with its [=workflow service=], the <strong>incident coordinator</strong> (<a>P2</a>) 
-          begins polling the <strong>[=workflow service=]</strong> (<a>P5</a>) to get updates on the exchange (<a>F23</a>) so 
-          that it can execute any business logic associated with state changes the exchange goes through. 
+        <p>The interaction begins with <strong>Sachin</strong> (<a>E1</a>) opening his <strong>phone’s</strong> (<a>C1</a>)
+          <strong>browser</strong> (<a>P2</a>) to the <strong>State of Utopia’s Incident Command website</strong> (<a>P4</a>) (<a>F0</a>).
+          Here he navigates to find the incident he is traveling to and selects to register as an EMT for the incident (<a>F1</a>).
+          The incident website needs proof that Sachin is a credentialed first responder and reaches out (<a>F2</a>) to its
+          <strong>[=workflow service=]</strong> (<a>P5</a>) to create a new <strong>exchange URL</strong> (<a>D9</a>) to facilitate Sachin’s request.
+          After creating the exchange with its [=workflow service=], the <strong>incident coordinator</strong> (<a>P2</a>)
+          begins polling the <strong>[=workflow service=]</strong> (<a>P5</a>) to get updates on the exchange (<a>F23</a>) so
+          that it can execute any business logic associated with state changes the exchange goes through.
         </p>
-        <p>The incident coordinator then generates a <strong>protocol object</strong> (<a>D4</a>) that contains the set of possible 
-          interaction options a user can select from including the <strong>exchange URL</strong> (<a>D9</a>) just provisioned. 
-          Following this, the <strong>interaction URL</strong> (<a>D2</a>) is generated and returned to Sachin’s browser (<a>F3</a>). 
-          This interaction URL (<a>D2</a>) can be transferred via any number of mechanisms – QR Code, NFC, a letter, etc. Here, Sachin 
+        <p>The incident coordinator then generates a <strong>protocol object</strong> (<a>D4</a>) that contains the set of possible
+          interaction options a user can select from including the <strong>exchange URL</strong> (<a>D9</a>) just provisioned.
+          Following this, the <strong>interaction URL</strong> (<a>D2</a>) is generated and returned to Sachin’s browser (<a>F3</a>).
+          This interaction URL (<a>D2</a>) can be transferred via any number of mechanisms – QR Code, NFC, a letter, etc. Here, Sachin
           experiences the interaction as a response to his selection on the incident website that occurs in (<a>F1</a>).
         </p>
-        <p>Sachin, who is still viewing the incident website sees a popup that asks him to confirm his wallet selection (<a>F4</a>). 
-          As part of the selection, Sachin sees a message that details the reason for this interaction, allowing him to choose 
-          to cancel or continue the interaction as he sees fit. Once the wallet selection is made, Sachin’s browser forwards the 
-          interaction URL (<a>F5</a>) to the selected <strong>wallet</strong> (<a>P1</a>). The selected wallet reaches out to the provided 
+        <p>Sachin, who is still viewing the incident website sees a popup that asks him to confirm his wallet selection (<a>F4</a>).
+          As part of the selection, Sachin sees a message that details the reason for this interaction, allowing him to choose
+          to cancel or continue the interaction as he sees fit. Once the wallet selection is made, Sachin’s browser forwards the
+          interaction URL (<a>F5</a>) to the selected <strong>wallet</strong> (<a>P1</a>). The selected wallet reaches out to the provided
           interaction URL, which returns to the incident coordinator, and retrieves the <strong>protocol object</strong> (<a>D4</a>)
-          that advertises the set of available <strong>interaction protocols</strong> (<a>F6</a>). 
-          Once the <strong>wallet coordinator</strong> (<a>P1</a>) has the set of available protocols, it selects the protocol that 
-          best fits the current interaction. For this exploration, it selects the VC API, but in fullness it could select from 
-          any of the available interaction protocols advertised, such as the inviteRequest protocol, and there are no restrictions 
-          on the protocols object that limits the set of advertised interaction protocols. 
+          that advertises the set of available <strong>interaction protocols</strong> (<a>F6</a>).
+          Once the <strong>wallet coordinator</strong> (<a>P1</a>) has the set of available protocols, it selects the protocol that
+          best fits the current interaction. For this exploration, it selects the VC API, but in fullness it could select from
+          any of the available interaction protocols advertised, such as the inviteRequest protocol, and there are no restrictions
+          on the protocols object that limits the set of advertised interaction protocols.
         </p>
-        <p>After selecting the VC API from the available set of protocols, Sachin’s wallet uses the provided 
-          <strong>exchange URL</strong> (<a>D9</a>) to contact the State of Utopia Incident Command’s <strong>[=workflow service=]</strong> (<a>P5</a>) (<a>F7</a>). 
-          The [=workflow service=] then, according to this particular workflow, generates a verifiable presentation request (VPR) to 
-          request proof of <strong>EMT certification</strong> (<a>D5</a>) and uses the exchange to return the VPR to Sachin’s wallet coordinator (<a>F8</a>). 
-          Sachin’s wallet coordinator then retrieves the set of credentials Sachin has that match the query by example in the VPR (<a>F9</a>) from 
-          its <strong>backend service</strong> (<a>P3</a>) and presents the options, as well as the reason for the request, to Sachin (<a>F10</a>). 
-          Sachin reviews the reason and selects his <strong>EMT credential</strong> (<a>D1</a>) to send as proof of his existing EMT certification. 
-          The wallet coordinator then asks the wallet service to create a <strong>verifiable presentation</strong> (VP) (<a>D6</a>) (<a>F11</a>) which is 
-          sent back to the [=workflow service=] (<a>F12</a>) using the exchange. 
+        <p>After selecting the VC API from the available set of protocols, Sachin’s wallet uses the provided
+          <strong>exchange URL</strong> (<a>D9</a>) to contact the State of Utopia Incident Command’s <strong>[=workflow service=]</strong> (<a>P5</a>) (<a>F7</a>).
+          The [=workflow service=] then, according to this particular workflow, generates a verifiable presentation request (VPR) to
+          request proof of <strong>EMT certification</strong> (<a>D5</a>) and uses the exchange to return the VPR to Sachin’s wallet coordinator (<a>F8</a>).
+          Sachin’s wallet coordinator then retrieves the set of credentials Sachin has that match the query by example in the VPR (<a>F9</a>) from
+          its <strong>backend service</strong> (<a>P3</a>) and presents the options, as well as the reason for the request, to Sachin (<a>F10</a>).
+          Sachin reviews the reason and selects his <strong>EMT credential</strong> (<a>D1</a>) to send as proof of his existing EMT certification.
+          The wallet coordinator then asks the wallet service to create a <strong>verifiable presentation</strong> (VP) (<a>D6</a>) (<a>F11</a>) which is
+          sent back to the [=workflow service=] (<a>F12</a>) using the exchange.
         </p>
-        <p>Once the [=workflow service=] has the <strong>VP</strong> (<a>D6</a>), it does any processing specified by the workflow on the returned VP, 
-          before sending it to its <strong>[=verifier service=]</strong> (<a>P6</a>) to get verified (<a>F13</a>). The verification service verifies the provided VP, 
-          as part of this process it reaches out to the <strong>State of Newtopia’s status service</strong> (<a>P9</a>) to check the contained 
-          VC’s status (<a>F14</a>). When verification is complete, the verification service returns the verification results to the [=workflow service=] (<a>F15</a>). 
+        <p>Once the [=workflow service=] has the <strong>VP</strong> (<a>D6</a>), it does any processing specified by the workflow on the returned VP,
+          before sending it to its <strong>[=verifier service=]</strong> (<a>P6</a>) to get verified (<a>F13</a>). The verification service verifies the provided VP,
+          as part of this process it reaches out to the <strong>State of Newtopia’s status service</strong> (<a>P9</a>) to check the contained
+          VC’s status (<a>F14</a>). When verification is complete, the verification service returns the verification results to the [=workflow service=] (<a>F15</a>).
         </p>
-        <p>The [=workflow service=] continues the workflow by checking the results of the verification and executing any additional business logic 
-          specified by the workflow, resulting in the [=workflow service=] determining the provided proof of EMT certification is acceptable and 
-          that it will issue an incident activation credential to Sachin. To simplify the diagram, it was decided that the newly issued credential 
-          would be issued to the same identifier that the proof EMT credential was issued to. In fullness, the workflow could include an additional 
-          request to Sachin’s wallet coordinator to provide an identifier to issue the new credential to. 
+        <p>The [=workflow service=] continues the workflow by checking the results of the verification and executing any additional business logic
+          specified by the workflow, resulting in the [=workflow service=] determining the provided proof of EMT certification is acceptable and
+          that it will issue an incident activation credential to Sachin. To simplify the diagram, it was decided that the newly issued credential
+          would be issued to the same identifier that the proof EMT credential was issued to. In fullness, the workflow could include an additional
+          request to Sachin’s wallet coordinator to provide an identifier to issue the new credential to.
         </p>
-        <p>Once the [=workflow service=] has decided to issue the new credential, it reaches out to its <strong>[=issuer service=]</strong> (<a>P7</a>) and 
-          provides all the necessary information for the new credential to be issued appropriately (<a>F16</a>). As this is the first credential of 
-          this type being created, the [=issuer service=] reaches out to its <strong>status service</strong> (<a>P8</a>) to create a new 
-          <strong>status list</strong> (<a>D10</a>) (<a>F17</a>). The [=issuer service=] then completes its work, assigning one of the status list indexes to 
-          this credential per its policies, and returning the issued credential to the [=workflow service=] (<a>F18</a>). 
+        <p>Once the [=workflow service=] has decided to issue the new credential, it reaches out to its <strong>[=issuer service=]</strong> (<a>P7</a>) and
+          provides all the necessary information for the new credential to be issued appropriately (<a>F16</a>). As this is the first credential of
+          this type being created, the [=issuer service=] reaches out to its <strong>status service</strong> (<a>P8</a>) to create a new
+          <strong>status list</strong> (<a>D10</a>) (<a>F17</a>). The [=issuer service=] then completes its work, assigning one of the status list indexes to
+          this credential per its policies, and returning the issued credential to the [=workflow service=] (<a>F18</a>).
         </p>
-        <p>The [=workflow service=] packages the credential in a <strong>VP</strong> (<a>D7</a>) and returns it to Sachin’s wallet coordinator (<a>F19</a>), 
-          which verifies the VP itself before storing the credential contained therein in the wallet service (<a>F20</a>). Between flows [=F18=] and [=F19=], Sachin’s wallet 
-          has the opportunity to ask Sachin if he wants to take any actions prior to storing the received credential, such as confirming that he 
-          wants to store the credential and/or choose a non-default storage location. Here we assume Sachin’s wallet settings are such that the credential is simply stored. 
-          Sachin is then redirected back to the Incident Command website (<a>F21</a>, <a>F22</a>) 
-          where he now sees a confirmation page that confirms he has been added to the incident.   
+        <p>The [=workflow service=] packages the credential in a <strong>VP</strong> (<a>D7</a>) and returns it to Sachin’s wallet coordinator (<a>F19</a>),
+          which verifies the VP itself before storing the credential contained therein in the wallet service (<a>F20</a>). Between flows [=F18=] and [=F19=], Sachin’s wallet
+          has the opportunity to ask Sachin if he wants to take any actions prior to storing the received credential, such as confirming that he
+          wants to store the credential and/or choose a non-default storage location. Here we assume Sachin’s wallet settings are such that the credential is simply stored.
+          Sachin is then redirected back to the Incident Command website (<a>F21</a>, <a>F22</a>)
+          where he now sees a confirmation page that confirms he has been added to the incident.
         </p>
 
 
@@ -387,53 +388,53 @@
           <tr>
             <td class="left"><dfn data-lt="P3|P3 Holder Service Process|Holder Service Process">P3 Holder Service Process</dfn></td>
             <td>
-              The process running on a web-accessible platform that can handle asynchronous requests and [=holder=]-approved functions without 
-              needing either the [=holder=]’s device (<a>C1</a>) or the [=holder coordinator=] process (<a>P1</a>) to be active. Also provides the [=holder=] (<a>E1</a>) with 
+              The process running on a web-accessible platform that can handle asynchronous requests and [=holder=]-approved functions without
+              needing either the [=holder=]’s device (<a>C1</a>) or the [=holder coordinator=] process (<a>P1</a>) to be active. Also provides the [=holder=] (<a>E1</a>) with
               the ability to access their credentials from multiple devices.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="P4|P4 Coordinator Process|Coordinator Process">P4 Coordinator Process</dfn></td>
             <td>
-              The process representing both an [=issuer coordinator=] and a [=verifier coordinator=] in one, unified coordinator that is publicly accessible by outside users, 
-              such as the [=holder=] (<a>E1</a>). It facilitates the up-front business logic before invoking particular interactions, and interfaces with the 
-              [=workflow service=] (<a>P5</a>) to provision exchanges (<a>D9</a>) on a per-interaction basis. It also constructs the protocol object (<a>D4</a>) which allows a 
+              The process representing both an [=issuer coordinator=] and a [=verifier coordinator=] in one, unified coordinator that is publicly accessible by outside users,
+              such as the [=holder=] (<a>E1</a>). It facilitates the up-front business logic before invoking particular interactions, and interfaces with the
+              [=workflow service=] (<a>P5</a>) to provision exchanges (<a>D9</a>) on a per-interaction basis. It also constructs the protocol object (<a>D4</a>) which allows a
               [=holder=] (<a>E1</a>) and a [=holder coordinator=] (<a>P1</a>) to choose available interaction protocols via a provided interaction URL (<a>D2</a>).
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="P5|P5 Workflow Service Process|Workflow Service Process">P5 Workflow Service Process</dfn></td>
             <td>
-              The process that indexes all possible credential workflows for a system including the business rules and logic for each workflow. 
-              It provides particular exchange URLs (<a>D9</a>) to the requesting coordinator (<a>P4</a>), uses the [=issuer service=] to issue new credentials (<a>P7</a>), 
+              The process that indexes all possible credential workflows for a system including the business rules and logic for each workflow.
+              It provides particular exchange URLs (<a>D9</a>) to the requesting coordinator (<a>P4</a>), uses the [=issuer service=] to issue new credentials (<a>P7</a>),
               and uses the [=verifier service=] to verify submitted credentials (<a>P6</a>).
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="P6|P6 Verifier Service Process|Verifier Service Process">P6 Verifier Service Process</dfn></td>
             <td>
-              This process verifies the verifiable credentials provided by the [=workflow service=] (<a>P5</a>) and checks credential status (<a>P9</a>) 
+              This process verifies the verifiable credentials provided by the [=workflow service=] (<a>P5</a>) and checks credential status (<a>P9</a>)
               using the service specified by the credential being verified (<a>D6</a>).
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="P7|P7 Issuer Service Process|Issuer Service Process">P7 Issuer Service Process</dfn></td>
             <td>
-              This process issues credentials as directed by the [=workflow service=] (<a>P5</a>), assigns status list 
+              This process issues credentials as directed by the [=workflow service=] (<a>P5</a>), assigns status list
               indexes (<a>D10</a>) to newly created credentials, and tracks used indexes within a given status list.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="P8|P8 Utopia Status Service Process|Utopia Status Service Process">P8 Utopia Status Service Process</dfn></td>
             <td>
-              This process maintains status lists (<a>D10</a>) so that verification services (<a>P6</a>) can check the status of a credential. 
+              This process maintains status lists (<a>D10</a>) so that verification services (<a>P6</a>) can check the status of a credential.
               It also provides status lists (<a>D10</a>) to [=issuer=] services (<a>P7</a>) for assignment to new credentials.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="P9|P9 Newtopia Status Service Process|Newtopia Status Service Process">P9 Newtopia Status Service Process</dfn></td>
             <td>
-              This process maintains status lists so that verification services (<a>P6</a>) can check the status of a credential. 
+              This process maintains status lists so that verification services (<a>P6</a>) can check the status of a credential.
               It also provides status lists (<a>D10</a>) to [=issuer=] services (<a>P7</a>) for assignment to new credentials.
             </td>
           </tr>
@@ -452,14 +453,14 @@
           <tr>
             <td class="left"><dfn data-lt="F2|F2 Create exchange|Create exchange">F2 Create exchange</dfn></td>
             <td>
-              The call from the coordinator process (<a>P4</a>) to its [=workflow service=] (<a>P5</a>) to provision an 
+              The call from the coordinator process (<a>P4</a>) to its [=workflow service=] (<a>P5</a>) to provision an
               exchange URL (<a>D9</a>) to include in the [=protocol object=] (<a>D4</a>) that the coordinator process will create.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F3|F3 Offer interaction|Offer interaction">F3 Offer interaction</dfn></td>
             <td>
-              The response to the [=holder=]’s initiating interaction (<a>F1</a>) that informs the [=holder=] that an 
+              The response to the [=holder=]’s initiating interaction (<a>F1</a>) that informs the [=holder=] that an
               additional action is required by offering a new interaction via an interaction URL (<a>D2</a>).
             </td>
           </tr>
@@ -473,15 +474,15 @@
           <tr>
             <td class="left"><dfn data-lt="F5|F5 Hand off interaction|Hand off interaction">F5 Hand off interaction</dfn></td>
             <td>
-              The redirect from the [=holder=]’s browser (<a>P2</a>) to the [=holder coordinator=] (<a>P1</a>). After this occurs the [=holder coordinator=] 
+              The redirect from the [=holder=]’s browser (<a>P2</a>) to the [=holder coordinator=] (<a>P1</a>). After this occurs the [=holder coordinator=]
               (<a>P1</a>) could do an additional round of consent interaction with the [=holder=] (<a>E1</a>) if it chooses to do so.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F6|F6 Fetch protocols|Fetch protocols">F6 Fetch protocols</dfn></td>
             <td>
-              The call from the [=holder coordinator=] (<a>P1</a>) to the coordinator service (<a>P4</a>) to retrieve the available protocols (<a>D4</a>) for this interaction. 
-              The [=holder coordinator=] is expected to make a default selection based on the list of available protocols as users are not expected to understand this choice. 
+              The call from the [=holder coordinator=] (<a>P1</a>) to the coordinator service (<a>P4</a>) to retrieve the available protocols (<a>D4</a>) for this interaction.
+              The [=holder coordinator=] is expected to make a default selection based on the list of available protocols as users are not expected to understand this choice.
               However a particular [=holder coordinator=] can choose to expose this choice to the [=holder=].
             </td>
           </tr>
@@ -494,22 +495,22 @@
           <tr>
             <td class="left"><dfn data-lt="F8|F8 Request EMT credential|Request EMT credential">F8 Request EMT credential</dfn></td>
             <td>
-              The call back from the [=workflow service=] (<a>P5</a>) to the [=holder coordinator=] (<a>P1</a>) that contains the VPR that requests the submission of proof of valid EMT certification (<a>D5</a>). 
+              The call back from the [=workflow service=] (<a>P5</a>) to the [=holder coordinator=] (<a>P1</a>) that contains the VPR that requests the submission of proof of valid EMT certification (<a>D5</a>).
               The VPR contains a query by example that informs the [=holder coordinator=] what credentials are acceptable for this request to be satisfied.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F9|F9 Retrieve candidate credentials|Retrieve candidate credentials">F9 Retrieve candidate credentials</dfn></td>
             <td>
-              The [=holder coordinator=] (<a>P1</a>) forwards the query by example set to its [=holder service=] (<a>P3</a>) 
+              The [=holder coordinator=] (<a>P1</a>) forwards the query by example set to its [=holder service=] (<a>P3</a>)
               which finds the set of credentials the [=holder=] (<a>E1</a>) has that match the criteria and returns them to the [=holder coordinator=].
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F10|F10 Request consent select credential|Request consent select credential">F10 Request consent select credential</dfn></td>
             <td>
-              Once the [=holder coordinator=] (<a>P1</a>) has the set of credentials that match the request it informs the [=holder=] (<a>E1</a>) 
-              of the request and allows them to select the credential to meet the requirements, or to cancel the interaction. 
+              Once the [=holder coordinator=] (<a>P1</a>) has the set of credentials that match the request it informs the [=holder=] (<a>E1</a>)
+              of the request and allows them to select the credential to meet the requirements, or to cancel the interaction.
               The [=holder=] selects the credential they want to send (<a>D1</a>).
             </td>
           </tr>
@@ -526,35 +527,35 @@
           <tr>
             <td class="left"><dfn data-lt="F13|F13 Verify|Verify">F13 Verify</dfn></td>
             <td>
-              The [=workflow service=] (<a>P5</a>) as part of its evaluation of the submitted VP, 
+              The [=workflow service=] (<a>P5</a>) as part of its evaluation of the submitted VP,
               sends only the selected credential (<a>D1</a>) to its [=verifier service=] for verification (<a>P6</a>).
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F14|F14 Check status|Check status">F14 Check status</dfn></td>
             <td>
-              The call from the State of Utopia Incident Command’s [=verifier service=] (<a>P6</a>) to the 
+              The call from the State of Utopia Incident Command’s [=verifier service=] (<a>P6</a>) to the
               State of Newtopia’s status service (<a>P9</a>) to check the submitted credential’s (<a>D1</a>) status.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F15|F15 Verification results|Verification results">F15 Verification results</dfn></td>
             <td>
-              The call from the [=verifier service=] (<a>P6</a>) to the [=workflow service=] (<a>P5</a>) with the results of the verification. 
+              The call from the [=verifier service=] (<a>P6</a>) to the [=workflow service=] (<a>P5</a>) with the results of the verification.
               The [=workflow service=] then finishes any additional processing it needs to continue to the next step in the workflow.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F16|F16 Request issuance|Request issuance">F16 Request issuance</dfn></td>
             <td>
-              The call from the [=workflow service=] (<a>P5</a>) to the [=issuer=] service (<a>P7</a>) to direct the [=issuer=] service to issue 
+              The call from the [=workflow service=] (<a>P5</a>) to the [=issuer=] service (<a>P7</a>) to direct the [=issuer=] service to issue
               the credential to the provided identifier, along with any other information needed to properly issue the new credential.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F17|F17 Create list|Create list">F17 Create list</dfn></td>
             <td>
-              The call from the [=issuer=] service (<a>P7</a>) to its status service (<a>P8</a>) to provision a new status list (<a>D10</a>) 
+              The call from the [=issuer=] service (<a>P7</a>) to its status service (<a>P8</a>) to provision a new status list (<a>D10</a>)
               as this is the first credential issued of this kind. The [=issuer=] service then assigns an index in this list to the new credential during the issuance process.
             </td>
           </tr>
@@ -567,30 +568,30 @@
           <tr>
             <td class="left"><dfn data-lt="F19|F19 Issued credential as VP|Issued credential as VP">F19 Issued credential as VP</dfn></td>
             <td>
-              The [=workflow service=] packages the newly issued credential (<a>D3</a>) into a VP (<a>D7</a>) and uses the exchange to return 
-              it to the [=holder coordinator=] (<a>P1</a>). Along with the generated VP (<a>D7</a>), the [=workflow service=] can also include 
+              The [=workflow service=] packages the newly issued credential (<a>D3</a>) into a VP (<a>D7</a>) and uses the exchange to return
+              it to the [=holder coordinator=] (<a>P1</a>). Along with the generated VP (<a>D7</a>), the [=workflow service=] can also include
               a redirect URL (<a>D8</a>) to send the [=holder=] (<a>E1</a>) to at the conclusion of the interaction.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F20|F20 Store credential|Store credential">F20 Store credential</dfn></td>
             <td>
-              The call from the [=holder coordinator=] (<a>P1</a>) to the [=holder service=] (<a>P3</a>) to store the credential (<a>D3</a>). 
-              This happens after any processing needed by the [=holder coordinator=], including possible interaction with the [=holder=] (<a>E1</a>), 
+              The call from the [=holder coordinator=] (<a>P1</a>) to the [=holder service=] (<a>P3</a>) to store the credential (<a>D3</a>).
+              This happens after any processing needed by the [=holder coordinator=], including possible interaction with the [=holder=] (<a>E1</a>),
               and removing the credential (<a>D3</a>) from the VP (<a>D7</a>) it is contained within.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F21|F21 Redirect back to origin|Redirect back to origin">F21 Redirect back to origin</dfn></td>
             <td>
-              The call from the [=holder coordinator=] (<a>P1</a>) to the [=holder=]’s browser (<a>P2</a>) that uses the provided redirect URL (<a>D8</a>) 
+              The call from the [=holder coordinator=] (<a>P1</a>) to the [=holder=]’s browser (<a>P2</a>) that uses the provided redirect URL (<a>D8</a>)
               to redirect the [=holder=] (<a>E1</a>) back to the origin as directed by the [=workflow service=] (<a>P5</a>).
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F22|F22 Follow redirect|Follow redirect">F22 Follow redirect</dfn></td>
             <td>
-              The call from the [=holder=]’s browser (<a>P2</a>) to the coordinator process (<a>P4</a>) that returns the [=holder=] to the original origin 
+              The call from the [=holder=]’s browser (<a>P2</a>) to the coordinator process (<a>P4</a>) that returns the [=holder=] to the original origin
               they started the interaction on, likely to a webpage that displays results and confirmation of the interaction that just occurred.
             </td>
           </tr>
@@ -610,29 +611,29 @@
           <tr>
             <td class="left"><dfn data-lt="D2|D2 Interaction URL|Interaction URL">D2 Interaction URL</dfn></td>
             <td>
-              The URL generated by the coordinator process (<a>P4</a>) that can be sent over any mutually supported transport 
-              layer–HTTP, digital QR Code, physical QR code, NFC–that, when resolved, results in the retrieval of a 
+              The URL generated by the coordinator process (<a>P4</a>) that can be sent over any mutually supported transport
+              layer–HTTP, digital QR Code, physical QR code, NFC–that, when resolved, results in the retrieval of a
               protocols object (<a>D4</a>) that advertises protocol options for the requested interaction.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="D3|D3 Incident Activation Credential|Incident Activation Credential">D3 Incident Activation Credential</dfn></td>
             <td>
-              The credential that is generated by the State of Utopia to signify that the [=holder=] (<a>E1</a>) is 
+              The credential that is generated by the State of Utopia to signify that the [=holder=] (<a>E1</a>) is
               onboarded to the specified incident. It requires proof of being a certified EMT to receive.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="D4|D4 Protocols Object|Protocols Object">D4 Protocols Object</dfn></td>
             <td>
-              The JSON object that is retrieved via a particular interaction URL (<a>D2</a>) that contains a list of available protocols as 
+              The JSON object that is retrieved via a particular interaction URL (<a>D2</a>) that contains a list of available protocols as
               well as the associated URL to reach out to to start the particular interaction with the specified protocol.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="D5|D5 EMT Credential VPR|EMT Credential VPR">D5 EMT Credential VPR</dfn></td>
             <td>
-              The verifiable presentation request for proof of EMT certification that contains a query by example to inform 
+              The verifiable presentation request for proof of EMT certification that contains a query by example to inform
               the recipient’s [=holder coordinator=] (<a>P1</a>) which credentials or set of credentials would satisfy the request.
             </td>
           </tr>
@@ -663,7 +664,7 @@
           <tr>
             <td class="left"><dfn data-lt="D10|D10 Incident Activation Credential Status List|Incident Activation Credential Status List">D10 Incident Activation Credential Status List</dfn></td>
             <td>
-              The list of identifiers that the [=issuer=] service (<a>P7</a>) used to assign the issued 
+              The list of identifiers that the [=issuer=] service (<a>P7</a>) used to assign the issued
               incident activation credential (<a>D3</a>) a particular index in the list.
             </td>
           </tr>
@@ -706,7 +707,7 @@
           <tr>
             <td class="left"><dfn data-lt="T1|T1 State of Utopia Trust Boundary|State of Utopia Trust Boundary">T1 State of Utopia Trust Boundary</dfn></td>
             <td>
-              The boundary between the [=holder=] controlled software (<a>C1</a>, <a>C4</a>) and the software ran by the State of Utopia’s Incident Command (<a>C5</a>). 
+              The boundary between the [=holder=] controlled software (<a>C1</a>, <a>C4</a>) and the software ran by the State of Utopia’s Incident Command (<a>C5</a>).
               It is assumed that the [=holder=]’s wallet front end (<a>C3</a>) and backend (<a>C4</a>) trust each other and the connection between them.
             </td>
           </tr>
@@ -730,19 +731,19 @@
       <li>To be able to interface with any external software system in order to complete tasks that involve either the sharing or receiving of credentials.</li>
       </ol>
     <p>
-      The [=holder=] is primarily concerned with the reliability and security of these interactions and could be anyone with a computation device whether 
-      that be a smart phone, tablet, laptop, desktop, smart watch, or other forms of electronics including shared devices. The [=holder=] has many choices they 
-      can make about which software they trust to hold their credentials. Any number of personal “wallet” configurations are possible including using 
-      many different pieces of software with each acting as a wallet in different scenarios. 
+      The [=holder=] is primarily concerned with the reliability and security of these interactions and could be anyone with a computation device whether
+      that be a smart phone, tablet, laptop, desktop, smart watch, or other forms of electronics including shared devices. The [=holder=] has many choices they
+      can make about which software they trust to hold their credentials. Any number of personal “wallet” configurations are possible including using
+      many different pieces of software with each acting as a wallet in different scenarios.
     </p>
     <p>
-      In practice most people will set up their own [=holder=] software configuration based on brand confidence and peer recommendation. 
-      Regardless of which software a given person chooses to run, they will expect things to simply work without the need for understanding any 
-      of the underlying technical choices being made by their chosen [=holder=] software. As such it is expected that [=holder coordinator=]s will 
-      want to implement a selection of protocols that are commonly in use across various ecosystems in the real world to facilitate minimal 
+      In practice most people will set up their own [=holder=] software configuration based on brand confidence and peer recommendation.
+      Regardless of which software a given person chooses to run, they will expect things to simply work without the need for understanding any
+      of the underlying technical choices being made by their chosen [=holder=] software. As such it is expected that [=holder coordinator=]s will
+      want to implement a selection of protocols that are commonly in use across various ecosystems in the real world to facilitate minimal
       but informed interaction experiences for their users that allow them to easily make use of their credentials.
     </p>
-        
+
   </section>
   <section id="threat-model-threats">
     <h2>Threats</h2>
