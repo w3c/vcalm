@@ -1,0 +1,9 @@
+{
+  "@context": {
+    "@protected": true,
+    "exchangeData": {
+      "@id": "https://w3id.org/vcalm#exchangeData",
+      "@type": "@json"
+    }
+  }
+}
