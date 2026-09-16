@@ -546,6 +546,20 @@ with all mandatory interfaces exposed by a [=status service implementation=].
 All implementations MAY provide functionality beyond this specification.
       </p>
 
+      <p class="note"
+         title="Secure Coding Practices">
+        Implementers are urged to use industry standard secure coding practices when
+        implementing this specification. Even deeply experienced software developers can
+        make mistakes and the use of secure coding checklists and vulnerability scanning
+        software can catch errors that would result in security compromises. Following
+        checklists and guides such as the
+        <a href="https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/">
+        OWASP Secure Coding Practices Checklist</a> and the
+        <a href="https://owasp.org/www-project-web-security-testing-guide/">
+        OWASP Web Security Testing Guide</a> can help reduce the chance of insecure
+        implementations.
+      </p>
+      
     </section>
 
     <section class="informative">
@@ -3703,7 +3717,6 @@ object MUST be set to `false`; if no errors are included, it MUST be set to
 
   <section class="appendix informative">
     <h2>Threat Model</h2>
-
     <p>
 This section details the general threat model for this specification
 including security considerations, privacy considerations, and market
@@ -3883,6 +3896,66 @@ Workflow Variables Allow Workflow Template to be Misused
           <span class="threat-tag threat-tag-security">security</span> —
 Workflow variable options expose unintended workflow paths allowing misused workflows or malicious actors to achieve unintended outcomes for the workflow.
         </li>
+        <li value="33">
+          <a href="threat-model/index.html#t33-verifier-phones-home-about-specific-verifiable-credential">
+Verifier Phones Home About Specific Verifiable Credential
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+It is considered a bad privacy practice for a verifier to contact an issuer about a specific verifiable credential. This practice is known as "phoning home" 
+and can result in a mismatch in privacy expectations between holders, issuers, verifiers, and other parties expressed in a verifiable credential. 
+Phoning home enables issuers to correlate unsuspecting parties with the use of certain verifiable credentials which can violate privacy expectations that 
+each entity might have regarding the use of those credentials. For example, what is expected by the holder to be a private interaction between them and 
+the verifier becomes one where the issuer is notified of the interaction.
+        </li>
+        <li value="34">
+          <a href="threat-model/index.html#t34-unknown-proof-types">
+Unknown Proof Types
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+Holder coordinator implementations, such as digital wallet software, can receive and store verifiable credentials that include proofs that are not understood by the software.
+        </li>
+        <li value="35">
+          <a href="threat-model/index.html#t35-interaction-url-does-not-use-https">
+Interaction URL Does Not Use HTTPS
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+Using protocol schemes that are not rooted in the HTTPS trust model requires separate encryption protocol, key management, and trust models to be used, 
+which are often less broadly developed and deployed and require much more development and analysis to determine the threat and privacy model.
+        </li>
+        <li value="36">
+          <a href="threat-model/index.html#t36-deletion-request-only-results-in-partial-deletion-of-credential">
+Deletion Request Only Results in Partial Deletion of Credential
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+The APIs provided by this specification enable the deletion of verifiable credentials and verifiable presentations from storage services. 
+In some cases, a record may be only partially deleted which means that some or all of the original information continues to be stored. 
+This mode of operation can be useful if there are audit requirements for all credentials and/or presentations over a particular time period, 
+or if recovering an original credential might be a useful feature to provide but can lead to unintended persistence of records for longer than necessary.
+        </li>
+        <li value="38">
+          <a href="threat-model/index.html#t38-mishandled-status-information-upon-credential-deletion-reveals-information">
+Mishandled Status Information Upon Credential Deletion Lead to Holder Confusion 
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+When deleting a verifiable credential, handling of its status information needs to be considered. 
+Some use cases might call for deletion of a particular verifiable credential to also set the revocation and suspension bits of that verifiable credential, 
+such that any sort of status check for the deleted credential fails and use of the credential is halted without the knowledge of the holder. 
+This can lead to frustration and confusion when the holder attempts to use the credential for what they deem to be a valid purpose.
+        </li>
+        <li value="39">
+          <a href="threat-model/index.html#t39-large-payload-triggers-denial-of-service-dos">
+Large Payload Triggers Denial of Service (DoS)
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+Large transaction payloads can trigger DoS incidents.
+        </li>
+        <li value="40">
+          <a href="threat-model/index.html#t40-improper-credential-validation-leads-to-security-vulnerabilities">
+Improper Credential Validation Leads to Security Vulnerabilities
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> —
+In most cases, simply verifying the proof might not be sufficient to properly handle the received data. Improper validation will often lead to security vulnerabilities.
+        </li>
       </ol>
     </section>
 
@@ -3933,6 +4006,36 @@ Ecosystem Gatekeeping in the Name of Security or Privacy
           <span class="threat-tag">market competition</span> —
 Primary ecosystem actors choose to restrict their support of particular protocols or data formats in the name of security or privacy whereas in reality they are trying to push the ecosystem to adopt their solution.
         </li>
+        <li value="30">
+          <a href="threat-model/index.html#t30-issuance-request-and-or-delivery-made-by-third-party">
+Unintended Data Leak Due to Third Party Processing
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> <span class="threat-tag threat-tag-privacy">privacy</span> —
+Verifiable credentials issuance has a request phase and a delivery phase. The request might be made by the subject or another role, and delivery can be to a client that might or might not be controlled by the subject.
+        </li>
+        <li value="31">
+          <a href="threat-model/index.html#t31-unintended-data-leak-due-to-third-party-processing">
+Unintended Data Leak Due to Third Party Processing
+          </a>
+          <span class="threat-tag threat-tag-privacy">privacy</span> —
+An issuer or verifier may make use of a third party service to process some data during an issuance or verification workflow. 
+This third party service becomes a potential data leak risk as it may be able to aggregate across different issuers or verifiers using its services.
+        </li>
+        <li value="32">
+          <a href="threat-model/index.html#t32-malicious-entity-acts-on-behalf-of-incapable-party">
+Malicious Entity Acts on Behalf of Incapable Party
+          </a>
+          <span class="threat-tag threat-tag-security">security</span> <span class="threat-tag threat-tag-privacy">privacy</span> —
+Some subjects such as a new born baby, a pet, or a person with dementia, are incapable of acting on their own behalf. 
+In these cases requests may be made on behalf of a subject with no cryptographic delegation possible. This can be problematic when guardians have malicious intent.
+        </li>
+        <li value="37">
+          <a href="threat-model/index.html#t37-credential-deletion-violates-legal-regulation">
+Credential Deletion Violates Legal Regulation
+          </a>
+          <span class="threat-tag threat-tag-privacy">privacy</span> —
+Due to some legal regulations and/or audit requirements, the complete or partial storage of a credential is required for some amount of time after a deletion request has been made.
+        </li>        
       </ol>
     </section>
 
@@ -4126,158 +4229,34 @@ integrity proof|proofs=] unless the wallet has implemented the procedures for
 deriving a proof. It is vital that a wallet not present a base proof by
 accident, as it might include information that is secret to the [=holder=].
       </p>
-    </section>
-
-    <section>
-      <h3>Use of HTTPS for Interaction URLs</h3>
 
       <p>
-This specification strongly suggests the use of HTTPS for [=interaction URLs=]
-for the following reasons:
+        A <a href="threat-model/index.html">threat model for the VCALM specification</a> has been created
+        based on a use case of a first responder onboarding themselves to a new incident. This use case was chosen because it could be simplified
+        to detail the issuance of a [=verifiable credential=] for the particular incident, predicated on the [=verification=] of an existing emergency 
+        responder credential. This enabled the data flow diagram in the threat model to detail both the [=verification=] and issuance steps, in the 
+        same workflow. 
       </p>
+    
+    <section class="notoc">
+        <h3>Security Considerations</h4>
+        <p>
+          W3C is migrating to a holistic threat modelling approach and is in the process
+          of deprecating the Security Considerations sections in new specifications.
+          Please refer to Appendix [[[#threat-model]]] for documentation related to
+          security considerations.
+        </p>
+      </section>
 
-      <ul>
-        <li>
-The HTTPS URL used in an interaction firmly establishes trust in the
-interaction based on the existing and well understood same-origin trust model
-used by browsers.
-        </li>
-        <li>
-The initial URL provided establishes trust such that subsequent protocols used
-in the interaction can be simply and safely delegated or outsourced to other
-systems, some of which can be in a separate domain.
-        </li>
-        <li>
-Graphical interfaces that need to gather consent can use domain names, which
-are understood well enough by the general population to combat phishing attacks.
-        </li>
-        <li>
-Protocols that require stronger verification of any party can use
-protocol-specific mechanisms, such as [=verifiable credentials=], to verify
-the [=holder=], [=issuer=], or [=verifier=] during a particular protocol
-exchange.
-        </li>
-      </ul>
-
-      <p>
-Using protocol schemes that are not rooted in the HTTPS trust model requires
-separate encryption protocol, key management, and trust models to be used, which
-are often less broadly developed and deployed and require much more development
-and analysis to determine the threat and privacy model.
-      </p>
-
-    </section>
-
-    <section>
-      <h3>Deletion</h3>
-
-      <p>
-The APIs provided by this specification enable the deletion of
-[=verifiable credentials=] and [=verifiable presentations=] from
-[=storage services=]. The result of these deletions
-and the side-effects they might cause are out of scope for this specification.
-However, implementers are advised to understand the various ways deletion can be
-implemented. There are at least two types of deletion that are contemplated by
-this specification.
-      </p>
-
-      <p>
-<dfn>Partial deletion</dfn> marks a record for deletion but continues to store
-some or all of the original information. This mode of operation can be useful if
-there are audit requirements for all credentials and/or presentations over
-a particular time period, or if recovering an original credential might be a
-useful feature to provide.
-      </p>
-      <p>
-<dfn>Complete deletion</dfn> purges all information related to a given
-[=verifiable credential=] or [=verifiable presentation=] in a way that
-is unrecoverable. This mode of operation can be useful when removing information
-that is outdated and beyond the needs of any audit or when responding to any
-sort of "<a href="https://en.wikipedia.org/wiki/Right_to_be_forgotten">right
-to be forgotten</a>" request.
-      </p>
-      <p>
-When deleting a [=verifiable credential=], handling of its status
-information needs to be considered. Some use cases might call for deletion
-of a particular [=verifiable credential=] to also set the revocation
-and suspension bits of that [=verifiable credential=], such that any sort of
-status check for the deleted credential fails and use of the credential is
-halted.
-      </p>
-      <p>
-Given the scenarios above, implementers are advised to allow the system actions
-that occur after a delete to be configurable, such that system flexibility is
-sufficient to address any [=verifiable credential=] use case.
-      </p>
-    </section>
-
-    <section>
-      <h3>Payload Sizes</h3>
-      <p>
-Larger transactions can trigger DoS incidents. It's recommended to configure the
-payload size accepted by endpoints at an instance level.
-      </p>
-    </section>
-
-    <section>
-      <h3>Additional Validation</h3>
-      <p>
-In most cases, simply verifying the proof might not be sufficient to properly
-handle the received data. [=Verifier services=] are expected to configure additional
-validation steps based on their use cases. To define such additional
-validations, implementers can refer to specifications such as
-<a data-cite="?VC-DATA-INTEGRITY#resource-integrity">Section 2.3: Resource
-Integrity</a> and
-<a data-cite="?VC-DATA-INTEGRITY#contexts-and-vocabularies">Section 2.4:
-Contexts and Vocabularies</a>
-in the [[[?VC-DATA-INTEGRITY]]] specification where further information can be
-found about context handling and integrity verification.
-      </p>
-      <p>
-Improper validation will often lead to security vulnerabilities.
-      </p>
-      <p>
-Additional validation steps can be accounted for when returning a verification
-response object, through the problem details.
-      </p>
-    </section>
-
-    <section>
-      <h3>Secure Coding Practices</h3>
-
-      <p>
-Implementers are urged to use industry standard secure coding practices when
-implementing this specification. Even deeply experienced software developers can
-make mistakes and the use of secure coding checklists and vulnerability scanning
-software can catch errors that would result in security compromises. Following
-checklists and guides such as the
-<a href="https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/stable-en/">
-OWASP Secure Coding Practices Checklist</a> and the
-<a href="https://owasp.org/www-project-web-security-testing-guide/">
-OWASP Web Security Testing Guide</a> can help reduce the chance of insecure
-implementations.
-      </p>
-    </section>
-
-    <section>
-      <h3>Other Security Considerations</h3>
-
-      <p>
-Since the interfaces to manage the lifecycle of [=verifiable credentials=]
-described by this specification are generalized in nature, the security
-implications of their use might not be immediately apparent to readers.
-To understand the sort of security
-concerns one might need to consider in a complete software system, implementers
-are urged to read about how this technology can be used by the
-[[[?VC-DATA-MODEL-2.0]]] specification (specifically the section
-on <a data-cite="?VC-DATA-MODEL-2.0#security-considerations">
-Verifiable Credential Security Considerations</a>), as well as the
-[[[?VC-DATA-INTEGRITY]]] specification (specifically the section
-on <a data-cite="?VC-DATA-INTEGRITY#security-considerations">
-Data Integrity Security Considerations</a>).
-      </p>
-    </section>
-
+      <section class="notoc">
+        <h3>Privacy Considerations</h4>
+        <p>
+          W3C is migrating to a holistic threat modelling approach and is in the process
+          of deprecating the Privacy Considerations sections in new specifications. Please
+          refer to Appendix [[[#threat-model]]] for documentation related to privacy
+          considerations.
+        </p>
+      </section>
   </section>
 
   <section class="appendix">
