@@ -163,7 +163,6 @@ components:
           }],
           "challenge": "3182bdea-63d9-11ea-b6de-3b7c1404d57f",
           "domain": "edu.example",
-                    "domain": "edu.example",
           "credentialOffer": [{
             "mediaType": "application/vc",
             "credential": {
