@@ -78,94 +78,7 @@ body:has(input[name=color-scheme][value=light]:checked),head:not(:has(meta[name=
 body:has(input[name=color-scheme][value=dark]:checked){color-scheme:dark}
 </style>
   
-<script src="threats/threat-model.js"></script> 
-
-
-  
-  
-<script src="threats/outline.js"></script>
-  
 <link rel="stylesheet" href="threats/threat-model.css">
-  
-<script src="threats/t1-dos-attacks-against-public-coordinator-endpoints.js"></script>
-  
-<script src="threats/t2-attacker-bypasses-internal-security-to-issue-vc-to-attacker.js"></script>
-  
-<script src="threats/t3-interaction-urls-with-origins-that-do-not-match-coordinator-origin.js"></script>
-  
-<script src="threats/t4-attacker-guesses-exchange-url.js"></script>
-  
-<script src="threats/t5-issuance-information-stored-long-term.js"></script>
-  
-<script src="threats/t6-stolen-authorization-tokens.js"></script>
-  
-<script src="threats/t7-revocation-list-unavailable.js"></script>
-  
-<script src="threats/t8-issuer-authentication-leads-to-incorrect-vc-being-issued-to-attacker.js"></script>
-  
-<script src="threats/t9-wrong-authorization-scope.js"></script>
-  
-<script src="threats/t10-interaction-url-leads-to-attacker-controlled-website.js"></script>
-  
-<script src="threats/t11-holder-shares-credential-with-attacker-for-the-purposes-of-replaying-the-credential.js"></script>
-  
-<script src="threats/t12-use-of-protocol-to-centralize-digital-credentials-ecosystem-and-lockout-competition.js"></script>
-  
-<script src="threats/t13-interaction-url-read-from-qr-code-is-opened-by-unexpected-or-malicious-application.js"></script>
-  
-<script src="threats/t14-reusing-presentation-challenges-vs-allowing-network-resiliency.js"></script>
-  
-<script src="threats/t15-invalid-assignment-or-overallocation-of-status-list-indexes.js"></script>
-  
-<script src="threats/t16-too-many-status-lists-created-for-too-small-of-a-population.js"></script>
-  
-<script src="threats/t17-leaking-information-due-to-status-list-vc-updates.js"></script>
-  
-<script src="threats/t18-protocol-confusion-when-multiple-protocol-options-are-available.js"></script>
-  
-<script src="threats/t19-interaction-urls-leak-personal-ips.js"></script>
-  
-<script src="threats/t20-exchange-state-leaked-to-coordinator-frontend.js"></script>
-  
-<script src="threats/t21-dos-for-exchange-state-polling.js"></script>
-  
-<script src="threats/t22-misconfigured-issuer-instance.js"></script>
-  
-<script src="threats/t23-misconfigured-status-instance.js"></script>
-  
-<script src="threats/t24-misconfigured-verifier-instance.js"></script>
-  
-<script src="threats/t25-failure-to-validate-verifier-results-and-semantic-contexts.js"></script>
-  
-<script src="threats/t26-misconfigured-workflow-instance.js"></script>
-  
-<script src="threats/t27-workflow-variables-allow-workflow-template-to-be-misused.js"></script>
-  
-<script src="threats/t28-callback-urls-during-workflows-slow-to-respond.js"></script>
-  
-<script src="threats/t29-ecosystem-gatekeeping-in-the-name-of-security-or-privacy.js"></script>
-  
-<script src="threats/t30-issuance-request-and-or-delivery-made-by-third-party.js"></script>
-  
-<script src="threats/t31-unintended-data-leak-due-to-third-party-processing.js"></script>
-  
-<script src="threats/t32-malicious-entity-acts-on-behalf-of-incapable-party.js"></script>
-  
-<script src="threats/t33-verifier-phones-home-about-specific-verifiable-credential.js"></script>
-  
-<script src="threats/t34-unknown-proof-types.js"></script>
-  
-<script src="threats/t35-interaction-url-does-not-use-https.js"></script>
-  
-<script src="threats/t36-deletion-request-only-results-in-partial-deletion-of-credential.js"></script>
-  
-<script src="threats/t37-credential-deletion-violates-legal-regulation.js"></script>
-  
-<script src="threats/t38-mishandled-status-information-upon-credential-deletion-reveals-information.js"></script>
-  
-<script src="threats/t39-large-payload-triggers-denial-of-service-dos.js"></script>
-  
-<script src="threats/t40-improper-credential-validation-leads-to-security-vulnerabilities.js"></script>
 
 <meta name="color-scheme" content="light">
 <meta name="description" content="This threat model describes known threats of 
@@ -496,7 +409,7 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
         </p>
       </section><section id="verifier-and-issuer-architecture-choices-0"><div class="header-wrapper"><h4 id="verifier-and-issuer-architecture-choices"><bdi class="secno">1.2.4 </bdi>Verifier and Issuer Architecture Choices</h4><a class="self-link" href="#verifier-and-issuer-architecture-choices" aria-label="Permalink for Section 1.2.4"></a></div>
         <p>To simplify the number of coordinators needed in the diagram, the State of Utopia’s Incident Command 
-          is acting as both <a data-link-type="dfn" href="https://www.w3.org/TR/vc-data-model-2.0/#dfn-issuers">issuer</a> and <a data-link-type="dfn" href="https://www.w3.org/TR/vc-data-model-2.0/#dfn-verifier">verifier</a>, meaning they have a unified <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found">issuer coordinator</a> and <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-1">verifier coordinator</a> process.
+          is acting as both <a data-link-type="dfn" href="https://www.w3.org/TR/vc-data-model-2.0/#dfn-issuers">issuer</a> and <a data-link-type="dfn" href="https://www.w3.org/TR/vc-data-model-2.0/#dfn-verifier">verifier</a>, meaning they have a unified issuer coordinator and verifier coordinator process.
         </p>
 
     </section></section>
@@ -515,9 +428,9 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
           <strong>browser</strong> (<a href="#dfn-p2" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p2-1">P2</a>) to the <strong>State of Utopia’s Incident Command website</strong> (<a href="#dfn-p4" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p4-1">P4</a>) (<a href="#dfn-f0" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f0-1">F0</a>). 
           Here he navigates to find the incident he is traveling to and selects to register as an EMT for the incident (<a href="#dfn-f1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f1-1">F1</a>). 
           The incident website needs proof that Sachin is a credentialed first responder and reaches out (<a href="#dfn-f2" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f2-1">F2</a>) to its 
-          <strong><a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-3">workflow service</a></strong> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-1">P5</a>) to create a new <strong>exchange URL</strong> (<a href="#dfn-d9" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d9-1">D9</a>) to facilitate Sachin’s request. 
-          After creating the exchange with its <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-4">workflow service</a>, the <strong>incident coordinator</strong> (<a href="#dfn-p2" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p2-2">P2</a>) 
-          begins polling the <strong><a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-5">workflow service</a></strong> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-2">P5</a>) to get updates on the exchange (<a href="#dfn-f23" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f23-1">F23</a>) so 
+          <strong>workflow service</strong> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-1">P5</a>) to create a new <strong>exchange URL</strong> (<a href="#dfn-d9" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d9-1">D9</a>) to facilitate Sachin’s request. 
+          After creating the exchange with its workflow service, the <strong>incident coordinator</strong> (<a href="#dfn-p2" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p2-2">P2</a>) 
+          begins polling the <strong>workflow service</strong> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-2">P5</a>) to get updates on the exchange (<a href="#dfn-f23" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f23-1">F23</a>) so 
           that it can execute any business logic associated with state changes the exchange goes through. 
         </p>
         <p>The incident coordinator then generates a <strong>protocol object</strong> (<a href="#dfn-d4" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d4-1">D4</a>) that contains the set of possible 
@@ -538,33 +451,33 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
           on the protocols object that limits the set of advertised interaction protocols. 
         </p>
         <p>After selecting the VC API from the available set of protocols, Sachin’s wallet uses the provided 
-          <strong>exchange URL</strong> (<a href="#dfn-d9" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d9-3">D9</a>) to contact the State of Utopia Incident Command’s <strong><a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-6">workflow service</a></strong> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-3">P5</a>) (<a href="#dfn-f7" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f7-1">F7</a>). 
-          The <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-7">workflow service</a> then, according to this particular workflow, generates a verifiable presentation request (VPR) to 
+          <strong>exchange URL</strong> (<a href="#dfn-d9" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d9-3">D9</a>) to contact the State of Utopia Incident Command’s <strong>workflow service</strong> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-3">P5</a>) (<a href="#dfn-f7" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f7-1">F7</a>). 
+          The workflow service then, according to this particular workflow, generates a verifiable presentation request (VPR) to 
           request proof of <strong>EMT certification</strong> (<a href="#dfn-d5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d5-1">D5</a>) and uses the exchange to return the VPR to Sachin’s wallet coordinator (<a href="#dfn-f8" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f8-1">F8</a>). 
           Sachin’s wallet coordinator then retrieves the set of credentials Sachin has that match the query by example in the VPR (<a href="#dfn-f9" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f9-1">F9</a>) from 
           its <strong>backend service</strong> (<a href="#dfn-p3" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p3-1">P3</a>) and presents the options, as well as the reason for the request, to Sachin (<a href="#dfn-f10" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f10-1">F10</a>). 
           Sachin reviews the reason and selects his <strong>EMT credential</strong> (<a href="#dfn-d1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d1-1">D1</a>) to send as proof of his existing EMT certification. 
           The wallet coordinator then asks the wallet service to create a <strong>verifiable presentation</strong> (VP) (<a href="#dfn-d6" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d6-1">D6</a>) (<a href="#dfn-f11" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f11-1">F11</a>) which is 
-          sent back to the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-8">workflow service</a> (<a href="#dfn-f12" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f12-1">F12</a>) using the exchange. 
+          sent back to the workflow service (<a href="#dfn-f12" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f12-1">F12</a>) using the exchange. 
         </p>
-        <p>Once the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-9">workflow service</a> has the <strong>VP</strong> (<a href="#dfn-d6" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d6-2">D6</a>), it does any processing specified by the workflow on the returned VP, 
-          before sending it to its <strong><a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-33">verifier service</a></strong> (<a href="#dfn-p6" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p6-1">P6</a>) to get verified (<a href="#dfn-f13" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f13-1">F13</a>). The verification service verifies the provided VP, 
+        <p>Once the workflow service has the <strong>VP</strong> (<a href="#dfn-d6" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d6-2">D6</a>), it does any processing specified by the workflow on the returned VP, 
+          before sending it to its <strong>verifier service</strong> (<a href="#dfn-p6" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p6-1">P6</a>) to get verified (<a href="#dfn-f13" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f13-1">F13</a>). The verification service verifies the provided VP, 
           as part of this process it reaches out to the <strong>State of Newtopia’s status service</strong> (<a href="#dfn-p9" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p9-1">P9</a>) to check the contained 
-          VC’s status (<a href="#dfn-f14" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f14-1">F14</a>). When verification is complete, the verification service returns the verification results to the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-10">workflow service</a> (<a href="#dfn-f15" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f15-1">F15</a>). 
+          VC’s status (<a href="#dfn-f14" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f14-1">F14</a>). When verification is complete, the verification service returns the verification results to the workflow service (<a href="#dfn-f15" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f15-1">F15</a>). 
         </p>
-        <p>The <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-11">workflow service</a> continues the workflow by checking the results of the verification and executing any additional business logic 
-          specified by the workflow, resulting in the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-12">workflow service</a> determining the provided proof of EMT certification is acceptable and 
+        <p>The workflow service continues the workflow by checking the results of the verification and executing any additional business logic 
+          specified by the workflow, resulting in the workflow service determining the provided proof of EMT certification is acceptable and 
           that it will issue an incident activation credential to Sachin. To simplify the diagram, it was decided that the newly issued credential 
           would be issued to the same identifier that the proof EMT credential was issued to. In fullness, the workflow could include an additional 
           request to Sachin’s wallet coordinator to provide an identifier to issue the new credential to. 
         </p>
-        <p>Once the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-13">workflow service</a> has decided to issue the new credential, it reaches out to its <strong><a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-38">issuer service</a></strong> (<a href="#dfn-p7" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p7-1">P7</a>) and 
+        <p>Once the workflow service has decided to issue the new credential, it reaches out to its <strong>issuer service</strong> (<a href="#dfn-p7" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p7-1">P7</a>) and 
           provides all the necessary information for the new credential to be issued appropriately (<a href="#dfn-f16" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f16-1">F16</a>). As this is the first credential of 
-          this type being created, the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-39">issuer service</a> reaches out to its <strong>status service</strong> (<a href="#dfn-p8" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p8-1">P8</a>) to create a new 
-          <strong>status list</strong> (<a href="#dfn-d10" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d10-1">D10</a>) (<a href="#dfn-f17" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f17-1">F17</a>). The <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-40">issuer service</a> then completes its work, assigning one of the status list indexes to 
-          this credential per its policies, and returning the issued credential to the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-14">workflow service</a> (<a href="#dfn-f18" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f18-1">F18</a>). 
+          this type being created, the issuer service reaches out to its <strong>status service</strong> (<a href="#dfn-p8" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p8-1">P8</a>) to create a new 
+          <strong>status list</strong> (<a href="#dfn-d10" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d10-1">D10</a>) (<a href="#dfn-f17" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f17-1">F17</a>). The issuer service then completes its work, assigning one of the status list indexes to 
+          this credential per its policies, and returning the issued credential to the workflow service (<a href="#dfn-f18" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f18-1">F18</a>). 
         </p>
-        <p>The <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-15">workflow service</a> packages the credential in a <strong>VP</strong> (<a href="#dfn-d7" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d7-1">D7</a>) and returns it to Sachin’s wallet coordinator (<a href="#dfn-f19" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f19-1">F19</a>), 
+        <p>The workflow service packages the credential in a <strong>VP</strong> (<a href="#dfn-d7" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d7-1">D7</a>) and returns it to Sachin’s wallet coordinator (<a href="#dfn-f19" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f19-1">F19</a>), 
           which verifies the VP itself before storing the credential contained therein in the wallet service (<a href="#dfn-f20" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-f20-1">F20</a>). Between flows <a data-link-type="dfn|abstract-op" href="#dfn-f18" class="internalDFN" id="ref-for-dfn-f18-2">F18</a> and <a data-link-type="dfn|abstract-op" href="#dfn-f19" class="internalDFN" id="ref-for-dfn-f19-2">F19</a>, Sachin’s wallet 
           has the opportunity to ask Sachin if he wants to take any actions prior to storing the received credential, such as confirming that he 
           wants to store the credential and/or choose a non-default storage location. Here we assume Sachin’s wallet settings are such that the credential is simply stored. 
@@ -605,31 +518,31 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
           <tr>
             <td class="left"><dfn data-lt="P4|P4 Coordinator Process|Coordinator Process" id="dfn-p4" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">P4 Coordinator Process</dfn></td>
             <td>
-              The process representing both an <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-0">issuer coordinator</a> and a <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-2">verifier coordinator</a> in one, unified coordinator that is publicly accessible by outside users, 
+              The process representing both an issuer coordinator and a verifier coordinator in one, unified coordinator that is publicly accessible by outside users, 
               such as the <a data-link-type="dfn|abstract-op" href="#dfn-e1" class="internalDFN" id="ref-for-dfn-e1-13">holder</a> (<a href="#dfn-e1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-e1-14">E1</a>). It facilitates the up-front business logic before invoking particular interactions, and interfaces with the 
-              <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-16">workflow service</a> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-4">P5</a>) to provision exchanges (<a href="#dfn-d9" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d9-4">D9</a>) on a per-interaction basis. It also constructs the protocol object (<a href="#dfn-d4" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d4-3">D4</a>) which allows a 
-              <a data-link-type="dfn|abstract-op" href="#dfn-e1" class="internalDFN" id="ref-for-dfn-e1-15">holder</a> (<a href="#dfn-e1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-e1-16">E1</a>) and a <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-3">holder coordinator</a> (<a href="#dfn-p1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p1-4">P1</a>) to choose available interaction protocols via a provided interaction URL (<a href="#dfn-d2" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d2-3">D2</a>).
+              workflow service (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-4">P5</a>) to provision exchanges (<a href="#dfn-d9" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d9-4">D9</a>) on a per-interaction basis. It also constructs the protocol object (<a href="#dfn-d4" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d4-3">D4</a>) which allows a 
+              holder (<a href="#dfn-e1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-e1-16">E1</a>) and a <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-3">holder coordinator</a> (<a href="#dfn-p1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p1-4">P1</a>) to choose available interaction protocols via a provided interaction URL (<a href="#dfn-d2" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d2-3">D2</a>).
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="P5|P5 Workflow Service Process|Workflow Service Process" id="dfn-p5" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">P5 Workflow Service Process</dfn></td>
             <td>
               The process that indexes all possible credential workflows for a system including the business rules and logic for each workflow. 
-              It provides particular exchange URLs (<a href="#dfn-d9" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d9-5">D9</a>) to the requesting coordinator (<a href="#dfn-p4" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p4-2">P4</a>), uses the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-41">issuer service</a> to issue new credentials (<a href="#dfn-p7" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p7-2">P7</a>), 
-              and uses the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-34">verifier service</a> to verify submitted credentials (<a href="#dfn-p6" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p6-2">P6</a>).
+              It provides particular exchange URLs (<a href="#dfn-d9" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d9-5">D9</a>) to the requesting coordinator (<a href="#dfn-p4" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p4-2">P4</a>), uses the issuer service to issue new credentials (<a href="#dfn-p7" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p7-2">P7</a>), 
+              and uses the verifier service to verify submitted credentials (<a href="#dfn-p6" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p6-2">P6</a>).
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="P6|P6 Verifier Service Process|Verifier Service Process" id="dfn-p6" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">P6 Verifier Service Process</dfn></td>
             <td>
-              This process verifies the verifiable credentials provided by the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-17">workflow service</a> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-5">P5</a>) and checks credential status (<a href="#dfn-p9" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p9-2">P9</a>) 
+              This process verifies the verifiable credentials provided by the workflow service (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-5">P5</a>) and checks credential status (<a href="#dfn-p9" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p9-2">P9</a>) 
               using the service specified by the credential being verified (<a href="#dfn-d6" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d6-3">D6</a>).
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="P7|P7 Issuer Service Process|Issuer Service Process" id="dfn-p7" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">P7 Issuer Service Process</dfn></td>
             <td>
-              This process issues credentials as directed by the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-18">workflow service</a> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-6">P5</a>), assigns status list 
+              This process issues credentials as directed by the workflow service (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-6">P5</a>), assigns status list 
               indexes (<a href="#dfn-d10" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d10-2">D10</a>) to newly created credentials, and tracks used indexes within a given status list.
             </td>
           </tr>
@@ -662,8 +575,8 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
           <tr>
             <td class="left"><dfn data-lt="F2|F2 Create exchange|Create exchange" id="dfn-f2" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">F2 Create exchange</dfn></td>
             <td>
-              The call from the coordinator process (<a href="#dfn-p4" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p4-5">P4</a>) to its <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-19">workflow service</a> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-7">P5</a>) to provision an 
-              exchange URL (<a href="#dfn-d9" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d9-6">D9</a>) to include in the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-42">protocol object</a> (<a href="#dfn-d4" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d4-4">D4</a>) that the coordinator process will create.
+              The call from the coordinator process (<a href="#dfn-p4" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p4-5">P4</a>) to its workflow service (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-7">P5</a>) to provision an 
+              exchange URL (<a href="#dfn-d9" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d9-6">D9</a>) to include in the protocol object (<a href="#dfn-d4" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d4-4">D4</a>) that the coordinator process will create.
             </td>
           </tr>
           <tr>
@@ -698,20 +611,20 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
           <tr>
             <td class="left"><dfn data-lt="F7|F7 Start exchange|Start exchange" id="dfn-f7" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">F7 Start exchange</dfn></td>
             <td>
-              The call from the <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-10">holder coordinator</a> (<a href="#dfn-p1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p1-9">P1</a>) to the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-20">workflow service</a> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-8">P5</a>) to start this particular exchange.
+              The call from the <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-10">holder coordinator</a> (<a href="#dfn-p1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p1-9">P1</a>) to the workflow service (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-8">P5</a>) to start this particular exchange.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F8|F8 Request EMT credential|Request EMT credential" id="dfn-f8" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">F8 Request EMT credential</dfn></td>
             <td>
-              The call back from the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-21">workflow service</a> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-9">P5</a>) to the <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-11">holder coordinator</a> (<a href="#dfn-p1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p1-10">P1</a>) that contains the VPR that requests the submission of proof of valid EMT certification (<a href="#dfn-d5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d5-2">D5</a>). 
+              The call back from the workflow service (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-9">P5</a>) to the <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-11">holder coordinator</a> (<a href="#dfn-p1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p1-10">P1</a>) that contains the VPR that requests the submission of proof of valid EMT certification (<a href="#dfn-d5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d5-2">D5</a>). 
               The VPR contains a query by example that informs the <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-12">holder coordinator</a> what credentials are acceptable for this request to be satisfied.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F9|F9 Retrieve candidate credentials|Retrieve candidate credentials" id="dfn-f9" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">F9 Retrieve candidate credentials</dfn></td>
             <td>
-              The <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-13">holder coordinator</a> (<a href="#dfn-p1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p1-11">P1</a>) forwards the query by example set to its <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-43">holder service</a> (<a href="#dfn-p3" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p3-2">P3</a>) 
+              The <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-13">holder coordinator</a> (<a href="#dfn-p1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p1-11">P1</a>) forwards the query by example set to its holder service (<a href="#dfn-p3" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p3-2">P3</a>) 
               which finds the set of credentials the <a data-link-type="dfn|abstract-op" href="#dfn-e1" class="internalDFN" id="ref-for-dfn-e1-30">holder</a> (<a href="#dfn-e1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-e1-31">E1</a>) has that match the criteria and returns them to the <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-14">holder coordinator</a>.
             </td>
           </tr>
@@ -731,33 +644,33 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
           <tr>
             <td class="left"><dfn data-lt="F12|F12 Present credential|Present credential" id="dfn-f12" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">F12 Present credential</dfn></td>
             <td>
-              The call where the <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-17">holder coordinator</a> (<a href="#dfn-p1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p1-14">P1</a>) presents the generated VP (<a href="#dfn-d6" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d6-5">D6</a>) to the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-22">workflow service</a> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-10">P5</a>) for evaluation.</td>
+              The call where the <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-17">holder coordinator</a> (<a href="#dfn-p1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p1-14">P1</a>) presents the generated VP (<a href="#dfn-d6" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d6-5">D6</a>) to the workflow service (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-10">P5</a>) for evaluation.</td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F13|F13 Verify|Verify" id="dfn-f13" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">F13 Verify</dfn></td>
             <td>
-              The <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-23">workflow service</a> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-11">P5</a>) as part of its evaluation of the submitted VP, 
-              sends only the selected credential (<a href="#dfn-d1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d1-5">D1</a>) to its <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-35">verifier service</a> for verification (<a href="#dfn-p6" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p6-5">P6</a>).
+              The workflow service (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-11">P5</a>) as part of its evaluation of the submitted VP, 
+              sends only the selected credential (<a href="#dfn-d1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d1-5">D1</a>) to its verifier service for verification (<a href="#dfn-p6" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p6-5">P6</a>).
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F14|F14 Check status|Check status" id="dfn-f14" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">F14 Check status</dfn></td>
             <td>
-              The call from the State of Utopia Incident Command’s <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-36">verifier service</a> (<a href="#dfn-p6" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p6-6">P6</a>) to the 
+              The call from the State of Utopia Incident Command’s verifier service (<a href="#dfn-p6" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p6-6">P6</a>) to the 
               State of Newtopia’s status service (<a href="#dfn-p9" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p9-3">P9</a>) to check the submitted credential’s (<a href="#dfn-d1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d1-6">D1</a>) status.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F15|F15 Verification results|Verification results" id="dfn-f15" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">F15 Verification results</dfn></td>
             <td>
-              The call from the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-37">verifier service</a> (<a href="#dfn-p6" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p6-7">P6</a>) to the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-24">workflow service</a> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-12">P5</a>) with the results of the verification. 
-              The <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-25">workflow service</a> then finishes any additional processing it needs to continue to the next step in the workflow.
+              The call from the verifier service (<a href="#dfn-p6" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p6-7">P6</a>) to the workflow service (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-12">P5</a>) with the results of the verification. 
+              The workflow service then finishes any additional processing it needs to continue to the next step in the workflow.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F16|F16 Request issuance|Request issuance" id="dfn-f16" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">F16 Request issuance</dfn></td>
             <td>
-              The call from the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-26">workflow service</a> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-13">P5</a>) to the <a data-link-type="dfn" href="https://www.w3.org/TR/vc-data-model-2.0/#dfn-issuers">issuer</a> service (<a href="#dfn-p7" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p7-5">P7</a>) to direct the <a data-link-type="dfn" href="https://www.w3.org/TR/vc-data-model-2.0/#dfn-issuers">issuer</a> service to issue 
+              The call from the workflow service (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-13">P5</a>) to the <a data-link-type="dfn" href="https://www.w3.org/TR/vc-data-model-2.0/#dfn-issuers">issuer</a> service (<a href="#dfn-p7" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p7-5">P7</a>) to direct the <a data-link-type="dfn" href="https://www.w3.org/TR/vc-data-model-2.0/#dfn-issuers">issuer</a> service to issue 
               the credential to the provided identifier, along with any other information needed to properly issue the new credential.
             </td>
           </tr>
@@ -771,21 +684,21 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
           <tr>
             <td class="left"><dfn data-lt="F18|F18 Return credential|Return credential" id="dfn-f18" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">F18 Return credential</dfn></td>
             <td>
-              The call from the <a data-link-type="dfn" href="https://www.w3.org/TR/vc-data-model-2.0/#dfn-issuers">issuer</a> service (<a href="#dfn-p7" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p7-7">P7</a>) back to the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-27">workflow service</a> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-14">P5</a>) that contains the newly issued credential (<a href="#dfn-d3" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d3-2">D3</a>).
+              The call from the <a data-link-type="dfn" href="https://www.w3.org/TR/vc-data-model-2.0/#dfn-issuers">issuer</a> service (<a href="#dfn-p7" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p7-7">P7</a>) back to the workflow service (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-14">P5</a>) that contains the newly issued credential (<a href="#dfn-d3" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d3-2">D3</a>).
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F19|F19 Issued credential as VP|Issued credential as VP" id="dfn-f19" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">F19 Issued credential as VP</dfn></td>
             <td>
-              The <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-28">workflow service</a> packages the newly issued credential (<a href="#dfn-d3" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d3-3">D3</a>) into a VP (<a href="#dfn-d7" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d7-2">D7</a>) and uses the exchange to return 
-              it to the <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-18">holder coordinator</a> (<a href="#dfn-p1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p1-15">P1</a>). Along with the generated VP (<a href="#dfn-d7" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d7-3">D7</a>), the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-29">workflow service</a> can also include 
+              The workflow service packages the newly issued credential (<a href="#dfn-d3" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d3-3">D3</a>) into a VP (<a href="#dfn-d7" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d7-2">D7</a>) and uses the exchange to return 
+              it to the <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-18">holder coordinator</a> (<a href="#dfn-p1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p1-15">P1</a>). Along with the generated VP (<a href="#dfn-d7" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d7-3">D7</a>), the workflow service can also include 
               a redirect URL (<a href="#dfn-d8" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d8-1">D8</a>) to send the <a data-link-type="dfn|abstract-op" href="#dfn-e1" class="internalDFN" id="ref-for-dfn-e1-37">holder</a> (<a href="#dfn-e1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-e1-38">E1</a>) to at the conclusion of the interaction.
             </td>
           </tr>
           <tr>
             <td class="left"><dfn data-lt="F20|F20 Store credential|Store credential" id="dfn-f20" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">F20 Store credential</dfn></td>
             <td>
-              The call from the <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-19">holder coordinator</a> (<a href="#dfn-p1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p1-16">P1</a>) to the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-44">holder service</a> (<a href="#dfn-p3" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p3-4">P3</a>) to store the credential (<a href="#dfn-d3" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d3-4">D3</a>). 
+              The call from the <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-19">holder coordinator</a> (<a href="#dfn-p1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p1-16">P1</a>) to the holder service (<a href="#dfn-p3" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p3-4">P3</a>) to store the credential (<a href="#dfn-d3" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d3-4">D3</a>). 
               This happens after any processing needed by the <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-20">holder coordinator</a>, including possible interaction with the <a data-link-type="dfn|abstract-op" href="#dfn-e1" class="internalDFN" id="ref-for-dfn-e1-39">holder</a> (<a href="#dfn-e1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-e1-40">E1</a>), 
               and removing the credential (<a href="#dfn-d3" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d3-5">D3</a>) from the VP (<a href="#dfn-d7" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d7-4">D7</a>) it is contained within.
             </td>
@@ -794,7 +707,7 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
             <td class="left"><dfn data-lt="F21|F21 Redirect back to origin|Redirect back to origin" id="dfn-f21" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">F21 Redirect back to origin</dfn></td>
             <td>
               The call from the <a data-link-type="dfn|abstract-op" href="#dfn-c3" class="internalDFN" id="ref-for-dfn-c3-21">holder coordinator</a> (<a href="#dfn-p1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p1-17">P1</a>) to the <a data-link-type="dfn|abstract-op" href="#dfn-e1" class="internalDFN" id="ref-for-dfn-e1-41">holder</a>’s browser (<a href="#dfn-p2" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p2-4">P2</a>) that uses the provided redirect URL (<a href="#dfn-d8" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-d8-2">D8</a>) 
-              to redirect the <a data-link-type="dfn|abstract-op" href="#dfn-e1" class="internalDFN" id="ref-for-dfn-e1-42">holder</a> (<a href="#dfn-e1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-e1-43">E1</a>) back to the origin as directed by the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-30">workflow service</a> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-15">P5</a>).
+              to redirect the <a data-link-type="dfn|abstract-op" href="#dfn-e1" class="internalDFN" id="ref-for-dfn-e1-42">holder</a> (<a href="#dfn-e1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-e1-43">E1</a>) back to the origin as directed by the workflow service (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-15">P5</a>).
             </td>
           </tr>
           <tr>
@@ -807,7 +720,7 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
           <tr>
             <td class="left"><dfn data-lt="F23|F23 Poll for exchange state|Poll for exchange state" id="dfn-f23" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">F23 Poll for exchange state</dfn></td>
             <td>
-              The call from Incident Command's coordinator (<a href="#dfn-p4" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p4-9">P4</a>) to their <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-31">workflow service</a> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-16">P5</a>) used to monitor the state of
+              The call from Incident Command's coordinator (<a href="#dfn-p4" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p4-9">P4</a>) to their workflow service (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-16">P5</a>) used to monitor the state of
               the active exchange so that the coordinator can bubble up any relevant changes to the <a data-link-type="dfn|abstract-op" href="#dfn-e1" class="internalDFN" id="ref-for-dfn-e1-46">holder</a> (<a href="#dfn-e1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-e1-47">E1</a>) as it sees fit.
             </td>
           </tr>
@@ -867,7 +780,7 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
           <tr>
             <td class="left"><dfn data-lt="D9|D9 Incident Activation Exchange URL|Incident Activation Exchange URL" id="dfn-d9" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">D9 Incident Activation Exchange URL</dfn></td>
             <td>
-              The exchange URL that is generated by the <a data-link-type="dfn|abstract-op" class="respec-offending-element" title="No matching definition found." id="respec-offender-no-matching-definition-found-32">workflow service</a> (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-17">P5</a>) for this particular exchange using the specified workflow.
+              The exchange URL that is generated by the workflow service (<a href="#dfn-p5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-p5-17">P5</a>) for this particular exchange using the specified workflow.
             </td>
           </tr>
           <tr>
@@ -914,14 +827,14 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
             </td>
           </tr>
           <tr>
-            <td class="left"><dfn data-lt="T1|T1 State of Utopia Trust Boundary|State of Utopia Trust Boundary" id="dfn-t1" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn" class="respec-offending-element" title="Found definition for &quot;T1 State of Utopia Trust Boundary&quot;, but nothing links to it. This is usually a spec bug!">T1 State of Utopia Trust Boundary</dfn></td>
+            <td class="left"><dfn data-lt="T1|T1 State of Utopia Trust Boundary|State of Utopia Trust Boundary" id="dfn-t1" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">T1 State of Utopia Trust Boundary</dfn></td>
             <td>
               The boundary between the <a data-link-type="dfn|abstract-op" href="#dfn-e1" class="internalDFN" id="ref-for-dfn-e1-64">holder</a> controlled software (<a href="#dfn-c1" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-c1-6">C1</a>, <a href="#dfn-c4" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-c4-1">C4</a>) and the software ran by the State of Utopia’s Incident Command (<a href="#dfn-c5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-c5-1">C5</a>). 
               It is assumed that the <a data-link-type="dfn|abstract-op" href="#dfn-e1" class="internalDFN" id="ref-for-dfn-e1-65">holder</a>’s wallet front end (<a href="#dfn-c3" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-c3-25">C3</a>) and backend (<a href="#dfn-c4" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-c4-2">C4</a>) trust each other and the connection between them.
             </td>
           </tr>
           <tr>
-            <td class="left"><dfn data-lt="T1|T1 State of Newtopia Trust Boundary|State of Newtopia Trust Boundary" class="respec-offending-element" title="This is defined more than once in the document." id="respec-offender-this-is-defined-more-than-once-in-the-document" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">T1 State of Newtopia Trust Boundary</dfn></td>
+            <td class="left"><dfn data-lt="T2|T2 State of Newtopia Trust Boundary|State of Newtopia Trust Boundary" id="dfn-t2" tabindex="0" aria-haspopup="dialog" data-dfn-type="dfn">T2 State of Newtopia Trust Boundary</dfn></td>
             <td>
               The boundary between the State of Utopia’s Incident Command software (<a href="#dfn-c5" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-c5-2">C5</a>) and the State of Newtopia’s software (<a href="#dfn-c6" class="internalDFN" data-link-type="dfn" id="ref-for-dfn-c6-1">C6</a>).
             </td>
@@ -3868,10 +3781,10 @@ var[data-type]:hover::after,var[data-type]:hover::before{opacity:1}
       <ul>
       <li>Not referenced in this document.</li>
     </ul>
-    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-respec-offender-this-is-defined-more-than-once-in-the-document" aria-label="Links in this document to definition: T1 State of Newtopia Trust Boundary">
+    </div><div class="dfn-panel" hidden="" role="dialog" aria-modal="true" id="dfn-panel-for-dfn-t2" aria-label="Links in this document to definition: T2 State of Newtopia Trust Boundary">
       <span class="caret"></span>
       <div>
-        <a class="self-link" href="#respec-offender-this-is-defined-more-than-once-in-the-document" aria-label="Permalink for definition: T1 State of Newtopia Trust Boundary. Activate to close this dialog.">Permalink</a>
+        <a class="self-link" href="#dfn-t2" aria-label="Permalink for definition: T2 State of Newtopia Trust Boundary. Activate to close this dialog.">Permalink</a>
          
         
       </div>
