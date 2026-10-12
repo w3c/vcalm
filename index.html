@@ -4385,6 +4385,18 @@ as the [[VC-BITSTRING-STATUS-LIST]] specification, which provides a normative
 example of how to implement status list credentials.
       </p>
 
+      <p>
+When a status service manages more than one index-allocation context, clients
+MAY supply an <code>indexAllocator</code> value when creating a status list.
+That value identifies the shared allocation state (for example, a per-tenant or
+per-<code>statusPurpose</code> registry) used to assign
+<code>statusListIndex</code> values for credentials that will reference the
+list. If an <code>indexAllocator</code> is supplied at list creation (or when
+indices are first assigned at issuance), subsequent status updates that depend
+on that allocation state MUST reuse the same <code>indexAllocator</code> value
+unless the implementation can unambiguously infer a single default allocator.
+      </p>
+
       <div class="api-detail"
         data-api-endpoint="post /status-lists"></div>
     </section>
@@ -4467,13 +4479,13 @@ Issuer instances are responsible for assigning one or more status entries to
 the Verifiable Credentials they issue. Issuer software is expected to ensure
 that it does not overallocate or misallocate status metadata (e.g., status
 lists or list indexes), as this overallocated, misallocated, or unused
-information can create privacy harms both to holders and issuers of Verifiable
+information can create privacy harms to both holders and issuers of Verifiable
 Credentials. In architectures that are highly available, horizontally scalable,
-or distributed, or any combination of these, this can can be especially
+or distributed, or any combination of these, this can be especially
 challenging unless status allocation state is appropriately shared, identified,
-and referenced across disparate components. The `indexAllocator` field can be
-used to identify and refer to shared state, allowing for better coordination
-as well as atomic allocation and use of status metadata.
+and referenced across disparate components. The <code>indexAllocator</code>
+field can be used to identify and refer to shared state, allowing for better
+coordination as well as atomic allocation and use of status metadata.
       </p>
       <p>
 Status mechanisms associate each [=verifiable credential=] with a

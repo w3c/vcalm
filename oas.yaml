@@ -882,7 +882,13 @@ components:
       type: object
       required: ['statusPurpose']
       additionalProperties: false
-      description: Parameters for creating a new status list credential.
+      description: >-
+        Parameters for creating a new status list credential. When a deployment
+        runs more than one index-allocation context, an optional `indexAllocator`
+        identifies which allocator state will own indices for credentials that
+        reference this list; the same value MUST be reused on later
+        `/credentials/status` updates that depend on that allocation state
+        unless a single default allocator can be inferred.
       properties:
         statusPurpose:
           type: string
@@ -892,13 +898,21 @@ components:
           type: string
           format: uri
           description: Optional identifier for the status list. If not provided, the service will generate one.
+        indexAllocator:
+          type: string
+          description: >-
+            Optional identifier for the index-allocation context associated with
+            this status list. When supplied, status updates that rely on the same
+            allocation state MUST reuse this value (see
+            `UpdateCredentialStatusRequest.indexAllocator`).
         options:
           type: object
           description: Optional parameters for creating the status list, such as size or other configuration options specific to the status list mechanism being used.
       example:
         {
           "statusPurpose": "revocation",
-          "id": "https://issuer.example.com/credentials/status/lists/abc123"
+          "id": "https://issuer.example.com/credentials/status/lists/abc123",
+          "indexAllocator": "tenant-acme-revocation"
         }
     CreateStatusListResponse:
       type: object
