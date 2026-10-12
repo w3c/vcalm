@@ -1091,7 +1091,7 @@ components:
               type: array
               description: The Verifiable Presentations that the client sends to the server.
               items:
-                $ref: "../components/ExchangeVerifiablePresentation.yml#/components/schemas/ExchangeVerifiablePresentation"
+                $ref: "./components/ExchangeVerifiablePresentation.yml#/components/schemas/ExchangeVerifiablePresentation"
             referenceId:
               type: string
               description: If the server previously sent a referenceId, the client SHOULD include it here to aid debugging and message correlation. The value SHOULD be a <code>urn:uuid</code> value.
