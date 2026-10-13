@@ -109,6 +109,9 @@ components:
                   type: string
                   description: The media type of the credential format.
                   example: [{"mediaType": "application/vc"}]
+                "group":
+                  type: string
+                  description: Optional group identifier for logical AND/OR operations when offering a set of credentials.
                 "credential":
                   type: object
                   description: A minimally contextualized set of type information that informs the recipient what is being offered.
@@ -165,6 +168,7 @@ components:
           "domain": "edu.example",
           "credentialOffer": [{
             "mediaType": "application/vc",
+            "group": "ExampleProofOfEducation",
             "credential": {
               "@context": [
                 "https://www.w3.org/ns/credentials/v2",
