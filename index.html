@@ -559,7 +559,7 @@ All implementations MAY provide functionality beyond this specification.
         OWASP Web Security Testing Guide</a> can help reduce the chance of insecure
         implementations.
       </p>
-      
+
     </section>
 
     <section class="informative">
@@ -3758,8 +3758,8 @@ This section details the general threat model for this specification
 including security considerations, privacy considerations, and market
 competition considerations. It makes reference to <a href="threat-model/index.html">a detailed threat model</a>, which was created
 based on a use case of a first responder onboarding themselves to a new incident. This use case was chosen because it could be simplified
-to detail the issuance of a [=verifiable credential=] for the particular incident, predicated on the [=verification=] of an existing emergency 
-responder credential. This enabled the data flow diagram in the threat model to detail both the [=verification=] and issuance steps, in the 
+to detail the issuance of a [=verifiable credential=] for the particular incident, predicated on the [=verification=] of an existing emergency
+responder credential. This enabled the data flow diagram in the threat model to detail both the [=verification=] and issuance steps, in the
 same workflow.
     </p>
 
@@ -3937,10 +3937,10 @@ Workflow variable options expose unintended workflow paths allowing misused work
 Verifier Phones Home About Specific Verifiable Credential
           </a>
           <span class="threat-tag threat-tag-security">security</span> —
-It is considered a bad privacy practice for a verifier to contact an issuer about a specific verifiable credential. This practice is known as "phoning home" 
-and can result in a mismatch in privacy expectations between holders, issuers, verifiers, and other parties expressed in a verifiable credential. 
-Phoning home enables issuers to correlate unsuspecting parties with the use of certain verifiable credentials which can violate privacy expectations that 
-each entity might have regarding the use of those credentials. For example, what is expected by the holder to be a private interaction between them and 
+It is considered a bad privacy practice for a verifier to contact an issuer about a specific verifiable credential. This practice is known as "phoning home"
+and can result in a mismatch in privacy expectations between holders, issuers, verifiers, and other parties expressed in a verifiable credential.
+Phoning home enables issuers to correlate unsuspecting parties with the use of certain verifiable credentials which can violate privacy expectations that
+each entity might have regarding the use of those credentials. For example, what is expected by the holder to be a private interaction between them and
 the verifier becomes one where the issuer is notified of the interaction.
         </li>
         <li value="34">
@@ -3955,7 +3955,7 @@ Holder coordinator implementations, such as digital wallet software, can receive
 Interaction URL Does Not Use HTTPS
           </a>
           <span class="threat-tag threat-tag-security">security</span> —
-Using protocol schemes that are not rooted in the HTTPS trust model requires separate encryption protocol, key management, and trust models to be used, 
+Using protocol schemes that are not rooted in the HTTPS trust model requires separate encryption protocol, key management, and trust models to be used,
 which are often less broadly developed and deployed and require much more development and analysis to determine the threat and privacy model.
         </li>
         <li value="36">
@@ -3963,19 +3963,19 @@ which are often less broadly developed and deployed and require much more develo
 Deletion Request Only Results in Partial Deletion of Credential
           </a>
           <span class="threat-tag threat-tag-security">security</span> —
-The APIs provided by this specification enable the deletion of verifiable credentials and verifiable presentations from storage services. 
-In some cases, a record may be only partially deleted which means that some or all of the original information continues to be stored. 
-This mode of operation can be useful if there are audit requirements for all credentials and/or presentations over a particular time period, 
+The APIs provided by this specification enable the deletion of verifiable credentials and verifiable presentations from storage services.
+In some cases, a record may be only partially deleted which means that some or all of the original information continues to be stored.
+This mode of operation can be useful if there are audit requirements for all credentials and/or presentations over a particular time period,
 or if recovering an original credential might be a useful feature to provide but can lead to unintended persistence of records for longer than necessary.
         </li>
         <li value="38">
           <a href="threat-model/index.html#t38-mishandled-status-information-upon-credential-deletion-reveals-information">
-Mishandled Status Information Upon Credential Deletion Lead to Holder Confusion 
+Mishandled Status Information Upon Credential Deletion Lead to Holder Confusion
           </a>
           <span class="threat-tag threat-tag-security">security</span> —
-When deleting a verifiable credential, handling of its status information needs to be considered. 
-Some use cases might call for deletion of a particular verifiable credential to also set the revocation and suspension bits of that verifiable credential, 
-such that any sort of status check for the deleted credential fails and use of the credential is halted without the knowledge of the holder. 
+When deleting a verifiable credential, handling of its status information needs to be considered.
+Some use cases might call for deletion of a particular verifiable credential to also set the revocation and suspension bits of that verifiable credential,
+such that any sort of status check for the deleted credential fails and use of the credential is halted without the knowledge of the holder.
 This can lead to frustration and confusion when the holder attempts to use the credential for what they deem to be a valid purpose.
         </li>
         <li value="39">
@@ -4054,7 +4054,7 @@ Verifiable credentials issuance has a request phase and a delivery phase. The re
 Unintended Data Leak Due to Third Party Processing
           </a>
           <span class="threat-tag threat-tag-privacy">privacy</span> —
-An issuer or verifier may make use of a third party service to process some data during an issuance or verification workflow. 
+An issuer or verifier may make use of a third party service to process some data during an issuance or verification workflow.
 This third party service becomes a potential data leak risk as it may be able to aggregate across different issuers or verifiers using its services.
         </li>
         <li value="32">
@@ -4062,7 +4062,7 @@ This third party service becomes a potential data leak risk as it may be able to
 Malicious Entity Acts on Behalf of Incapable Party
           </a>
           <span class="threat-tag threat-tag-security">security</span> <span class="threat-tag threat-tag-privacy">privacy</span> —
-Some subjects such as a new born baby, a pet, or a person with dementia, are incapable of acting on their own behalf. 
+Some subjects such as a new born baby, a pet, or a person with dementia, are incapable of acting on their own behalf.
 In these cases requests may be made on behalf of a subject with no cryptographic delegation possible. This can be problematic when guardians have malicious intent.
         </li>
         <li value="37">
@@ -4071,7 +4071,7 @@ Credential Deletion Violates Legal Regulation
           </a>
           <span class="threat-tag threat-tag-privacy">privacy</span> —
 Due to some legal regulations and/or audit requirements, the complete or partial storage of a credential is required for some amount of time after a deletion request has been made.
-        </li>        
+        </li>
       </ol>
     </section>
 
@@ -4269,11 +4269,11 @@ accident, as it might include information that is secret to the [=holder=].
       <p>
         A <a href="threat-model/index.html">threat model for the VCALM specification</a> has been created
         based on a use case of a first responder onboarding themselves to a new incident. This use case was chosen because it could be simplified
-        to detail the issuance of a [=verifiable credential=] for the particular incident, predicated on the [=verification=] of an existing emergency 
-        responder credential. This enabled the data flow diagram in the threat model to detail both the [=verification=] and issuance steps, in the 
-        same workflow. 
+        to detail the issuance of a [=verifiable credential=] for the particular incident, predicated on the [=verification=] of an existing emergency
+        responder credential. This enabled the data flow diagram in the threat model to detail both the [=verification=] and issuance steps, in the
+        same workflow.
       </p>
-    
+
     <section class="notoc">
         <h3>Security Considerations</h4>
         <p>
@@ -4961,19 +4961,19 @@ sequenceDiagram
     participant IC as Issuer Coordinator
     participant IS as Issuer Service
     participant VS as Verifier Serivice
-    
+
     Note over H,IS: Prerequisite: Exchange created by Issuer Coordinator
-    
+
     H->>HC: Request credential
     HC->>IWF: POST /workflows/123/exchanges/abc ({})
 
     Note left of IWF: Initiate exchange by POSTing an empty JSON object.
 
     IWF->>HC: Verifiable Presentation Request
-    
+
     HC->>H: (optional) Show consent prompt
     H->>HC: Approve
-    
+
     HC->>HC: Create VP with auth
     HC->>IWF: POST /workflows/123/exchanges/abc ({verifiablePresentation})
 
@@ -4990,14 +4990,14 @@ sequenceDiagram
     HC->>H: Display success
         </pre>
         <figcaption>
-Issuance of a credential to the requesting holder. 
+Issuance of a credential to the requesting holder.
         </figcaption>
     </figure>
 
     <h3>Verification of a single VC</h3>
     <p>
       The following diagram details the verification of a single [=verifiable credential=] at the request of a [=holder=].
-      It shows the use of `GET /credentials/{id}` with the [=holder coordinator=] doing the work of generating the 
+      It shows the use of `GET /credentials/{id}` with the [=holder coordinator=] doing the work of generating the
       [=verifiable presentation=] that is sent to the [=verifier=]. The [=workflow=] shown here does not have the verifier
       doing any auth request as seen in the preceding issuance example. If the [=verifier=] wanted, they could do another back
       and forth with the [=holder=] before deciding to verify the provided [=verifiable presentation=].
@@ -5011,9 +5011,9 @@ sequenceDiagram
     participant VWF as Verifier Workflow Service
     participant VC as Verifier Coordinator
     participant VS as Verifier Service
-    
+
     Note over H,VS: Prerequisite: Exchange created by Verifier Coordinator
-    
+
     H->>HC: Request verification of VC-098
     HC->>HS: GET /credentials/{id} (id:VC-098)
     HS->>HC: Requested VC-098
@@ -5039,8 +5039,8 @@ Verification of a single credential.
     <h3>Verification of multiple VCs</h3>
     <p>
       The following diagram details the verification of multiple [=verifiable credential=] at the request of a [=holder=].
-      It shows the use of `POST /presentations` to create the [=verifiable presentation=], with the [=holder service=] 
-      doing the work of generating the [=verifiable presentation=] that is sent to the [=verifier=]. 
+      It shows the use of `POST /presentations` to create the [=verifiable presentation=], with the [=holder service=]
+      doing the work of generating the [=verifiable presentation=] that is sent to the [=verifier=].
       The [=workflow=] shown here does not have the verifier doing any auth request as seen in the preceding issuance example.
       If the [=verifier=] wanted, they could do another back and forth with the [=holder=] before deciding to verify the
       provided [=verifiable presentation=].
@@ -5054,9 +5054,9 @@ sequenceDiagram
     participant VWF as Verifier Workflow Service
     participant VC as Verifier Coordinator
     participant VS as Verifier Service
-    
+
     Note over H,VS: Prerequisite: Exchange created by Verifier Coordinator
-    
+
     H->>HC: Request verification of a set of VCs
     HC->>HS: POST /presentations ({setofVCs})
     HS->>HS: Create VP with specified VCs
@@ -5081,7 +5081,7 @@ Verification of multiple credentials in one presentation.
     <h3>Presentation of a VC in person</h3>
     <p>
       The following diagram details the presentation of a [=verifiable credential=] at the request of a [=holder=] to
-      another person, Tiffany. It shows the use of `GET /credentials/{id}` to return the specified [=verifiable credential=] 
+      another person, Tiffany. It shows the use of `GET /credentials/{id}` to return the specified [=verifiable credential=]
       to the [=holder coordinator=], to be packaged in a QR Code that can be read by Tiffany's device.
     </p>
     <figure>
@@ -5092,7 +5092,7 @@ sequenceDiagram
     participant HS as Holder Service
     participant T as Tiffany
     participant THC as Tiffany's Holder Coordinator
-    
+
     H->>HC: Select VC to present
     HC->>HS: GET /credentials/{id} (id:credentialId)
     HS->>HC: Requested VC
@@ -5112,8 +5112,8 @@ Presentation of a VC in person
 
     <h3>Presentation of a VP in person</h3>
     <p>
-      The following diagram details the presentation of a [=verifiable presentation=] at the request of a [=holder=] to 
-      another person, Alice. It shows the use of `GET /presentations/{id}` implying that the [=holder=] has 
+      The following diagram details the presentation of a [=verifiable presentation=] at the request of a [=holder=] to
+      another person, Alice. It shows the use of `GET /presentations/{id}` implying that the [=holder=] has
       presented this same presentation in the past, and that the [=holder coordinator=] knows the `id` to request the existing
       presentation.
     </p>
@@ -5125,7 +5125,7 @@ sequenceDiagram
     participant HS as Holder Service
     participant A as Alice
     participant AHC as Alice's Holder Coordinator
-    
+
     H->>HC: Select VC to present
     HC->>HS: GET /presentations/{id} (id:presentationId)
     HS->>HS: Generate VP with selected VC
