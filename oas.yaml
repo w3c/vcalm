@@ -830,7 +830,10 @@ components:
       type: object
       required: ['credentialId', 'credentialStatus', 'status']
       additionalProperties: false
-      description: Credential status information to be updated.
+      description: >-
+        Credential status information to be updated. When a deployment runs more than one
+        mechanism that assigns or records `statusListIndex` values, an optional
+        `indexAllocator` can identify which allocator context to use (see that property).
       properties:
         credentialId:
           type: string
@@ -856,18 +859,36 @@ components:
           description: Specifies the new status.
         indexAllocator:
           type: string
-          description: For services to use which indexes are being used/assigned to VCs.
+          description: >-
+            Optional identifier for the index-allocation context the status service should
+            use for this request. Status mechanisms such as bitstring status lists associate
+            each credential with a `statusListIndex` inside a list; implementations often keep
+            internal bookkeeping (free lists, counters, per-tenant pools, etc.) so indices are
+            not double-assigned and updates target the correct row. When multiple allocators
+            exist—for example, separate pipelines per tenant, environment, or
+            `statusPurpose` — `indexAllocator` tells the service which registry or policy to
+            consult or update alongside `credentialId` and `credentialStatus`. Omission is
+            allowed when the implementation infers a single default allocator or when
+            `credentialStatus` already fully identifies the list entry. Allowed values are
+            implementation-specific; this specification does not define a registry of names.
       example:
         {
           "credentialId": "0fc754bc-fc32-46a0-aec1-a5ef385e7ea0",
           "credentialStatus": { "type": "BitstringStatusList", "statusPurpose": "revocation" },
-          "status": True
+          "status": true,
+          "indexAllocator": "tenant-acme-revocation"
         }
     CreateStatusListRequest:
       type: object
       required: ['statusPurpose']
       additionalProperties: false
-      description: Parameters for creating a new status list credential.
+      description: >-
+        Parameters for creating a new status list credential. When a deployment
+        runs more than one index-allocation context, an optional `indexAllocator`
+        identifies which allocator state will own indices for credentials that
+        reference this list; the same value MUST be reused on later
+        `/credentials/status` updates that depend on that allocation state
+        unless a single default allocator can be inferred.
       properties:
         statusPurpose:
           type: string
@@ -877,13 +898,21 @@ components:
           type: string
           format: uri
           description: Optional identifier for the status list. If not provided, the service will generate one.
+        indexAllocator:
+          type: string
+          description: >-
+            Optional identifier for the index-allocation context associated with
+            this status list. When supplied, status updates that rely on the same
+            allocation state MUST reuse this value (see
+            `UpdateCredentialStatusRequest.indexAllocator`).
         options:
           type: object
           description: Optional parameters for creating the status list, such as size or other configuration options specific to the status list mechanism being used.
       example:
         {
           "statusPurpose": "revocation",
-          "id": "https://issuer.example.com/credentials/status/lists/abc123"
+          "id": "https://issuer.example.com/credentials/status/lists/abc123",
+          "indexAllocator": "tenant-acme-revocation"
         }
     CreateStatusListResponse:
       type: object
@@ -1091,7 +1120,7 @@ components:
               type: array
               description: The Verifiable Presentations that the client sends to the server.
               items:
-                $ref: "../components/ExchangeVerifiablePresentation.yml#/components/schemas/ExchangeVerifiablePresentation"
+                $ref: "./components/ExchangeVerifiablePresentation.yml#/components/schemas/ExchangeVerifiablePresentation"
             referenceId:
               type: string
               description: If the server previously sent a referenceId, the client SHOULD include it here to aid debugging and message correlation. The value SHOULD be a <code>urn:uuid</code> value.
