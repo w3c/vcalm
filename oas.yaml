@@ -1058,7 +1058,9 @@ components:
             - verifiablePresentation
           properties:
             verifiablePresentation:
-              $ref: "./components/VerifiablePresentation.yml#/components/schemas/VerifiablePresentation"
+              oneOf:
+                - $ref: "./components/VerifiablePresentation.yml#/components/schemas/VerifiablePresentation"
+                - $ref: "./components/EnvelopedVerifiablePresentation.yml#/components/schemas/EnvelopedVerifiablePresentation"
             referenceId:
               type: string
               description: When the server previously sent a referenceId, the client SHOULD include it here to aid debugging and message correlation. The value SHOULD be a <code>urn:uuid</code> value.
@@ -1068,9 +1070,11 @@ components:
           properties:
             verifiablePresentation:
               type: array
-              description: The Verifiable Presentations that the client sends to the server.
+              description: The Verifiable Presentations that the client sends to the server. Items MAY be enveloped, including JWT JWE compact serializations when acceptedEncryption was advertised on the VPR.
               items:
-                $ref: "./components/VerifiablePresentation.yml#/components/schemas/VerifiablePresentation"
+                oneOf:
+                  - $ref: "./components/VerifiablePresentation.yml#/components/schemas/VerifiablePresentation"
+                  - $ref: "./components/EnvelopedVerifiablePresentation.yml#/components/schemas/EnvelopedVerifiablePresentation"
             referenceId:
               type: string
               description: If the server previously sent a referenceId, the client SHOULD include it here to aid debugging and message correlation. The value SHOULD be a <code>urn:uuid</code> value.
@@ -1127,7 +1131,9 @@ components:
             - verifiablePresentation
           properties:
             verifiablePresentation:
-              $ref: "./components/VerifiablePresentation.yml#/components/schemas/VerifiablePresentation"
+              oneOf:
+                - $ref: "./components/VerifiablePresentation.yml#/components/schemas/VerifiablePresentation"
+                - $ref: "./components/EnvelopedVerifiablePresentation.yml#/components/schemas/EnvelopedVerifiablePresentation"
             referenceId:
               type: string
               description: An optional identifier to correlate exchange messages. A server MAY include this value; if present, the client SHOULD include it in its next message. The value SHOULD be a <code>urn:uuid</code> value.
@@ -1137,9 +1143,11 @@ components:
           properties:
             verifiablePresentation:
               type: array
-              description: The Verifiable Presentations that the server sends to the client.
+              description: The Verifiable Presentations that the server sends to the client. Items MAY be enveloped, including JWT JWE compact serializations when acceptedEncryption was advertised on the VPR.
               items:
-                $ref: "./components/VerifiablePresentation.yml#/components/schemas/VerifiablePresentation"
+                oneOf:
+                  - $ref: "./components/VerifiablePresentation.yml#/components/schemas/VerifiablePresentation"
+                  - $ref: "./components/EnvelopedVerifiablePresentation.yml#/components/schemas/EnvelopedVerifiablePresentation"
             referenceId:
               type: string
               description: An optional identifier to correlate exchange messages. A server MAY include this value; if present, the client SHOULD include it in its next message. The value SHOULD be a <code>urn:uuid</code> value.
