@@ -81,6 +81,51 @@ components:
           description: A domain, intended to prevent replay attacks, provided by the requester that is typically expected to be included in the Verifiable Presentation response.
           items:
             type: string
+        "acceptedEncryption":
+          type: object
+          description: >
+            Indicates that the holder MAY or MUST encrypt the verifiable
+            presentation (and any contained verifiable credentials) to public
+            keys provided by the requester. Encrypted responses are expressed
+            as an EnvelopedVerifiablePresentation or
+            EnvelopedVerifiableCredential whose <code>id</code> is a
+            <code>data:</code> URL with media type <code>application/jwt</code>
+            carrying a JSON Web Encryption compact serialization (five
+            dot-delimited segments).
+          required:
+            - required
+            - jwks
+          properties:
+            required:
+              type: boolean
+              description: >
+                If <code>true</code>, the holder MUST encrypt the response
+                using one of the provided keys. If <code>false</code>, the
+                holder MAY send an unencrypted verifiable presentation.
+            jwks:
+              type: array
+              minItems: 1
+              description: >
+                One or more public JSON Web Keys to which the holder may
+                encrypt the response. Private key material MUST NOT be
+                included.
+              items:
+                type: object
+                additionalProperties: true
+                description: A public JSON Web Key (JWK).
+                properties:
+                  kty:
+                    type: string
+                  kid:
+                    type: string
+                  use:
+                    type: string
+                  crv:
+                    type: string
+                  x:
+                    type: string
+                  y:
+                    type: string
         "interact":
           type: array
           description: A list of interaction mechanisms that are supported by the server.
@@ -126,6 +171,17 @@ components:
           }],
           "challenge": "3182bdea-63d9-11ea-b6de-3b7c1404d57f",
           "domain": "edu.example",
+          "acceptedEncryption": {
+            "required": false,
+            "jwks": [{
+              "kty": "EC",
+              "crv": "P-256",
+              "use": "enc",
+              "kid": "ex-enc-1",
+              "x": "MKBCTNIcKUSDii11ySs3526iDZ8AiTo7Tu6KPAqv7D4",
+              "y": "4Etl6SRW2YiLUrN5vfvVHuhp7x8PxltmWWlbbM4IFyM"
+            }]
+          },
           "interact": {
             "service": [{
               "type": "UnmediatedPresentationService2021",
