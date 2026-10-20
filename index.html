@@ -67,7 +67,7 @@
       }
     },
     xref: [
-      "web-platform", "infra", "url", "vc-data-model-2.0", "did", "vc-data-integrity", "vc-recognized-entities"
+      "web-platform", "infra", "url", "vc-data-model-2.0", "did", "vc-data-integrity", "vc-di-bbs", "vc-recognized-entities"
     ],
     github: {
       repoURL: "https://github.com/w3c/vcalm/",
@@ -2299,7 +2299,59 @@ back to a coordinator website after an exchange has completed.
 include this value; if present, the client SHOULD include it in its next message.
 The value SHOULD be a `urn:uuid` value.
         </li>
+        <li>
+`exchangeVerifiablePresentation`: A Verifiable Presentation that also includes
+an `exchangeData` property. This is used when a party needs to send information
+that is specific to the exchange and is not expressed as a verifiable credential
+inside the presentation.
+        </li>
       </ul>
+      <p>
+The value of <dfn>exchangeData</dfn> is a JSON object. This specification does not
+define the names or the contents of that object's properties. Each property
+identifies a cryptosuite or other exchange-specific context, and the
+corresponding value is defined by the specification that governs that
+cryptosuite or context. Implementations are expected to interpret only the
+properties they understand for the exchange at hand. For example, the
+<code>bbs-2023</code> Data Integrity cryptosuite [[?VC-DI-BBS]] uses
+<code>exchangeData</code> during issuance so that a [=holder=] can supply the
+commitment information needed to issue a credential with pseudonym support.
+Other cryptosuites, such as AnonCreds, and other exchange contexts (for
+example, authorization capabilities or payment authorization) define their
+own property names and value shapes in the same object.
+      </p>
+      <pre class="example nohighlight" title="Holder sending BBS commitment data during an issuance exchange">
+{
+  "exchangeVerifiablePresentation": {
+    "@context": [
+      "https://www.w3.org/ns/credentials/v2",
+      "https://w3id.org/vcalm/v1rc1"
+    ],
+    "type": "VerifiablePresentation",
+    "holder": "did:example:123",
+    "exchangeData": {
+      "bbs-2023": {
+        "featureOption": "pseudonym",
+        "commitment_with_proof": "uU6Qc2R0QHj8exampleCommitmentWithProofValue"
+      }
+    },
+    "proof": {
+      "type": "DataIntegrityProof",
+      "cryptosuite": "eddsa-rdfc-2022",
+      "created": "2026-10-20T12:00:00Z",
+      "verificationMethod": "did:example:123#key-1",
+      "proofPurpose": "authentication",
+      "proofValue": "z3FXQjecWufY46exampleProofValueUAUL5n2Brbx"
+    }
+  }
+}
+      </pre>
+      <p>
+The <code>bbs-2023</code> property in the example above is illustrative. A
+different cryptosuite would use a different property name and a value defined
+by that cryptosuite. This specification places no requirement on the inner
+shape beyond <code>exchangeData</code> being a JSON object.
+      </p>
       <p>
 Custom properties and values might also be included, but are expected to
 trigger errors in implementations that do not recognize them.
@@ -2321,9 +2373,13 @@ associated verifiable presentation request. If the object includes
 `verifiablePresentation`, then some information is offered, such as
 verifiable credentials issued to the holder operating the exchange client or
 verifiable credentials with information about the exchange server's operator
-based on the exchange client's request. If the object includes `redirectUrl`,
-the exchange is complete and the workflow service recommends that the client
-proceed to another place to continue the interaction in another form.
+based on the exchange client's request. If the object includes
+`exchangeVerifiablePresentation`, then a verifiable presentation is offered
+together with `exchangeData` whose contents are defined by the cryptosuite or
+exchange context in use (for example, a `bbs-2023` issuance commitment). If
+the object includes `redirectUrl`, the exchange is complete and the workflow
+service recommends that the client proceed to another place to continue the
+interaction in another form.
       </p>
       <p>
 Many verifiable credential use cases can be implemented using these basic
@@ -2861,6 +2917,14 @@ include the same <code>referenceId</code> in its next message to the server.
 This aids in debugging and ensures that potentially delayed or misordered
 messages are linked to the correct request. The value of
 <code>referenceId</code> SHOULD be a <code>urn:uuid</code> value.
+        </p>
+        <p>
+A client or server MAY send an <code>exchangeVerifiablePresentation</code>
+when the exchange requires data that is not a verifiable credential, such as
+cryptosuite-specific commitments. The <code>exchangeData</code> object in
+that presentation is interpreted according to the cryptosuite or
+exchange-specific context identified by each of its properties; see
+[=exchangeData=].
         </p>
 
         <div class="api-detail"
