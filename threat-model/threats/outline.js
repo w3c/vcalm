@@ -8,7 +8,7 @@
         {
             name: "Implementation Threats",
             id: "threat-model-implementation-threats",
-            threats: ["T2", "T3", "T9", "T14", "T15", "T16", "T18", "T20", "T22", "T23", "T24", "T25", "T26", "T27", "T33", "T34", "T35", "T36", "T38", "T39", "T40"],
+            threats: ["T2", "T3", "T9", "T14", "T15", "T16", "T18", "T20", "T22", "T25", "T27", "T33", "T34", "T35", "T36", "T38", "T39", "T40"],
         },
         {
             name: "External Threats",
