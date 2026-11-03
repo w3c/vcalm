@@ -12,7 +12,7 @@
         elements: ["P1", "F12", "F19", "P5", "P7", "P6", "F16", "F13"],
         tags: ["security"],
         taxonomyName: "STRIDE",
-        taxonomyClass: ""
+        taxonomyClass: "Denial of Service"
     };
     window.ThreatModel.register(threat);
 })();
