@@ -84,12 +84,12 @@ components:
         "acceptedEncryption":
           type: object
           description: >
-            Indicates that the holder MAY or MUST encrypt the verifiable
-            presentation (and any contained verifiable credentials) to public
+            Indicates whether the holder MAY or MUST encrypt the verifiable
+            presentation (and any contained verifiable credentials) with public
             keys provided by the requester. Encrypted responses are expressed
             as an EnvelopedVerifiablePresentation or
             EnvelopedVerifiableCredential whose <code>id</code> is a
-            <code>data:</code> URL with media type <code>application/jwt</code>
+            <code>data:</code> URL with media type <code>application/vp+jwt</code>
             carrying a JSON Web Encryption compact serialization (five
             dot-delimited segments).
           required:
@@ -106,9 +106,9 @@ components:
               type: array
               minItems: 1
               description: >
-                One or more public JSON Web Keys to which the holder may
-                encrypt the response. Private key material MUST NOT be
-                included.
+                One or more public JSON Web Keys with which the holder
+                might encrypt the response. Private key material MUST
+                NOT be included.
               items:
                 type: object
                 additionalProperties: true

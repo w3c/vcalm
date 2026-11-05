@@ -1511,9 +1511,9 @@ attacks</a>.
           <dt><dfn class="export" data-dfn-for="verifiable presentation request">acceptedEncryption</dfn></dt>
           <dd>
 An OPTIONAL [=map=] that a [=verifier=] provides to a [=holder=] to indicate
-that the [=holder=] MAY or MUST encrypt the [=verifiable presentation=]
-response (and any contained [=verifiable credential=]s) to public keys the
-[=verifier=] controls. This enables an additional encryption layer for
+whether the [=holder=] MAY or MUST encrypt the [=verifiable presentation=]
+response (and any contained [=verifiable credential=]s) with public keys
+the [=verifier=] controls. This enables an additional encryption layer for
 protocols such as the Digital Credentials API, and for device response
 formats (for example, mdoc) that require encryption independently of the
 transport. The value MUST be a [=map=] of the following form:
@@ -1526,15 +1526,15 @@ send an unencrypted [=verifiable presentation=].
               </li>
               <li>
 <code>jwks</code>: A REQUIRED array of one or more public JSON Web Keys
-[[RFC7517]] to which the [=holder=] may encrypt the response. Private key
-material MUST NOT be included.
+[[RFC7517]] with which the [=holder=] may encrypt the response. Private
+key material MUST NOT be included.
               </li>
             </ul>
 When encrypting, the [=holder=] expresses the result as an
 <code>EnvelopedVerifiablePresentation</code> (or an
 <code>EnvelopedVerifiableCredential</code> inside a presentation) whose
 <code>id</code> is a <code>data:</code> URL [[RFC2397]] with media type
-<code>application/jwt</code> carrying a JSON Web Encryption [[RFC7516]]
+<code>application/vp+jwt</code> carrying a JSON Web Encryption [[RFC7516]]
 compact serialization. An encrypted JWT compact serialization consists of
 five dot-delimited segments. The encrypted payload decrypts to a
 [=verifiable presentation=] or [=verifiable credential=], or to another
@@ -1572,16 +1572,16 @@ enveloped object with some other media type.
 }
         </pre>
 
-        <pre class="example nohighlight" title="An encrypted presentation response as an enveloped JWT">
+        <pre class="example nohighlight" title="An encrypted presentation response as an enveloped JWT (illustrative; the encrypted key, IV, ciphertext and tag segments are placeholders, not a valid JWE)">
 {
   "@context": ["https://www.w3.org/ns/credentials/v2"],
   "type": "EnvelopedVerifiablePresentation",
-  "id": "data:application/jwt,eyJhbGciOiJFQ0RILUVTIiwiZW5jIjoiQTEyOEdDTSIsImtpZCI6ImV4LWVuYy0xIn0.encryptedKey.iv.ciphertext.tag"
+  "id": "data:application/vp+jwt,eyJhbGciOiJFQ0RILUVTIiwiZW5jIjoiQTEyOEdDTSIsImtpZCI6ImV4LWVuYy0xIn0.encryptedKey.iv.ciphertext.tag"
 }
         </pre>
 
         <p class="note" title="Encryption in addition to TLS">
-          Encrypting a response to <code>acceptedEncryption</code> keys does
+          Encrypting a response with <code>acceptedEncryption</code> keys does
           not provide additional protection for a message that travels only
           over an authenticated TLS channel to the workflow server. The public
           keys are themselves delivered over that same channel; a break in TLS
