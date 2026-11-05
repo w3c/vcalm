@@ -23,9 +23,12 @@ components:
             type: string
         "id":
           type: string
+          pattern: "^data:"
           description: This MUST be a "data:" scheme URL [RFC2397] that expresses a secured verifiable presentation using an enveloping security scheme.
         "type":
           type: string
+          enum:
+            - EnvelopedVerifiablePresentation
           description: This MUST be EnvelopedVerifiablePresentation.
       example:
         {
