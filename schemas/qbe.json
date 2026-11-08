@@ -257,7 +257,6 @@
           "type": "string",
           "description": "The media type of the envelope format",
           "examples": [
-            "application/mdoc",
             "application/vc+jwt",
             "application/vc+sd-jwt",
             "application/vc+cose"
@@ -271,7 +270,6 @@
               "type": "string",
               "description": "The media type of the envelope format",
               "examples": [
-                "application/mdoc",
                 "application/vc+jwt",
                 "application/vc+sd-jwt",
                 "application/vc+cose"
