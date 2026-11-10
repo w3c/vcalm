@@ -1524,12 +1524,15 @@ the [=verifier=].
         </p>
 
         <p>
-The `credentialQuery` property in a QueryByExample query is a single object.
+The `credentialQuery` property in a `QueryByExample` query is a single object.
 Logical "AND" and "OR" operations for combining multiple queries
 are handled through the `group` property at the query level, as described in
 Section [[[#logical-operations-in-queries]]]. Multiple queries with the same
 `group` value are processed as "AND" operations, while queries with different
-or missing `group` values are processed as "OR" operations.
+`group` values are processed as "OR" operations. For backwards compatibility,
+queries with a missing `group` value are to be processed under a shared
+`undefined` group, where each query would need to be satisfied to fulfill the
+requirements of the VPR (an "AND" operation across all such queries).
         </p>
 
         <pre class="example nohighlight" title="A Query By Example query">
@@ -2016,7 +2019,9 @@ play crucial roles in defining the path to desired data.
         <p>
 At the top-most level of the request structure, different types of queries are
 expected to be processed as "AND" operations if each one's `group` property
-is set to the same value.
+is set to the same value. All queries with a missing `group` value are to be
+processed under a shared `undefined` group, and hence, are also expected to be
+treated as the operands of an "AND" operation.
         </p>
 
         <p>
@@ -2046,9 +2051,8 @@ these conditions need to be met in order to fulfill the request.
         <h3>Nested Queries ("OR" Operation)</h3>
 
         <p>
-Within a specific query type, an "OR" operation can be applied, by either not
-specifying the `group` or providing `group` values that are different from
-one another.
+Within a specific query type, an "OR" operation can be applied by providing
+`group` values that are different from one another.
         </p>
 
         <pre class="example" title="Queries for alternate credentials where any match will succeed">
