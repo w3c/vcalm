@@ -1621,7 +1621,7 @@ specification; the list contains recognized issuers that are acceptable to the
             <td>
 An OPTIONAL array specifying which cryptographic proof suites the [=verifier=]
 will accept. Each element SHOULD be an object with a <code>cryptosuite</code>
-property referencing a Data Integrity cryptosuite name or <code>Ed25519Signature2020</code> for legacy
+property referencing a Data Integrity cryptosuite name or <code>Ed25519Signature2020</code> for legacy support
 (for backwards compatibility, string values MAY also be used and are to be
 interpreted as the cryptosuite name). This enables the [=holder=] to select an
 appropriate proof format. This property MAY be used independently of <code>acceptedEnvelopes</code>,
@@ -1821,7 +1821,7 @@ An optional array of objects that conveys the cryptography suites among which
 the [=holder=] MUST choose when generating a cryptographic proof to be
 submitted to this [=verifier=]. Each object in the
 array MUST contain a property called `cryptosuite` with a value that is a
-Data Integrity cryptosuite name (or `Ed25519Signature2020` for legacy),
+Data Integrity cryptosuite name (or `Ed25519Signature2020` for legacy support),
 and MAY contain other properties that are specific to the cryptosuite.
 Valid example values include:
 <ul>
