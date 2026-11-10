@@ -966,16 +966,14 @@ components:
             properties:
               id:
                 type: string
-                description: The ID of the template.
+                description: The ID of the credential template.
               type:
                 type: string
-                description: The type of template.
-                # Other options are possible
-                enum:
-                  - "jsonata"
+                description: The type of credential template.
+                example: jsonata
               template:
                 type: string
-                description: The template itself.
+                description: The credential template.
         steps:
           type: object
           description: One or more steps required to complete an exchange on the workflow. Passing the steps object is REQUIRED. The keys are one or more step names, where each STEP_NAME is replaced by the name of a step (such as <code>request-employee-id</code>), and the values are step configurations.
@@ -1013,12 +1011,16 @@ components:
           items:
             type: object
             properties:
+              id:
+                type: string
+                description: The ID of the credential template.
               type:
                 type: string
-                description: The type of template.
+                description: The type of credential template.
+                example: jsonata
               template:
                 type: string
-                description: The template itself.
+                description: The credential template.
         steps:
           type: object
           description: One or more steps required to complete an exchange on the workflow. The keys are one or more step names, where each STEP_NAME is replaced by the name of a step (such as <code>request-employee-id</code>), and the values are step configurations.
@@ -1233,7 +1235,8 @@ components:
       properties:
         type:
           type: string
-          description: The type of template.
+          description: The type of step template.
+          example: jsonata
         template:
           type: string
           description: The step template.
