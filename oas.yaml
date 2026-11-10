@@ -1140,7 +1140,7 @@ components:
           properties:
             done:
               type: boolean
-              description: An explicit signal from the client instructing whether to terminate the exchange. This property is optional, but when omitted in the absence of other termination signals in the client request payload (e.g., empty object), it should be interpreted as false.
+              description: An explicit signal from the client instructing the server whether to terminate the exchange. This property is optional, but when omitted in the absence of other termination signals in the client request payload (e.g., empty object), it should be interpreted as false.
     ExchangeParticipationServerMessage:
       type: object
       description: A message from the server to the client during an exchange.
@@ -1195,7 +1195,7 @@ components:
           properties:
             done:
               type: boolean
-              description: An explicit signal from the server instructing whether to terminate the exchange. This property is optional, but when omitted in the absence of other termination signals in the server response payload (e.g., empty object), it should be interpreted as false.
+              description: An explicit signal from the server instructing the client whether to terminate the exchange. This property is optional, but when omitted in the absence of other termination signals in the server response payload (e.g., empty object), it should be interpreted as false.
     GetExchangeProtocolsResponse:
       type: object
       additionalProperties: false
