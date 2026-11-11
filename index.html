@@ -3760,7 +3760,7 @@ object MUST be set to `false`; if no errors are included, it MUST be set to
     <section>
       <h3>Language Localization</h3>
       <p>
-        In order for a client to signal to a VCALM service that it would like to receive data in a particular language from one of the HTTP APIs defined in this specification, the client should include the Accept-Language header in their request.
+        A client can signal to a VCALM service that it would like to receive data in a particular language from one of the HTTP APIs defined in this specification by including the Accept-Language header in their request.
         Service implementers are encouraged to support this localization mechanism for languages that are predominant in the regions where they expect their constituents to reside.
         Nonetheless, clients are advised to handle data returned in an unexpected language, as inclusion of the Accept-Language header does not guarantee that the server will respond in a requested language, an extant risk that exists across the web today, predating the publication of this specification.
       </p>
