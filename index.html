@@ -2461,41 +2461,7 @@ mechanism.
     {
       "id": "caffb919-053a-4bfa-beba-80567904f842",
       "type": "jsonata",
-      "template": "{
-        \"credential\": {
-          \"@context\": [
-            \"https://www.w3.org/ns/credentials/v2\",
-            \"https://purl.imsglobal.org/spec/ob/v3p0/context-3.0.3.json\",
-            \"https://purl.imsglobal.org/spec/ob/v3p0/extensions.json\"
-          ],
-          \"id\": sampleAchievementCredential.id,
-          \"type\": [\"VerifiableCredential\", \"AchievementCredential\"],
-          \"issuer\": {
-            \"type\": [\"Profile\"],
-            \"name\": \"Example Issuer\",
-            \"image\": {
-              \"type\": \"Image\",
-              \"id\": \"https://issuer.example.com/logo.png\"
-            }
-          },
-          \"awardedDate\": sampleAchievementCredential.awardedDate,
-          \"validFrom\": sampleAchievementCredential.validFrom,
-          \"name\": \"Sample Achievement\",
-          \"credentialSubject\": {
-            \"id\": results.didAuthRequest.verifiablePresentation.holder,
-            \"type\": \"AchievementSubject\",
-            \"name\": sampleAchievementCredential.credentialSubject.name,
-            \"achievement\": {
-              \"id\": sampleAchievementCredential.credentialSubject.achievement.id,
-              \"type\": [\"Achievement\"],
-              \"achievementType\": sampleAchievementCredential.credentialSubject.achievement.achievementType,
-              \"name\": sampleAchievementCredential.credentialSubject.achievement.name,
-              \"description\": sampleAchievementCredential.credentialSubject.achievement.description,
-              \"alignment\": sampleAchievementCredential.credentialSubject.achievement.alignment
-            }
-          }
-        }
-      }"
+      "template": "{\n        \"credential\": {\n          \"@context\": [\n            \"https://www.w3.org/ns/credentials/v2\",\n            \"https://purl.imsglobal.org/spec/ob/v3p0/context-3.0.3.json\",\n            \"https://purl.imsglobal.org/spec/ob/v3p0/extensions.json\"\n          ],\n          \"id\": sampleAchievementCredential.id,\n          \"type\": [\"VerifiableCredential\", \"AchievementCredential\"],\n          \"issuer\": {\n            \"type\": [\"Profile\"],\n            \"name\": \"Example Issuer\",\n            \"image\": {\n              \"type\": \"Image\",\n              \"id\": \"https://issuer.example.com/logo.png\"\n            }\n          },\n          \"awardedDate\": sampleAchievementCredential.awardedDate,\n          \"validFrom\": sampleAchievementCredential.validFrom,\n          \"name\": \"Sample Achievement\",\n          \"credentialSubject\": {\n            \"id\": results.didAuthRequest.verifiablePresentation.holder,\n            \"type\": \"AchievementSubject\",\n            \"name\": sampleAchievementCredential.credentialSubject.name,\n            \"achievement\": {\n              \"id\": sampleAchievementCredential.credentialSubject.achievement.id,\n              \"type\": [\"Achievement\"],\n              \"achievementType\": sampleAchievementCredential.credentialSubject.achievement.achievementType,\n              \"name\": sampleAchievementCredential.credentialSubject.achievement.name,\n              \"description\": sampleAchievementCredential.credentialSubject.achievement.description,\n              \"alignment\": sampleAchievementCredential.credentialSubject.achievement.alignment\n            }\n          }\n        }\n      }"
     }
   ],
   "controller": "did:web:issuer.example.com"
@@ -2549,14 +2515,7 @@ referenced in the `didAuthRequest` step):
     "didAuthRequest": {
       "stepTemplate": {
         "type": "jsonata",
-        "template": "{
-          "createChallenge": true,
-          "verifiablePresentationRequest": verifiablePresentationRequest,
-          "callback": {
-            "url": callbackUrl
-          },
-          "nextStep": "credentialDelivery"
-        }"
+        "template": "{\n          \"createChallenge\": true,\n          \"verifiablePresentationRequest\": verifiablePresentationRequest,\n          \"callback\": {\n            \"url\": callbackUrl\n          },\n          \"nextStep\": \"credentialDelivery\"\n        }"
       }
     },
     "credentialDelivery": {
@@ -2572,41 +2531,7 @@ referenced in the `didAuthRequest` step):
     {
       "id": "caffb919-053a-4bfa-beba-80567904f842",
       "type": "jsonata",
-      "template": "{
-        \"credential\": {
-          \"@context\": [
-            \"https://www.w3.org/ns/credentials/v2\",
-            \"https://purl.imsglobal.org/spec/ob/v3p0/context-3.0.3.json\",
-            \"https://purl.imsglobal.org/spec/ob/v3p0/extensions.json\"
-          ],
-          \"id\": sampleAchievementCredential.id,
-          \"type\": [\"VerifiableCredential\", \"AchievementCredential\"],
-          \"issuer\": {
-            \"type\": [\"Profile\"],
-            \"name\": \"Example Issuer\",
-            \"image\": {
-              \"type\": \"Image\",
-              \"id\": \"https://issuer.example.com/logo.png\"
-            }
-          },
-          \"awardedDate\": sampleAchievementCredential.awardedDate,
-          \"validFrom\": sampleAchievementCredential.validFrom,
-          \"name\": \"Sample Achievement\",
-          \"credentialSubject\": {
-            \"id\": results.didAuthRequest.verifiablePresentation.holder,
-            \"type\": \"AchievementSubject\",
-            \"name\": sampleAchievementCredential.credentialSubject.name,
-            \"achievement\": {
-              \"id\": sampleAchievementCredential.credentialSubject.achievement.id,
-              \"type\": [\"Achievement\"],
-              \"achievementType\": sampleAchievementCredential.credentialSubject.achievement.achievementType,
-              \"name\": sampleAchievementCredential.credentialSubject.achievement.name,
-              \"description\": sampleAchievementCredential.credentialSubject.achievement.description,
-              \"alignment\": sampleAchievementCredential.credentialSubject.achievement.alignment
-            }
-          }
-        }
-      }"
+      "template": "{\n        \"credential\": {\n          \"@context\": [\n            \"https://www.w3.org/ns/credentials/v2\",\n            \"https://purl.imsglobal.org/spec/ob/v3p0/context-3.0.3.json\",\n            \"https://purl.imsglobal.org/spec/ob/v3p0/extensions.json\"\n          ],\n          \"id\": sampleAchievementCredential.id,\n          \"type\": [\"VerifiableCredential\", \"AchievementCredential\"],\n          \"issuer\": {\n            \"type\": [\"Profile\"],\n            \"name\": \"Example Issuer\",\n            \"image\": {\n              \"type\": \"Image\",\n              \"id\": \"https://issuer.example.com/logo.png\"\n            }\n          },\n          \"awardedDate\": sampleAchievementCredential.awardedDate,\n          \"validFrom\": sampleAchievementCredential.validFrom,\n          \"name\": \"Sample Achievement\",\n          \"credentialSubject\": {\n            \"id\": results.didAuthRequest.verifiablePresentation.holder,\n            \"type\": \"AchievementSubject\",\n            \"name\": sampleAchievementCredential.credentialSubject.name,\n            \"achievement\": {\n              \"id\": sampleAchievementCredential.credentialSubject.achievement.id,\n              \"type\": [\"Achievement\"],\n              \"achievementType\": sampleAchievementCredential.credentialSubject.achievement.achievementType,\n              \"name\": sampleAchievementCredential.credentialSubject.achievement.name,\n              \"description\": sampleAchievementCredential.credentialSubject.achievement.description,\n              \"alignment\": sampleAchievementCredential.credentialSubject.achievement.alignment\n            }\n          }\n        }\n      }"
     }
   ],
   "controller": "did:web:issuer.example.com"
