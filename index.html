@@ -3130,7 +3130,7 @@ sequenceDiagram
   W->>WS: Initiate workflow exchange
   Note left of I: POST https://workflow.example/workflows/abc/exchanges/123
   W->>H: Acquire consent to proceed
-  Note right of H: issuer.example is offering credentials, accept?
+  Note right of H: Issuer at issuer.example is offering credentials. Accept?
   end
         </pre>
         <figcaption>
@@ -3167,7 +3167,7 @@ sequenceDiagram
   V->>W: Return interaction protocols
   Note left of V: (VCALM, OID4VP, NFC, Bluetooth, etc.)
   W->>H: Acquire consent to proceed
-  Note right of H: verifier.example is requesting credentials, proceed?
+  Note right of H: Verifier at verifier.example is requesting credentials. Proceed?
   W->>W: Select appropriate protocol
   opt "vcapi" protocol example
   W->>WS: Initiate workflow exchange
@@ -3561,7 +3561,7 @@ The `inviteRequest` interaction protocol is used by a local system to signal to
 the remote system that it would like an invitation to a remote system via a
 specific URL, such as a website where an individual can engage in a use-case
 specific interaction. If the `inviteRequest` interaction protocol is selected,
-the local system sends data using an HTTP POST to instruct the remote system
+the remote system sends data using an HTTP POST to instruct the local system
 where to send the individual. A couple examples of the POST data are shown below.
 These examples intend to highlight that this specification does not state any
 requirements as to how the "url" field is formatted, but does recommend that an
@@ -3622,6 +3622,67 @@ as described in Section [[[#participate-in-an-exchange]]].
 
       </section>
 
+      <section>
+        <h4>Interaction Chaining</h4>
+        <p>
+Following the completion of an interaction, one party to an exchange might wish
+to engage in a subsequent interaction. In order to signal this desire to the
+other party, they MAY use the `redirectUrl` property of an exchange participation
+message to send an [=interaction URL=] for the new interaction. In this way,
+exchange participants can engage in a sequence of related interactions as a
+result of a single user interaction on the coordinator site.
+        </p>
+        <figure>
+          <pre class="mermaid" style="max-width:100%">
+sequenceDiagram
+  participant H as Holder
+  participant W as Holder Coordinator (Wallet)
+  participant B as Browser
+  participant I as Issuer Coordinator
+  participant WS as Workflow Service
+  autonumber
+  H->>B: Click "Receive credential"
+  B->>I: Request interaction QR Code
+  I->>WS: Create workflow exchange
+  Note left of WS: POST https://workflow.example/workflows/abc/exchanges
+  WS->>I: Return workflow exchange
+  I->>I: Generate QR Code
+  I->>B: Display QR Code
+  Note left of I: https://issuer.example/interactions/123?iuv=1
+  H->>W: Start scanning QR Code
+  W->>B: Scan QR Code
+  W->>I: Get available interaction protocols
+  Note left of I: GET https://issuer.example/interactions/123?iuv=1
+  I->>W: Return interaction protocols
+  Note left of I: (VCALM, OID4VP, NFC, Bluetooth, etc.)
+  W->>W: Select appropriate protocol
+  opt "vcapi" protocol example 1
+    W->>WS: Initiate workflow exchange
+    Note left of I: POST https://workflow.example/workflows/abc/exchanges/123
+    WS->>W: Send credential 1 and new interaction URL
+    Note left of I: { "verifiablePresentation": {...}, "redirectUrl": "https://issuer.example/interactions/456?iuv=1" }
+    W->>H: Acquire consent to save credential 1
+    Note right of H: Issuer at issuer.example is offering credential 1. Accept?
+  end
+  W->>I: Get available interaction protocols
+  Note left of I: GET https://issuer.example/interactions/456?iuv=1
+  I->>W: Return interaction protocols
+  Note left of I: (VCALM, OID4VP, NFC, Bluetooth, etc.)
+  W->>W: Select appropriate protocol
+  opt "vcapi" protocol example 2
+    W->>WS: Initiate workflow exchange
+    Note left of I: POST https://workflow.example/workflows/abc/exchanges/456
+    WS->>W: Send credential 2
+    Note left of I: { "verifiablePresentation": {...} }
+    W->>H: Acquire consent to save credential 2
+    Note right of H: Issuer at issuer.example is offering credential 2. Accept?
+  end
+          </pre>
+          <figcaption>
+  A chain of interactions
+          </figcaption>
+        </figure>
+      </section>
     </section>
 
     <section>
