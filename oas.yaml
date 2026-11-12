@@ -962,6 +962,25 @@ components:
       properties:
         IssueCredentialResponse:
           $ref: "./components/VerifiableCredentialResponse.yml#/components/schemas/VerifiableCredentialResponse"
+    CredentialTemplateItem:
+      type: object
+      additionalProperties: false
+      description: A template for credential issuance. The <code>template</code> string SHOULD render to an object containing a <code>credential</code> field, which holds the credential template, and (optionally) an <code>options</code> field, which holds important credential issuing parameters (this is the format of the request body that is sent to <code>POST /credentials/issue</code>).
+      properties:
+        id:
+          type: string
+          description: The ID of the credential template.
+        type:
+          type: string
+          description: The type of credential template.
+          example: jsonata
+        template:
+          type: string
+          description: The credential template.
+    CredentialTemplateArray:
+      type: array
+      items:
+        $ref: "#/components/schemas/CredentialTemplateItem"
     CreateWorkflowRequest:
       type: object
       additionalProperties: false
@@ -988,23 +1007,7 @@ components:
                   type: string
                   description: OAuth2 issuer config URL.
         credentialTemplates:
-          type: array
-          description: One or more templates for credential issuance. The <code>template</code> string should render to an object containing a <code>credential</code> field, which holds the credential template, and (optionally) an <code>options</code> field, which holds important credential issuing parameters (this is the format of the request body that is sent to <code>POST /credentials/issue</code>). Passing <code>credentialTemplates</code> is OPTIONAL.
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                description: The ID of the template.
-              type:
-                type: string
-                description: The type of template.
-                # Other options are possible
-                enum:
-                  - "jsonata"
-              template:
-                type: string
-                description: The template itself.
+          $ref: "#/components/schemas/CredentialTemplateArray"
         steps:
           type: object
           description: One or more steps required to complete an exchange on the workflow. Passing the steps object is REQUIRED. The keys are one or more step names, where each STEP_NAME is replaced by the name of a step (such as <code>request-employee-id</code>), and the values are step configurations.
@@ -1037,17 +1040,7 @@ components:
                   type: string
                   description: OAuth2 issuer config URL.
         credentialTemplates:
-          type: array
-          description: One or more templates for credential issuance. The <code>template</code> string should render to an object containing a <code>credential</code> field, which holds the credential template, and (optionally) an <code>options</code> field, which holds important credential issuing parameters (this is the format of the request body that is sent to <code>POST /credentials/issue</code>). Passing <code>credentialTemplates</code> is OPTIONAL.
-          items:
-            type: object
-            properties:
-              type:
-                type: string
-                description: The type of template.
-              template:
-                type: string
-                description: The template itself.
+          $ref: "#/components/schemas/CredentialTemplateArray"
         steps:
           type: object
           description: One or more steps required to complete an exchange on the workflow. The keys are one or more step names, where each STEP_NAME is replaced by the name of a step (such as <code>request-employee-id</code>), and the values are step configurations.
@@ -1276,7 +1269,8 @@ components:
       properties:
         type:
           type: string
-          description: The type of template.
+          description: The type of step template.
+          example: jsonata
         template:
           type: string
           description: The step template.
@@ -1340,14 +1334,14 @@ components:
                 properties:
                   credentialTemplateId:
                     type: string
-                    description: The ID of the item in workflow.credentialTemplates that captures the schema of a credential that is issued in a step.
+                    description: The ID of the item in a workflow's <code>credentialTemplates</code> property that captures the schema of a credential that is issued in a step.
               - type: object
                 required:
                   - credentialTemplateIndex
                 properties:
                   credentialTemplateIndex:
                     type: string
-                    description: The index of the item in workflow.credentialTemplates that captures the schema of a credential that is issued in a step.
+                    description: The index of the item in a workflow's <code>credentialTemplates</code> property that captures the schema of a credential that is issued in a step.
             additionalProperties: false
         presentationSchema:
           oneOf:
