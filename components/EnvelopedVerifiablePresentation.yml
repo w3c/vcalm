@@ -33,6 +33,6 @@ components:
       example:
         {
           "@context": "https://www.w3.org/ns/credentials/v2",
-          "id": "data:application/vp+jwt,eyJraWQiO...zhwGfQ",
+          "id": "data:application/jwt,eyJraWQiO...zhwGfQ",
           "type": "EnvelopedVerifiablePresentation"
         }
