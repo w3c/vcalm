@@ -33,6 +33,17 @@ components:
                 if a VPR asks for zcaps, this field would contain the reference IDs 
                 for each zcap to be generated; if a VPR request needs additional payment
                 information, this field would contain the requested data.
+                Each property of this object is an entry that MAY be a BBS
+                commitment, a response to a BBS blind issuance, or any other
+                JSON object. Any number and combination of these entries MAY
+                be included.
+              additionalProperties:
+                anyOf:
+                  - $ref: "#/components/schemas/BbsCommitment"
+                  - $ref: "#/components/schemas/BbsBlindIssuanceResponse"
+                  - type: object
+                    description: Any other exchange-specific JSON object, with no restrictions.
+                    additionalProperties: true
       example:
         {
           "@context":
@@ -43,7 +54,25 @@ components:
             ],
           "holder": "did:example:123",
           "type": "VerifiablePresentation",
-          "exchangeData": {...},
+          "exchangeData":
+            {
+              "bbsCommitment":
+                {
+                  "featureOption": "pseudonym",
+                  "commitment_with_proof": "uU6Qc2R0QHj8exampleCommitmentWithProofValue",
+                  "cryptosuite": "BBS_BLS12381G2_XOF:SHAKE-256"
+                },
+              "bbsBlindIssuanceResponse":
+                {
+                  "blind_signature": "bWFrZS1hLWNvbW1pdG1lbnQtZHVyaW5nLWlzc3VhbmNl...",
+                  "cryptosuite": "BBS_BLS12381G2_XOF:SHAKE-256",
+                  "issuer_public_key_id": "did:example:issuer#key-1"
+                },
+              "paymentAuthorization":
+                {
+                  "referenceId": "urn:uuid:9e1b2c3d-4f5a-6b7c-8d9e-0f1a2b3c4d5e"
+                }
+            },
           "verifiableCredential":
             [
                 "@context":
@@ -84,3 +113,58 @@ components:
               "proofValue": "zaHXrr7AQdydBk3ahpCDpWbxfLokDqmCToYm2dyWvpcFVyWooC2he63w1f7UNQoAMKdhaRtcnaE2KTo5o5vTCcfw",
             },
         }
+    BbsCommitment:
+      type: object
+      title: BbsCommitment
+      description: >
+        A commitment sent by the holder during a BBS blind issuance, enabling
+        the issuer to sign over holder secrets (such as a pseudonym secret)
+        without learning them.
+      required:
+        - featureOption
+        - commitment_with_proof
+      properties:
+        featureOption:
+          type: string
+          description: The BBS feature option the commitment is generated for.
+          enum:
+            - anonymous_holder_binding
+            - pseudonym
+            - holder_binding_pseudonym
+          example: "pseudonym"
+        commitment_with_proof:
+          type: string
+          description: >
+            Base64url-encoded octet string containing the commitment to the
+            holder's secret values together with a proof of correctness of
+            that commitment.
+          example: "uU6Qc2R0QHj8exampleCommitmentWithProofValue"
+        cryptosuite:
+          type: string
+          description: >
+            Specifies the exact ciphersuite context variant the commitment was
+            generated under (e.g., BBS-BLS12381-G2). This is a BBS ciphersuite
+            identifier, not a Data Integrity cryptosuite name such as
+            bbs-2023. If present, the issuer MUST produce the blind signature
+            using the same ciphersuite or reject the commitment.
+          example: "BBS_BLS12381G2_XOF:SHAKE-256"
+    BbsBlindIssuanceResponse:
+      type: object
+      title: BbsBlindIssuanceResponse
+      description: The response payload from the issuer containing the blind signature and necessary metadata for the holder to unblind it.
+      required:
+        - blind_signature
+      properties:
+        blind_signature:
+          type: string
+          description: Base64url-encoded octet string representing the blind signature on the G2 elliptic curve group element.
+          example: "bWFrZS1hLWNvbW1pdG1lbnQtZHVyaW5nLWlzc3VhbmNl..."
+        cryptosuite:
+          type: string
+          description: Specifies the exact ciphersuite context variant executed (e.g., BBS-BLS12381-G2).
+          example: "BBS_BLS12381G2_XOF:SHAKE-256"
+        issuer_public_key_id:
+          type: string
+          format: uri
+          description: The URI identifying the issuer's public key used to generate this signature, helping the wallet locate the correct verification key.
+          example: "did:example:issuer#key-1"
