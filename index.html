@@ -1534,7 +1534,7 @@ When encrypting, the [=holder=] expresses the result as an
 <code>EnvelopedVerifiablePresentation</code> (or an
 <code>EnvelopedVerifiableCredential</code> inside a presentation) whose
 <code>id</code> is a <code>data:</code> URL [[RFC2397]] with media type
-<code>application/vp+jwt</code> carrying a JSON Web Encryption [[RFC7516]]
+<code>application/jwt</code> carrying a JSON Web Encryption [[RFC7516]]
 compact serialization. An encrypted JWT compact serialization consists of
 five dot-delimited segments. The encrypted payload decrypts to a
 [=verifiable presentation=] or [=verifiable credential=], or to another
@@ -1576,7 +1576,7 @@ enveloped object with some other media type.
 {
   "@context": ["https://www.w3.org/ns/credentials/v2"],
   "type": "EnvelopedVerifiablePresentation",
-  "id": "data:application/vp+jwt,eyJhbGciOiJFQ0RILUVTIiwiZW5jIjoiQTEyOEdDTSIsImtpZCI6ImV4LWVuYy0xIn0.encryptedKey.iv.ciphertext.tag"
+  "id": "data:application/jwt,eyJhbGciOiJFQ0RILUVTIiwiZW5jIjoiQTEyOEdDTSIsImtpZCI6ImV4LWVuYy0xIn0.encryptedKey.iv.ciphertext.tag"
 }
         </pre>
 

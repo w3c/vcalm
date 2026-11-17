@@ -89,7 +89,7 @@ components:
             keys provided by the requester. Encrypted responses are expressed
             as an EnvelopedVerifiablePresentation or
             EnvelopedVerifiableCredential whose <code>id</code> is a
-            <code>data:</code> URL with media type <code>application/vp+jwt</code>
+            <code>data:</code> URL with media type <code>application/jwt</code>
             carrying a JSON Web Encryption compact serialization (five
             dot-delimited segments).
           required:
