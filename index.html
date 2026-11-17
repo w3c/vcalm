@@ -534,7 +534,7 @@ interfaces Section [[[#workflows-and-exchanges]]].
      </p>
 
      <p>
-A conforming <dfn>service client implementation</dfn> MUST provide the
+A conforming <dfn>service coordinator implementation</dfn> MUST provide the
 means to communicate with all REQUIRED interfaces provided by the
 corresponding service implementation. That is, a
 <em>status client implementation</em> provides means to communicate
@@ -796,7 +796,7 @@ a path within that domain (e.g., <code>website.example/api</code>).
         <p>
   This API can be deployed in a variety of networking environments which might
   contain hostile actors. As a result, conforming service implementations require
-  conforming [=service client implementations=] to utilize secure authorization
+  conforming [=service coordinator implementations=] to utilize secure authorization
   technologies when performing certain types of requests. Each HTTP endpoint
   defined in this document specifies whether or not authorization is required when
   performing a request. With the exception of the class of forbidden authorization
