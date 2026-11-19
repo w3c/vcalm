@@ -202,6 +202,8 @@ paths:
           description: Invalid input
         "401":
           description: Not Authorized
+        "404":
+          description: Workflow not found
         "500":
           description: Internal Error
   /workflows/{localWorkflowId}/exchanges:
@@ -247,6 +249,8 @@ paths:
           description: Invalid input
         "401":
           description: Not Authorized
+        "404":
+          description: Workflow not found
         "500":
           description: Internal Error
   /workflows/{localWorkflowId}/exchanges/{localExchangeId}:
@@ -276,6 +280,8 @@ paths:
           description: Invalid input
         "401":
           description: Not Authorized
+        "404":
+          description: Workflow or exchange not found
         "500":
           description: Internal Error
     post:
@@ -314,6 +320,8 @@ paths:
           description: Invalid input
         "401":
           description: Not Authorized
+        "404":
+          description: Workflow or exchange not found
         "500":
           description: Internal Error
   /workflows/{localWorkflowId}/exchanges/{localExchangeId}/protocols:
@@ -345,6 +353,8 @@ paths:
           description: Invalid input
         "401":
           description: Not Authorized
+        "404":
+          description: Workflow or exchange not found
         "500":
           description: Internal Error
   /workflows/{localWorkflowId}/exchanges/{localExchangeId}/request:
@@ -370,6 +380,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GetCurrentExchangeVprResponse"
+        "404":
+          description: Workflow or exchange not found
         "500":
           description: Internal Error
   /credentials/{id}:
