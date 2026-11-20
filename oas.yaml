@@ -414,7 +414,7 @@ paths:
         - networkAuth: []
         - oAuth2: []
         - zCap: []
-      summary: Deletes a credential or verifiable credential by ID. To delete a credential that does not have credential.id set but has an associated credentialId value, pass credentialId instead.
+      summary: Deletes a credential or verifiable credential by ID.
       x-expectedCaller:
         - Issuer Coordinator
         - Holder Coordinator
