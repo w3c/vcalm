@@ -84,9 +84,10 @@ components:
         "acceptedEncryption":
           type: object
           description: >
-            Indicates whether the holder MAY or MUST encrypt the verifiable
-            presentation (and any contained verifiable credentials) with public
-            keys provided by the requester. Encrypted responses are expressed
+            Public keys provided by the requester, which the holder can use to
+            encrypt the verifiable presentation (and any contained verifiable
+            credentials); <code>required</code> says whether encryption is
+            required. Encrypted responses are expressed
             as an EnvelopedVerifiablePresentation or
             EnvelopedVerifiableCredential whose <code>id</code> is a
             <code>data:</code> URL with media type <code>application/jwt</code>
