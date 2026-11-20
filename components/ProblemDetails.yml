@@ -14,9 +14,12 @@ components:
   schemas:
     ProblemDetails:
       type: object
+      required:
+        - type
       properties:
         type:
           type: string
+          format: uri
           description: URL identifying the type of problem.
         title:
           type: string
