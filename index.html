@@ -2969,6 +2969,14 @@ messages are linked to the correct request. The value of
             If the x-componentTableLink isn't updated to match the corresponding Component Table link will break.-->
         <h4>Exchange Step Callbacks</h4>
         <p>
+A workflow step can include a `callback` with a `url`. After the step executes,
+the workflow service sends information about the exchange to that URL. A
+callback is a notification. It is not a step that the exchange waits on. A
+workflow service is expected to make callbacks in a way that does not block the
+exchange, so that a callback URL that is slow, unreachable, or returns an error
+does not delay or prevent the exchange from advancing. See
+<a href="threat-model/index.html#t28-callback-urls-during-workflows-slow-to-respond">T28:
+Callback URLs During Workflows Slow to Respond</a> in the threat model.
         </p>
 
         <div class="api-detail"
@@ -3993,25 +4001,11 @@ Exchange State Leaked to Coordinator Frontend
 Granular internal processing states bleed out into frontend responses, revealing sensitive system execution parameters to local client scraping or cross-site threats.
         </li>
         <li value="22">
-          <a href="threat-model/index.html#t22-misconfigured-issuer-instance">
-Misconfigured Issuer Instance
+          <a href="threat-model/index.html#t22-misconfigured-component-instance">
+Misconfigured Component Instance
           </a>
           <span class="threat-tag threat-tag-security">security</span> —
-An issuer administrator misconfigures some aspect of the issuance software, whether that be the coordinator service or the workflow service related to issuing credentials, leading to false issuance or an incorrect rejection of an issuance request.
-        </li>
-        <li value="23">
-          <a href="threat-model/index.html#t23-misconfigured-status-instance">
-Misconfigured Status Instance
-          </a>
-          <span class="threat-tag threat-tag-security">security</span> —
-An incorrectly deployed status service allows unauthorized users to write unvetted status indicators or read metrics without proper authorization checks.
-        </li>
-        <li value="24">
-          <a href="threat-model/index.html#t24-misconfigured-verifier-instance">
-Misconfigured Verifier Instance
-          </a>
-          <span class="threat-tag threat-tag-security">security</span> —
-A verifier administrator misconfigures some aspect of the verification software, whether that be the coordinator service or the workflow service related to verifying credentials, leading to inaccurate or wrong verifications.
+An administrator of a holder, verifier, issuer, or workflow instance misconfigures some aspect of the software, whether that be the coordinator or service for their particular role, leading to the component misbehaving in its intended role.
         </li>
         <li value="25">
           <a href="threat-model/index.html#t25-failure-to-validate-verifier-results-and-semantic-contexts">
@@ -4019,13 +4013,6 @@ Failure to Validate Verifier Results and Semantic Contexts
           </a>
           <span class="threat-tag threat-tag-security">security</span> —
 Verification components fail to parse nested semantic outcomes (like specialized `revoked=true` fields) or blindly fetch untrusted external JSON-LD schemas, causing unexpected remote execution patterns.
-        </li>
-        <li value="26">
-          <a href="threat-model/index.html#t26-misconfigured-workflow-instance">
-Misconfigured Workflow Instance
-          </a>
-          <span class="threat-tag threat-tag-security">security</span> —
-Flaws in one or more workflows allow a user client to bypass prerequisites, jumping directly into incorrect success or failure states.
         </li>
         <li value="27">
           <a href="threat-model/index.html#t27-workflow-variables-allow-workflow-template-to-be-misused">
@@ -4196,31 +4183,15 @@ Downstream consumer webhooks or internal endpoints process calls slowly, filling
         </li>
       </ol>
     </section>
-
-    <section class="notoc">
-      <h3>Security Considerations</h4>
-      <p>
-  W3C is migrating to a holistic threat modelling approach and is in the process
-  of deprecating the Security Considerations sections in new specifications.
-  Please refer to Appendix [[[#threat-model]]] for documentation related to
-  security considerations.
-      </p>
-    </section>
-
-    <section class="notoc">
-      <h3>Privacy Considerations</h4>
-      <p>
-  W3C is migrating to a holistic threat modelling approach and is in the process
-  of deprecating the Privacy Considerations sections in new specifications. Please
-  refer to Appendix [[[#threat-model]]] for documentation related to privacy
-  considerations.
-      </p>
-    </section>
   </section>
 
   <section class="appendix">
     <h2>Privacy Considerations</h2>
     <p>
+W3C is migrating to a holistic threat modelling approach and is in the process
+of deprecating the Privacy Considerations sections in new specifications. Please
+refer to Appendix [[[#threat-model]]] for documentation related to privacy
+considerations.
     </p>
 
     <section>
@@ -4309,6 +4280,10 @@ ecosystem.
   <section class="appendix">
     <h2>Security Considerations</h2>
     <p>
+W3C is migrating to a holistic threat modelling approach and is in the process
+of deprecating the Security Considerations sections in new specifications.
+Please refer to Appendix [[[#threat-model]]] for documentation related to
+security considerations.
     </p>
 
     <section>
@@ -4367,34 +4342,6 @@ integrity proof|proofs=] unless the wallet has implemented the procedures for
 deriving a proof. It is vital that a wallet not present a base proof by
 accident, as it might include information that is secret to the [=holder=].
       </p>
-
-      <p>
-        A <a href="threat-model/index.html">threat model for the VCALM specification</a> has been created
-        based on a use case of a first responder onboarding themselves to a new incident. This use case was chosen because it could be simplified
-        to detail the issuance of a [=verifiable credential=] for the particular incident, predicated on the [=verification=] of an existing emergency
-        responder credential. This enabled the data flow diagram in the threat model to detail both the [=verification=] and issuance steps, in the
-        same workflow.
-      </p>
-
-    <section class="notoc">
-        <h3>Security Considerations</h4>
-        <p>
-          W3C is migrating to a holistic threat modelling approach and is in the process
-          of deprecating the Security Considerations sections in new specifications.
-          Please refer to Appendix [[[#threat-model]]] for documentation related to
-          security considerations.
-        </p>
-      </section>
-
-      <section class="notoc">
-        <h3>Privacy Considerations</h4>
-        <p>
-          W3C is migrating to a holistic threat modelling approach and is in the process
-          of deprecating the Privacy Considerations sections in new specifications. Please
-          refer to Appendix [[[#threat-model]]] for documentation related to privacy
-          considerations.
-        </p>
-      </section>
     </section>
   </section>
 
