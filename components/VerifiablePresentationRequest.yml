@@ -14,7 +14,14 @@ components:
   schemas:
     VerifiablePresentationRequest:
       type: object
-      description: A Verifiable Presentation Request.
+      description: >
+        A Verifiable Presentation Request. The `query` property is required;
+        an empty object means that there is no request (see Get Current
+        Exchange VPR).
+      anyOf:
+        - maxProperties: 0
+        - required:
+            - query
       properties:
         "query":
           type: array
@@ -23,10 +30,30 @@ components:
             type: object
             properties:
               "type":
+                type: string
+                description: The type of the query, such as QueryByExample or DIDAuthentication.
+              "acceptedMethods":
                 type: array
-                description: The type of the query.
+                description: For DIDAuthentication queries, the DID Methods the verifier accepts.
                 items:
-                  type: string
+                  type: object
+                  required:
+                    - method
+                  properties:
+                    "method":
+                      type: string
+                      description: A DID Method name.
+              "acceptedCryptosuites":
+                type: array
+                description: For DIDAuthentication queries, the cryptosuites among which the holder chooses when generating its proof.
+                items:
+                  type: object
+                  required:
+                    - cryptosuite
+                  properties:
+                    "cryptosuite":
+                      type: string
+                      description: A Data Integrity cryptosuite name, or Ed25519Signature2020 for legacy support.
               "credentialQuery":
                 type: object
                 description: For QueryByExample queries, specifies the credential request details.
@@ -39,12 +66,15 @@ components:
                     description: An example of the credential being requested.
                   "acceptedIssuers":
                     type: array
-                    description: Accepted issuers for the requested credential.
+                    description: >
+                      Issuers the verifier accepts for the requested credential:
+                      items, or lists that contain items.
                     items:
-                      type: object
-                      properties:
-                        "issuer":
-                          type: string
+                      anyOf:
+                        - $ref: "#/components/schemas/AcceptedIssuer"
+                        - type: array
+                          items:
+                            $ref: "#/components/schemas/AcceptedIssuer"
                   "acceptedCryptosuites":
                     type: array
                     description: Cryptographic proof suites the verifier will accept. Each element SHOULD be an object with a <code>cryptosuite</code> property referencing a Data Integrity cryptosuite name or <code>Ed25519Signature2020</code> for legacy (for backwards compatibility, string values MAY also be used and are to be interpreted as the cryptosuite name). This enables the holder to select an appropriate proof format. This property MAY be used independently of <code>acceptedEnvelopes</code>, which is only applicable to enveloped credentials.
@@ -244,3 +274,35 @@ components:
             }]
           }
         }
+    AcceptedIssuer:
+      description: >
+        An issuer the verifier accepts: a URL that identifies an issuer, an
+        object with an `id` URL, or an object with a `recognizedIn`
+        RecognizedEntityCredential.
+      anyOf:
+        - type: string
+          format: uri
+        - type: object
+          required:
+            - id
+          properties:
+            "id":
+              type: string
+              format: uri
+        - type: object
+          required:
+            - recognizedIn
+          properties:
+            "recognizedIn":
+              type: object
+              required:
+                - type
+                - id
+              properties:
+                "type":
+                  type: string
+                  enum:
+                    - RecognizedEntityCredential
+                "id":
+                  type: string
+                  format: uri
