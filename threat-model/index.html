@@ -111,7 +111,7 @@
   <script src="threats/t27-workflow-variables-allow-workflow-template-to-be-misused.js"></script>
   <script src="threats/t28-callback-urls-during-workflows-slow-to-respond.js"></script>
   <script src="threats/t29-ecosystem-gatekeeping-in-the-name-of-security-or-privacy.js"></script>
-  <script src="threats/t41-issuance-request-and-or-delivery-made-by-third-party.js"></script>
+  <script src="threats/t30-issuance-request-and-or-delivery-made-by-third-party.js"></script>
   <script src="threats/t31-unintended-data-leak-due-to-third-party-processing.js"></script>
   <script src="threats/t32-malicious-entity-acts-on-behalf-of-incapable-party.js"></script>
   <script src="threats/t33-verifier-phones-home-about-specific-verifiable-credential.js"></script>
@@ -119,10 +119,10 @@
   <script src="threats/t35-interaction-url-does-not-use-https.js"></script>
   <script src="threats/t36-deletion-request-only-results-in-partial-deletion-of-credential.js"></script>
   <script src="threats/t37-credential-deletion-violates-legal-regulation.js"></script>
-  <script src="threats/t38-mishandled-status-information-upon-credential-deletion-reveals-information.js"></script>
+  <script src="threats/t38-mishandled-status-information-upon-credential-deletion-breaks-verification.js"></script>
   <script src="threats/t39-large-payload-triggers-denial-of-service-dos.js"></script>
   <script src="threats/t40-improper-credential-validation-leads-to-security-vulnerabilities.js"></script>
-  <script src="threats/t41-shoulder-surfed-interaction-url.js"></script>
+  <script src="threats/t41-shoulder-surfed-interaction-url-enables-cross-device-pickup.js"></script>
 </head>
 
 <body>
@@ -308,11 +308,11 @@
           interaction URL, which returns to the incident coordinator, and retrieves the <strong>protocol object</strong> (<a>D4</a>)
           that advertises the set of available <strong>interaction protocols</strong> (<a>F6</a>).
           Once the <strong>wallet coordinator</strong> (<a>P1</a>) has the set of available protocols, it selects the protocol that
-          best fits the current interaction. For this exploration, it selects the VC API, but in fullness it could select from
+          best fits the current interaction. For this exploration, it selects the <a data-cite="VCALM#workflows-and-exchanges">VC API</a>, but in fullness it could select from
           any of the available interaction protocols advertised, such as the inviteRequest protocol, and there are no restrictions
           on the [=protocol object=] that limits the set of advertised interaction protocols.
         </p>
-        <p>After selecting the VC API from the available set of protocols, Sachin’s wallet uses the provided
+        <p>After selecting the <a data-cite="VCALM#workflows-and-exchanges">VC API</a> from the available set of protocols, Sachin’s wallet uses the provided
           <strong>exchange URL</strong> (<a>D9</a>) to contact the State of Utopia Incident Command’s <strong>[=workflow service=]</strong> (<a>P5</a>) (<a>F7</a>).
           The [=workflow service=] then, according to this particular workflow, generates a verifiable presentation request (VPR) to
           request proof of <strong>EMT certification</strong> (<a>D5</a>) and uses the exchange to return the VPR to Sachin’s wallet coordinator (<a>F8</a>).

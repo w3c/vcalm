@@ -3385,8 +3385,8 @@ the gap, since software on the device can still intercept the handoff
 Interaction URL Read from QR Code is Opened by Unexpected or Malicious
 Application</a>). Doing so requires distinguishing approved wallets from
 unapproved ones, with the effects described in
-<a href="threat-model/index.html#t12-use-of-protocol-to-centralize-digital-credential-ecosystem-and-lock-out-competition">T12:
-Use of Protocol to Centralize Digital Credential Ecosystem and Lock Out
+<a href="threat-model/index.html#t12-use-of-protocol-to-centralize-digital-credentials-ecosystem-and-lockout-competition">T12:
+Use of Protocol to Centralize Digital Credentials Ecosystem and Lockout
 Competition</a> and
 <a href="threat-model/index.html#t29-ecosystem-gatekeeping-in-the-name-of-security-or-privacy">T29:
 Ecosystem Gatekeeping in the Name of Security or Privacy</a>.
@@ -4071,14 +4071,11 @@ This mode of operation can be useful if there are audit requirements for all cre
 or if recovering an original credential might be a useful feature to provide but can lead to unintended persistence of records for longer than necessary.
         </li>
         <li value="38">
-          <a href="threat-model/index.html#t38-mishandled-status-information-upon-credential-deletion-reveals-information">
-Mishandled Status Information Upon Credential Deletion Lead to Holder Confusion
+          <a href="threat-model/index.html#t38-mishandled-status-information-upon-credential-deletion-breaks-verification">
+Mishandled Status Information Upon Credential Deletion Breaks Verification
           </a>
           <span class="threat-tag threat-tag-security">security</span> —
-When deleting a verifiable credential, handling of its status information needs to be considered.
-Some use cases might call for deletion of a particular verifiable credential to also set the revocation and suspension bits of that verifiable credential,
-such that any sort of status check for the deleted credential fails and use of the credential is halted without the knowledge of the holder.
-This can lead to frustration and confusion when the holder attempts to use the credential for what they deem to be a valid purpose.
+When deleting a verifiable credential, handling of its status information needs to be considered. For instance, some use cases might call for the revocation and suspension bits of a particular verifiable credential to be set upon deletion of that verifiable credential, such that any sort of status check for the deleted credential fails, and use of the credential is thereby halted, without immediately making the holder aware of these status changes. This can lead to frustration and confusion when the holder later attempts to use the credential for a purpose they deem to be valid.
         </li>
         <li value="39">
           <a href="threat-model/index.html#t39-large-payload-triggers-denial-of-service-dos">
