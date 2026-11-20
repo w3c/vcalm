@@ -287,10 +287,7 @@ paths:
         to continue the exchange.
       tags:
         - Credentials
-      security:
-        - networkAuth: []
-        - oAuth2: []
-        - zCap: []
+      security: []
       operationId: participateInExchange
       description: Participate in an exchange. Posting an empty body will start the exchange or return what the exchange is expecting to complete the next step.
       x-expectedCaller: Anyone
@@ -321,10 +318,7 @@ paths:
       summary: Gets the supported protocols for interacting with a specific exchange.
       tags:
         - Exchanges
-      security:
-        - networkAuth: []
-        - oAuth2: []
-        - zCap: []
+      security: []
       operationId: getSupportedProtocolsConfiguration
       description: Gets the supported protocols for interacting with a specific exchange.
       x-expectedCaller:
@@ -352,10 +346,7 @@ paths:
       summary: Gets the current VPR for an exchange.
       tags:
         - Exchanges
-      security:
-        - networkAuth: []
-        - oAuth2: []
-        - zCap: []
+      security: []
       operationId: getCurrentExchangeVpr
       description: Gets the current VPR for an exchange (if available). This might be a useful endpoint for integration with the DC API. Processing this request SHOULD not advance the exchange to a new step nor perform any state-changing side effects, such as credential issuance.
       x-expectedCaller: Anyone with provided URL
