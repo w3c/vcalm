@@ -1510,10 +1510,11 @@ attacks</a>.
           </dd>
           <dt><dfn class="export" data-dfn-for="verifiable presentation request">acceptedEncryption</dfn></dt>
           <dd>
-An OPTIONAL [=map=] that a [=verifier=] provides to a [=holder=] to indicate
-whether the [=holder=] MAY or MUST encrypt the [=verifiable presentation=]
-response (and any contained [=verifiable credential=]s) with public keys
-the [=verifier=] controls. This enables an additional encryption layer for
+An OPTIONAL [=map=] that a [=verifier=] provides to a [=holder=] with public
+keys the [=verifier=] controls, which the [=holder=] can use to encrypt the
+[=verifiable presentation=] response (and any contained
+[=verifiable credential=]s). Its <code>required</code> value says whether
+encryption is required. This enables an additional encryption layer for
 protocols such as the Digital Credentials API, and for device response
 formats (for example, mdoc) that require encryption independently of the
 transport. The value MUST be a [=map=] of the following form:
